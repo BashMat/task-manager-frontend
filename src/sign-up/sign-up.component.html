@@ -1,22 +1,24 @@
 <div class="sign-up">
-    <div class="form-authorization-row">
-        <label htmlFor="input-email">Email:</label>
-        <input id="input-email" type="text" placeholder="E-mail address..." />
-    </div>
-    <div class="form-authorization-row">
-        <label htmlFor="input-username">Имя пользователя:</label>
-        <input id="input-username" type="text" placeholder="Username..." />
-    </div>
-    <div class="form-authorization-row">
-        <label htmlFor="input-password">Пароль:</label>
-        <input id="input-password" type="password" />
-    </div>
-    <div class="form-authorization-row">
-        <label htmlFor="input-repeated-password">Повторите пароль:</label>
-        <input id="input-repeated-password" type="password" />
-    </div>
-    <p class="message" hidden>{{message}}</p>
-    <button class="btn">Зарегистрироваться</button>
+    <form [formGroup]="signUpForm" (submit)="SignUp()">
+        <div class="form-authorization-row">
+            <label htmlFor="input-email">Email:</label>
+            <input id="input-email" type="text" placeholder="E-mail address..." formControlName="email"/>
+        </div>
+        <div class="form-authorization-row">
+            <label htmlFor="input-username">Имя пользователя:</label>
+            <input id="input-username" type="text" placeholder="Username..." formControlName="userName"/>
+        </div>
+        <div class="form-authorization-row">
+            <label htmlFor="input-password">Пароль:</label>
+            <input id="input-password" type="password" formControlName="password"/>
+        </div>
+        <div class="form-authorization-row">
+            <label htmlFor="input-repeated-password">Повторите пароль:</label>
+            <input id="input-repeated-password" type="password" formControlName="passwordRepeated"/>
+        </div>
+        <p class="message" hidden>{{message}}</p>
+        <button class="btn">Зарегистрироваться</button>
+    </form>
     <div>
         <button class="btn" (click)="GoToLogIn()">Уже зарегистрированы?</button>
     </div>

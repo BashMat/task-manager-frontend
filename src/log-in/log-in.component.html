@@ -1,14 +1,16 @@
 <div class="log-in">
-    <div class="form-authorization-row">
-        <label htmlFor="input-user">Имя пользователя:</label>
-        <input id="input-user" type="text" placeholder="User..." />
-    </div>
-    <div class="form-authorization-row">
-        <label htmlFor="input-password">Пароль:</label>
-        <input id="input-password" type="password" />
-    </div>
-    <p class="message" hidden>{{message}}</p>
-    <button class="btn">Войти</button>
+    <form [formGroup]="logInForm" (submit)="LogIn()">
+        <div class="form-authorization-row">
+            <label htmlFor="input-user">Имя пользователя:</label>
+            <input id="input-user" type="text" placeholder="User..." formControlName="logInData"/>
+        </div>
+        <div class="form-authorization-row">
+            <label htmlFor="input-password">Пароль:</label>
+            <input id="input-password" type="password" formControlName="password"/>
+        </div>
+        <p class="message" hidden>{{message}}</p>
+        <button class="btn">Войти</button>
+    </form>
   <div>
       <button class="btn">Забыли пароль?</button>
       <button class="btn" (click)="GoToSignUp()">Зарегистрироваться</button>
