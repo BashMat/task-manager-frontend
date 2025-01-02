@@ -1,7 +1,12 @@
 <main class="main">
-  <log-in></log-in>
-  <sign-up></sign-up>
-  <boards-page></boards-page>
+  @if (hasValidAccessToken)
+  {
+    <boards-page></boards-page>
+  }
+  @else
+  {
+    <log-in></log-in>
+  }
 </main>
 
 
