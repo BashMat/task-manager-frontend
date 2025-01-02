@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -9,4 +9,12 @@ import { RouterOutlet } from '@angular/router';
 })
 export class SignUpComponent {
   message: String = 'Default message';
+
+  @Output() switchComponentEvent = new EventEmitter<any>();
+
+  GoToLogIn(): void
+  {
+    console.log("Going to Log In");
+    this.switchComponentEvent.emit();
+  }
 }

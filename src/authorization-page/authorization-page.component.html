@@ -1,0 +1,13 @@
+<div class="authorization-page">
+  @if (shouldShowLogInComponent)
+  {
+    <log-in (switchComponentEvent)="SwitchComponent()"></log-in>
+  }
+  @else
+  {
+    <sign-up (switchComponentEvent)="SwitchComponent()"></sign-up>
+  }
+
+</div>
+
+<router-outlet />

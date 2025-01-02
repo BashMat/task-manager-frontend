@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LogInComponent } from "../log-in/log-in.component";
-import { SignUpComponent } from '../sign-up/sign-up.component';
 import { BoardsPageComponent } from "../boards-page/boards-page.component";
 import { jwtDecode } from 'jwt-decode';
+import { AuthorizationPageComponent } from '../authorization-page/authorization-page.component';
 
 @Component({
   selector: 'app',
-  imports: [RouterOutlet, LogInComponent, SignUpComponent, BoardsPageComponent],
+  imports: [RouterOutlet, AuthorizationPageComponent, BoardsPageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
