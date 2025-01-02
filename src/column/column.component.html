@@ -1,0 +1,27 @@
+<div class="column">
+  <div class="column-title">
+    <li>{{column().title}}</li>
+  </div>
+  <label htmlFor="column">New Card:</label>
+  <form [formGroup]="newCardForm" (submit)="AddCard()">
+    <input
+      className="new-card-input"
+      type="text"
+      placeholder="Card..."
+      id="card"
+      autoComplete='off'
+      formControlName="cardTitle"/>
+    <button class="btn">+</button>
+  </form>
+  <button class="btn" (click)="DeleteColumn()">X</button>
+  <div class="column-content">
+    <ul>
+      @for (card of column().cards; track card.id)
+      {
+        <card [card]=card (deleteCardEvent)="DeleteCard($event)"></card>
+      }
+    </ul>
+  </div>
+</div>
+
+<router-outlet />

@@ -25,38 +25,7 @@
   <ul>
       @for (board of boards; track board.id)
       {
-        <div class="board">
-          <div class="board-title">
-            <li>{{board.title}}</li>
-          </div>
-          <button class="btn" (click)="DeleteBoard(board.id)">X</button>
-          <div class="board-content">
-            <ul>
-              @for (column of board.columns; track column.id)
-              {
-                <div class="column">
-                  <div class="column-title">
-                    <li>{{column.title}}</li>
-                  </div>
-                  <button class="btn" (click)="DeleteColumn(column.id)">X</button>
-                  <div class="column-content">
-                    <ul>
-                      @for (card of column.cards; track card.id)
-                      {
-                        <div class="card">
-                          <div class="card-title">
-                            <li>{{card.title}}</li>
-                          </div>
-                          <button class="btn" (click)="DeleteCard(card.id)">X</button>
-                        </div>
-                      }
-                    </ul>
-                  </div>
-                </div>
-              }
-            </ul>
-          </div>
-        </div>
+        <board [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board>
       }
   </ul>
 

@@ -4,10 +4,11 @@ import { TaskManagerBackendService } from '../services/task-manager-backend.serv
 import { LocalStorageService } from '../services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BoardDto } from './board-dto.interface';
+import { BoardComponent } from "../board/board.component";
 
 @Component({
   selector: 'boards-page',
-  imports: [RouterOutlet, ReactiveFormsModule],
+  imports: [RouterOutlet, ReactiveFormsModule, BoardComponent],
   templateUrl: './boards-page.component.html',
   styleUrl: './boards-page.component.css'
 })
@@ -68,6 +69,11 @@ export class BoardsPageComponent implements OnInit
 
     this.taskManagerBackendService.DeleteBoard(boardId)
                                   .subscribe((boards: any) => this.boards = boards['data'] || []);
+  }
+
+  AddColumn(boardId: number)
+  {
+    console.log("Adding column for board", boardId)
   }
   
   DeleteColumn(columnId: number)
