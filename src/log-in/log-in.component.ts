@@ -41,7 +41,6 @@ export class LogInComponent {
       console.log("Values cannot be null");
       return;
     }
-    this.taskManagerBackendService.LogIn(this.logInForm.value.logInData!, this.logInForm.value.password!);
-    
+    this.taskManagerBackendService.LogIn(this.logInForm.value.logInData!, this.logInForm.value.password!); 
   }
 }

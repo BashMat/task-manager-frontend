@@ -1,6 +1,6 @@
 <div class="board-page">
   <div class="board-page-header">
-
+    <form [formGroup]="newBoardForm" (submit)="AddBoard()">
         <div class="outer-center">
             <div class="form-row-board-page">
                 <label htmlFor="board">New Board:</label>
@@ -8,20 +8,56 @@
                        type="text" 
                        placeholder="Board..." 
                        id="board" 
-                       autoComplete='off'/>
+                       autoComplete='off'
+                       formControlName="boardTitle"/>
             </div>
         </div>
         <div class="outer-center">
             <button class="btn">Add Board</button>
         </div>
+    </form>
 
-      <div class="outer-center">
-          <h1>Boards</h1>
-      </div>
+    <div class="outer-center">
+      <h1>Boards</h1>
+    </div>
   </div>
 
   <ul>
-      <li>Board Stub</li>
+      @for (board of boards; track board.id)
+      {
+        <div class="board">
+          <div class="board-title">
+            <li>{{board.title}}</li>
+          </div>
+          <button class="btn" (click)="DeleteBoard(board.id)">X</button>
+          <div class="board-content">
+            <ul>
+              @for (column of board.columns; track column.id)
+              {
+                <div class="column">
+                  <div class="column-title">
+                    <li>{{column.title}}</li>
+                  </div>
+                  <button class="btn" (click)="DeleteColumn(column.id)">X</button>
+                  <div class="column-content">
+                    <ul>
+                      @for (card of column.cards; track card.id)
+                      {
+                        <div class="card">
+                          <div class="card-title">
+                            <li>{{card.title}}</li>
+                          </div>
+                          <button class="btn" (click)="DeleteCard(card.id)">X</button>
+                        </div>
+                      }
+                    </ul>
+                  </div>
+                </div>
+              }
+            </ul>
+          </div>
+        </div>
+      }
   </ul>
 
 </div>

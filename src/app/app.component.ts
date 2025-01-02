@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { BoardsPageComponent } from "../boards-page/boards-page.component";
 import { jwtDecode } from 'jwt-decode';
 import { AuthorizationPageComponent } from '../authorization-page/authorization-page.component';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'app',
@@ -12,17 +13,14 @@ import { AuthorizationPageComponent } from '../authorization-page/authorization-
 })
 export class AppComponent
 {
-  accessToken: string | null = this.GetAccessToken();
-  hasValidAccessToken: boolean = this.IsValidToken(this.accessToken);
+  accessToken: string | null;
+  hasValidAccessToken: boolean;
 
-  GetAccessToken(): string | null
+  constructor(private localStorageService: LocalStorageService)
   {
-    let localStorageEntry = localStorage.getItem('token');
-    if (!localStorageEntry || localStorageEntry === null || localStorageEntry === "null")
-    {
-      return null;
-    }
-    return localStorageEntry;
+    this.localStorageService = localStorageService
+    this.accessToken = this.localStorageService.GetAccessToken();
+    this.hasValidAccessToken = this.IsValidToken(this.accessToken);
   }
 
   IsValidToken(token: string | null): boolean
