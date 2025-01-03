@@ -1,0 +1,22 @@
+.form-authorization-containter
+{
+    display: block;
+    text-align: center
+}
+
+.form-authorization
+{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-authorization-row
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px;
+    align-items: baseline;
+    justify-content: flex-end;
+    flex-direction: column;
+}
