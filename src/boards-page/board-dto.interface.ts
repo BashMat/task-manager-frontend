@@ -1,3 +1,5 @@
+import { Column } from "../board/column.interface";
+
 export interface BoardDto
 {
     id: number,
@@ -7,5 +9,5 @@ export interface BoardDto
     CreatedAt: Date,
     updatedBy: any,
     updatedAt: Date,
-    columns: any[]
+    columns: Column[]
 }

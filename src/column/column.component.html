@@ -21,10 +21,14 @@
     </div>
   </div>
 
-  <div class="column-content">
+  <div class="column-content"
+       cdkDropList
+       [id]="column().id.toString()"
+       [cdkDropListData]="column().cards"
+       (cdkDropListDropped)="drop($event)">
     @for (card of column().cards; track card.id)
     {
-      <card [card]=card (deleteCardEvent)="DeleteCard($event)"></card>
+      <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag></card>
     }
   </div>
 </div>

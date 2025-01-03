@@ -6,10 +6,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Column } from './column.interface';
 import { Board } from '../boards-page/board.interface';
 import { ColumnComponent } from '../column/column.component';
+import { CdkDropListGroup } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'board',
-  imports: [RouterOutlet, ReactiveFormsModule, ColumnComponent],
+  imports: [RouterOutlet, ReactiveFormsModule, ColumnComponent, CdkDropListGroup],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })

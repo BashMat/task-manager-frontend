@@ -1,3 +1,5 @@
+import { Card } from "../column/card.interface";
+
 export interface Column
 {
     id: number,
@@ -8,5 +10,5 @@ export interface Column
     CreatedAt: Date,
     updatedBy: any,
     updatedAt: Date,
-    cards: any[]
+    cards: Card[]
 }

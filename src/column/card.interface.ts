@@ -4,6 +4,7 @@ export interface Card
     title: string,
     description: string | null,
     columnId: number,
+    orderIndex: number,
     createdBy: any,
     createdAt: Date,
     updatedBy: any,

@@ -6,10 +6,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Card } from './card.interface';
 import { Column } from '../board/column.interface';
 import { CardComponent } from '../card/card.component';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'column',
-  imports: [RouterOutlet, ReactiveFormsModule, CardComponent],
+  imports: [RouterOutlet, ReactiveFormsModule, CardComponent, CdkDropList, CdkDrag],
   templateUrl: './column.component.html',
   styleUrl: './column.component.css'
 })
@@ -66,5 +67,25 @@ export class ColumnComponent
 
     this.taskManagerBackendService.DeleteCard(cardId)
                                   .subscribe((cards: any) => this.column().cards = cards['data'].filter((card: Card) => card.columnId === this.column().id) || []);
+  }
+
+  drop(event: CdkDragDrop<Card[]>)
+  {
+    console.log("Card dropped in column: processing");
+    this.taskManagerBackendService.MoveCard(event.previousContainer.data[event.previousIndex],
+                                            event.container.id as unknown as number,
+                                            event.currentIndex)
+                                  .subscribe((response: Card) => console.log("Put request for Card was sent!"));
+    if (event.previousContainer === event.container)
+    {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } 
+    else
+    {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
   }
 }

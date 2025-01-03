@@ -188,21 +188,6 @@ export class TaskManagerBackendService
         return this.httpClient.get<BoardDto[]>(this.boardsEndpoint, requestOptions);
     }
 
-    private ConvertToBoardArray(data: any) : Array<Board>
-    {
-        console.log("Converting...")
-        return data.map((board: Board) =>
-            {
-                return {id: board.id, title: board.title, columns: board.columns.map((column: { id: any; title: any; cards: any[]; }) =>
-                    {
-                        return {id: column.id, title: column.title, cards: column.cards.map((card: { id: any; title: any; orderIndex: any; }) =>
-                            {
-                                return {id: card.id, title: card.title, orderIndex: card.orderIndex};
-                            }).sort((lhs: { orderIndex: number; }, rhs: { orderIndex: number; }) => lhs.orderIndex < rhs.orderIndex ? -1 : 1)};
-                    }).sort((lhs: { id: number; }, rhs: { id: number; }) => lhs.id < rhs.id ? -1 : 1)};
-            }).sort((lhs: { id: number; }, rhs: { id: number; }) => lhs.id < rhs.id ? -1 : 1);
-    }
-
     DeleteBoard(boardId: number): Observable<BoardDto[]>
     {
         const headers = {
@@ -300,5 +285,31 @@ export class TaskManagerBackendService
         };
     
         return this.httpClient.delete<Card[]>(`${this.cardsEndpoint}/${cardId}`, requestOptions);
+    }
+
+    MoveCard(cardToMove: Card, columnId: number, orderIndex: number): Observable<Card>
+    {
+        console.log("Start moving Card to Column", columnId, "at order index", orderIndex);
+
+        const headers = {
+            'Content-type': 'application/json; charset=UTF-8',
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Authorization": "bearer " + this.token
+        }
+      
+        const requestOptions = {                                                                                                                                                                                 
+            headers: new HttpHeaders(headers), 
+        };
+
+        const body = {
+            "Title": cardToMove.title,
+            "Description": cardToMove.description,
+            "ColumnId": columnId,
+            "OrderIndex": orderIndex
+        }
+    
+        return this.httpClient.put<Card>(`${this.cardsEndpoint}/${cardToMove.id}`, body, requestOptions);
     }
 }

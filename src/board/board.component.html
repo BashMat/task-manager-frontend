@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <div class="board-content">
+  <div class="board-content" cdkDropListGroup>
   @for (column of board().columns; track column.id)
   {
     <column [column]=column (deleteColumnEvent)="DeleteColumn($event)"></column>

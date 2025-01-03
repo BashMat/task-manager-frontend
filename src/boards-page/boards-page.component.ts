@@ -5,6 +5,8 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BoardDto } from './board-dto.interface';
 import { BoardComponent } from "../board/board.component";
+import { Board } from './board.interface';
+import { Column } from '../board/column.interface';
 
 @Component({
   selector: 'boards-page',
@@ -60,7 +62,26 @@ export class BoardsPageComponent implements OnInit
   GetBoards(): void
   {
     this.taskManagerBackendService.GetBoards()
-                                  .subscribe((boards: any) => this.boards = boards['data'] || []);
+                                  .subscribe((boards: any) => 
+                                    this.boards = this.ConvertToBoardArray(boards['data'] || []));
+  }
+
+  private ConvertToBoardArray(data: any): Array<BoardDto>
+  {
+    console.log("Converting...")
+    let converted = data.map((board: BoardDto) => 
+      {
+        let mappedBoard = board;
+        mappedBoard.columns = board.columns.map((column: Column) => 
+          {
+            let mappedColumn = column;
+            mappedColumn.cards = column.cards.sort((lhs, rhs) => lhs.orderIndex - rhs.orderIndex)
+            return mappedColumn;
+          });
+        return mappedBoard;
+      });
+    console.log("Converted:", converted);
+    return converted;
   }
 
   DeleteBoard(boardId: number)

@@ -5,6 +5,7 @@
     margin: 5px 5px 5px 5px;
     background: ghostwhite;
     box-shadow: 2px 2px 2px black;
+    width: 300px;
 }
 
 .column-header
@@ -28,4 +29,9 @@
 {
     display: flex;
     margin: 5px;
+}
+
+.column-content
+{
+    min-height: 30px;
 }
