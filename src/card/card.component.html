@@ -1,8 +1,10 @@
 <div class="card">
-  <div class="card-title">
-    <li>{{card().title}}</li>
+  <div class="card-header">
+    <div class="card-header-title">
+      {{card().title}}
+      <button class="btn danger" (click)="DeleteCard()">X</button>
+    </div>
   </div>
-  <button class="btn" (click)="DeleteCard()">X</button>
 </div>
 
 <router-outlet />

@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+html, body
+{
+    margin: 0;
+    padding: 0;
+}
+
+.btn
+{
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px black;
+    background: #9198e5;
+}
+
+.btn:hover
+{
+    background: violet;
+}
+
+.btn.danger
+{
+    background: #e66465;
+}
+
+.btn.danger:hover
+{
+    background: red;
+}

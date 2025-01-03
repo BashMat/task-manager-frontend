@@ -1,26 +1,31 @@
 <div class="board">
-  <div class="board-title">
-    <li>{{board().title}}</li>
+  <div class="board-header">
+    <div class="board-header-title">
+      {{board().title}}
+      <button class="btn danger" (click)="DeleteBoard()">X</button>
+    </div>
+  
+    <div class="board-header-panel">
+      <label htmlFor="column">New Column:</label>
+  
+      <form [formGroup]="newColumnForm" (submit)="AddColumn()">
+        <input
+          class="new-column-input"
+          type="text"
+          placeholder="Column..."
+          id="column"
+          autoComplete='off'
+          formControlName="columnTitle"/>
+        <button class="btn">+</button>
+      </form>
+    </div>
   </div>
-  <label htmlFor="column">New Column:</label>
-  <form [formGroup]="newColumnForm" (submit)="AddColumn()">
-    <input
-      className="new-column-input"
-      type="text"
-      placeholder="Column..."
-      id="column"
-      autoComplete='off'
-      formControlName="columnTitle"/>
-  <button class="btn">+</button>
-  </form>
-  <button class="btn" (click)="DeleteBoard()">X</button>
+
   <div class="board-content">
-    <ul>
-      @for (column of board().columns; track column.id)
-      {
-        <column [column]=column (deleteColumnEvent)="DeleteColumn($event)"></column>
-      }
-    </ul>
+  @for (column of board().columns; track column.id)
+  {
+    <column [column]=column (deleteColumnEvent)="DeleteColumn($event)"></column>
+  }
   </div>
 </div>
 

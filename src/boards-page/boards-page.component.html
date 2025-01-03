@@ -1,33 +1,27 @@
 <div class="board-page">
   <div class="board-page-header">
-    <form [formGroup]="newBoardForm" (submit)="AddBoard()">
-        <div class="outer-center">
-            <div class="form-row-board-page">
-                <label htmlFor="board">New Board:</label>
-                <input class="new-board-input"
-                       type="text" 
-                       placeholder="Board..." 
-                       id="board" 
-                       autoComplete='off'
-                       formControlName="boardTitle"/>
-            </div>
-        </div>
-        <div class="outer-center">
-            <button class="btn">Add Board</button>
-        </div>
-    </form>
-
-    <div class="outer-center">
+    <div class="board-page-header-title">
       <h1>Boards</h1>
+    </div>
+
+    <div class="board-page-header-panel">
+      <form [formGroup]="newBoardForm" (submit)="AddBoard()">
+        <label htmlFor="board">New Board:</label>
+        <input class="new-board-input"
+                type="text" 
+                placeholder="Board..." 
+                id="board" 
+                autoComplete='off'
+                formControlName="boardTitle"/>
+        <button class="btn">Add Board</button>
+    </form>
     </div>
   </div>
 
-  <ul>
-      @for (board of boards; track board.id)
-      {
-        <board [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board>
-      }
-  </ul>
+  @for (board of boards; track board.id)
+  {
+    <board [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board>
+  }
 
 </div>
 

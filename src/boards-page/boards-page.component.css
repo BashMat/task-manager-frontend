@@ -1,0 +1,17 @@
+.board-page-header-title
+{
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.board-page-header-title .btn
+{
+    margin: 5px;
+}
+
+.board-page-header-panel
+{
+    display: flex;
+    margin: 5px;
+}
