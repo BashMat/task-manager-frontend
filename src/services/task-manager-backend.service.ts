@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { Board } from "../boards-page/board.interface";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { BoardDto } from "../boards-page/board-dto.interface";
 import { Column } from "../board/column.interface";
@@ -199,7 +198,7 @@ export class TaskManagerBackendService
           }
       
         const requestOptions = {                                                                                                                                                                                 
-        headers: new HttpHeaders(headers), 
+            headers: new HttpHeaders(headers), 
         };
     
         return this.httpClient.delete<BoardDto[]>(`${this.boardsEndpoint}/${boardId}`, requestOptions);

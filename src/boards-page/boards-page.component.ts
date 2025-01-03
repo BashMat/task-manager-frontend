@@ -63,7 +63,7 @@ export class BoardsPageComponent implements OnInit
   {
     this.taskManagerBackendService.GetBoards()
                                   .subscribe((boards: any) => 
-                                    this.boards = this.ConvertToBoardArray(boards['data'] || []));
+                                    this.boards = this.ConvertToBoardArray(boards['data'] || new Array<BoardDto>()));
   }
 
   private ConvertToBoardArray(data: any): Array<BoardDto>
@@ -89,7 +89,7 @@ export class BoardsPageComponent implements OnInit
     console.log("Deleting board", boardId);
 
     this.taskManagerBackendService.DeleteBoard(boardId)
-                                  .subscribe((boards: any) => this.boards = boards['data'] || []);
+                                  .subscribe((boards: any) => this.boards = this.ConvertToBoardArray(boards['data'] || new Array<BoardDto>()));
   }
 
   AddColumn(boardId: number)
