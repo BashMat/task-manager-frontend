@@ -245,7 +245,7 @@ export class TaskManagerBackendService
         return this.httpClient.delete<Column[]>(`${this.columnsEndpoint}/${columnId}`, requestOptions);
     }
 
-    AddCard(columnId: number, cardTitle: string): Observable<{data: Card, message: string, success: boolean}> 
+    AddCard(columnId: number, cardTitle: string, orderIndex: number): Observable<{data: Card, message: string, success: boolean}> 
     {
         console.log("Adding card", cardTitle);
         const headers = {
@@ -263,7 +263,8 @@ export class TaskManagerBackendService
         const body = {
             "Title": cardTitle,
             "Description": null,
-            "ColumnId": columnId
+            "ColumnId": columnId,
+            "OrderIndex": orderIndex
         }
     
         return this.httpClient.post<{data: Card, message: string, success: boolean}>(this.cardsEndpoint, body, requestOptions);

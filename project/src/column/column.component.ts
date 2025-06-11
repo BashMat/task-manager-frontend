@@ -49,7 +49,12 @@ export class ColumnComponent
       return;
     }
 
-    this.taskManagerBackendService.AddCard(this.column().id, this.newCardForm.value.cardTitle!)
+    let columnLength = this.column().cards.length;
+    let newCardIndex = columnLength === 0
+                       ? 0
+                       : this.column().cards[columnLength - 1].orderIndex + 1;
+
+    this.taskManagerBackendService.AddCard(this.column().id, this.newCardForm.value.cardTitle!, newCardIndex)
                                   .subscribe((response: {data: Card, message: string, success: boolean}) => 
                                     {
                                       console.log("response: ", response)
