@@ -28,7 +28,7 @@
        (cdkDropListDropped)="drop($event)">
     @for (card of column().cards; track card.id)
     {
-      <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag></card>
+      <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag [cdkDragData]="card"></card>
     }
   </div>
 </div>

@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BoardDto } from "../boards-page/board-dto.interface";
-import { Column } from "../board/column.interface";
+import { TrackingLogDto } from "./tracking-log-dto.interface";
+import { TrackingLogEntry } from "./tracking-log-entry-dto.interface";
+import { Status } from "./tracking-log-entry-status-dto.interface";
 import { Card } from "../column/card.interface";
 
 @Injectable({
@@ -12,21 +13,22 @@ export class TaskManagerBackendService
 {
     token: string | null = null;
 
-    taskManagerBackendUrl = "https://localhost:5001";
+    taskManagerBackendUrl = "http://localhost:5000";
     api = "api";
     apiUrl = `${this.taskManagerBackendUrl}/${this.api}`;
     auth = "auth";
     signUpEndpoint = `${this.apiUrl}/${this.auth}/signup`;
     logInEndpoint = `${this.apiUrl}/${this.auth}/login`;
     
-    boards = "boards";
-    boardsEndpoint = `${this.apiUrl}/${this.boards}`;
+    tracking = "tracking";
+    logs = "logs";
+    trackingLogsEndpoint = `${this.apiUrl}/${this.tracking}/${this.logs}`;
 
-    columns = "columns";
-    columnsEndpoint = `${this.apiUrl}/${this.boards}/${this.columns}`;
+    logEntryStatuses = "statuses";
+    trackingLogEntryStatusesEndpoint = `${this.apiUrl}/${this.tracking}/${this.logEntryStatuses}`;
 
-    cards = "cards";
-    cardsEndpoint = `${this.apiUrl}/${this.boards}/${this.cards}`;
+    logEntries = "log-entries";
+    trackingLogEntriesEndpoint = `${this.apiUrl}/${this.tracking}/${this.logEntries}`;
 
     constructor(private httpClient: HttpClient)
     {
@@ -147,7 +149,7 @@ export class TaskManagerBackendService
         console.log("Finish Logging In");
     }
 
-    AddBoard(boardTitle: string) : Observable<{data: BoardDto, message: string, success: boolean}>
+    AddBoard(boardTitle: string) : Observable<{data: TrackingLogDto, message: string, success: boolean}>
     {
         console.log("Adding board", boardTitle);
         const headers = {
@@ -167,11 +169,12 @@ export class TaskManagerBackendService
             "Description": null
         }
     
-        return this.httpClient.post<{data: BoardDto, message: string, success: boolean}>(this.boardsEndpoint, body, requestOptions);
+        return this.httpClient.post<{data: TrackingLogDto, message: string, success: boolean}>(this.trackingLogsEndpoint, body, requestOptions);
     }
 
-    GetBoards(): Observable<BoardDto[]>
+    GetBoards(): Observable<TrackingLogDto[]>
     {
+        console.log("Getting boards");
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
             "Access-Control-Allow-Headers": "*",
@@ -184,10 +187,10 @@ export class TaskManagerBackendService
         headers: new HttpHeaders(headers), 
         };
     
-        return this.httpClient.get<BoardDto[]>(this.boardsEndpoint, requestOptions);
+        return this.httpClient.get<TrackingLogDto[]>(this.trackingLogsEndpoint, requestOptions);
     }
 
-    DeleteBoard(boardId: number): Observable<BoardDto[]>
+    DeleteBoard(boardId: number): Observable<TrackingLogDto[]>
     {
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
@@ -201,10 +204,10 @@ export class TaskManagerBackendService
             headers: new HttpHeaders(headers), 
         };
     
-        return this.httpClient.delete<BoardDto[]>(`${this.boardsEndpoint}/${boardId}`, requestOptions);
+        return this.httpClient.delete<TrackingLogDto[]>(`${this.trackingLogsEndpoint}/${boardId}`, requestOptions);
     }
 
-    AddColumn(boardId: number, columnTitle: string): Observable<{data: Column, message: string, success: boolean}> 
+    AddColumn(boardId: number, columnTitle: string): Observable<{data: Status, message: string, success: boolean}> 
     {
         console.log("Adding column", columnTitle);
         const headers = {
@@ -222,13 +225,13 @@ export class TaskManagerBackendService
         const body = {
             "Title": columnTitle,
             "Description": null,
-            "BoardId": boardId
+            "TrackingLogId": boardId
         }
     
-        return this.httpClient.post<{data: Column, message: string, success: boolean}>(this.columnsEndpoint, body, requestOptions);
+        return this.httpClient.post<{data: Status, message: string, success: boolean}>(this.trackingLogEntryStatusesEndpoint, body, requestOptions);
     }
     
-    DeleteColumn(columnId: number): Observable<Column[]>
+    DeleteColumn(columnId: number): Observable<Status[]>
     {
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
@@ -242,10 +245,10 @@ export class TaskManagerBackendService
             headers: new HttpHeaders(headers), 
         };
     
-        return this.httpClient.delete<Column[]>(`${this.columnsEndpoint}/${columnId}`, requestOptions);
+        return this.httpClient.delete<Status[]>(`${this.trackingLogEntryStatusesEndpoint}/${columnId}`, requestOptions);
     }
 
-    AddCard(columnId: number, cardTitle: string, orderIndex: number): Observable<{data: Card, message: string, success: boolean}> 
+    AddCard(boardId: number, columnId: number, cardTitle: string, orderIndex: number): Observable<{data: TrackingLogEntry, message: string, success: boolean}> 
     {
         console.log("Adding card", cardTitle);
         const headers = {
@@ -263,14 +266,15 @@ export class TaskManagerBackendService
         const body = {
             "Title": cardTitle,
             "Description": null,
-            "ColumnId": columnId,
+            "TrackingLogId": boardId,
+            "StatusId": columnId,
             "OrderIndex": orderIndex
         }
     
-        return this.httpClient.post<{data: Card, message: string, success: boolean}>(this.cardsEndpoint, body, requestOptions);
+        return this.httpClient.post<{data: TrackingLogEntry, message: string, success: boolean}>(this.trackingLogEntriesEndpoint, body, requestOptions);
     }
 
-    DeleteCard(cardId: number): Observable<Card[]>
+    DeleteCard(cardId: number): Observable<TrackingLogEntry[]>
     {
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
@@ -284,10 +288,10 @@ export class TaskManagerBackendService
             headers: new HttpHeaders(headers), 
         };
     
-        return this.httpClient.delete<Card[]>(`${this.cardsEndpoint}/${cardId}`, requestOptions);
+        return this.httpClient.delete<TrackingLogEntry[]>(`${this.trackingLogEntriesEndpoint}/${cardId}`, requestOptions);
     }
 
-    MoveCard(cardToMove: Card, columnId: number, orderIndex: number): Observable<Card>
+    MoveCard(cardToMove: Card, columnId: number, orderIndex: number): Observable<{data: TrackingLogEntry, message: string, success: boolean}>
     {
         console.log("Start moving Card to Column", columnId, "at order index", orderIndex);
 
@@ -306,10 +310,13 @@ export class TaskManagerBackendService
         const body = {
             "Title": cardToMove.title,
             "Description": cardToMove.description,
-            "ColumnId": columnId,
-            "OrderIndex": orderIndex
+            "TrackingLogId": cardToMove.boardId,
+            "StatusId": columnId,
+            "Priority": cardToMove.priority,
+            "OrderIndex": orderIndex,
+            "UpdatedAt": cardToMove.updatedAt
         }
     
-        return this.httpClient.put<Card>(`${this.cardsEndpoint}/${cardToMove.id}`, body, requestOptions);
+        return this.httpClient.put<{data: TrackingLogEntry, message: string, success: boolean}>(`${this.trackingLogEntriesEndpoint}/${cardToMove.id}`, body, requestOptions);
     }
 }

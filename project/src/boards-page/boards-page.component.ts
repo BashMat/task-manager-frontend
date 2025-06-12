@@ -3,10 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { TaskManagerBackendService } from '../services/task-manager-backend.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { BoardDto } from './board-dto.interface';
+import { TrackingLogDto } from '../services/tracking-log-dto.interface';
 import { BoardComponent } from "../board/board.component";
 import { Board } from './board.interface';
 import { Column } from '../board/column.interface';
+import { Status } from '../services/tracking-log-entry-status-dto.interface';
+import { TrackingLogEntry } from '../services/tracking-log-entry-dto.interface';
+import { Card } from '../column/card.interface';
 
 @Component({
   selector: 'boards-page',
@@ -16,7 +19,7 @@ import { Column } from '../board/column.interface';
 })
 export class BoardsPageComponent implements OnInit
 {
-  boards: Array<BoardDto> = [];
+  boards: Array<Board> = [];
 
   newBoardForm = new FormGroup(
     {
@@ -47,12 +50,12 @@ export class BoardsPageComponent implements OnInit
     }
 
     this.taskManagerBackendService.AddBoard(this.newBoardForm.value.boardTitle!)
-                                  .subscribe((response: {data: BoardDto, message: string, success: boolean}) => 
+                                  .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) => 
                                     {
                                       console.log("response: ", response)
                                       if (response.data !== null)
                                       {
-                                        this.boards.push(response.data)
+                                        this.boards.push(this.ConvertToBoard(response.data))
                                       }
                                     })
     this.newBoardForm.reset();
@@ -63,25 +66,53 @@ export class BoardsPageComponent implements OnInit
   {
     this.taskManagerBackendService.GetBoards()
                                   .subscribe((boards: any) => 
-                                    this.boards = this.ConvertToBoardArray(boards['data'] || new Array<BoardDto>()));
+                                    this.boards = this.ConvertToBoardArray(boards['data'] || new Array<Board>()));
   }
 
-  private ConvertToBoardArray(data: any): Array<BoardDto>
+  private ConvertToBoardArray(data: any): Array<Board>
   {
     console.log("Converting...")
-    let converted = data.map((board: BoardDto) => 
+    let converted = data.map((log: TrackingLogDto) => 
       {
-        let mappedBoard = board;
-        mappedBoard.columns = board.columns.map((column: Column) => 
-          {
-            let mappedColumn = column;
-            mappedColumn.cards = column.cards.sort((lhs, rhs) => lhs.orderIndex - rhs.orderIndex)
-            return mappedColumn;
-          });
-        return mappedBoard;
+        return this.ConvertToBoard(log);
       });
     console.log("Converted:", converted);
     return converted;
+  }
+
+  private ConvertToBoard(data: TrackingLogDto): Board
+  {
+    let mappedBoard = { id: data.id, title: data.title, columns: [] as Array<Column> };
+    mappedBoard.columns = data.trackingLogEntriesStatuses.map((status: Status) => 
+      {
+        let mappedColumn = { id: status.id, title: status.title, boardId: status.trackingLogId, cards: [] as Array<Card> };
+        console.log(mappedColumn);
+        console.log(data.trackingLogEntries);
+        let filtered = data.trackingLogEntries.filter((entry: TrackingLogEntry,
+                                                             index: number,
+                                                             array: TrackingLogEntry[]
+                                                            ) => { return entry.status.id === mappedColumn.id} );
+        console.log(filtered)
+        mappedColumn.cards = filtered.map((entry: TrackingLogEntry) => 
+                                                      {
+                                                        let mappedCard = {
+                                                                           id: entry.id,
+                                                                           title: entry.title,
+                                                                           description: entry.description,
+                                                                           boardId: entry.trackingLogId,
+                                                                           columnId: entry.status.id,
+                                                                           priority: entry.priority,
+                                                                           orderIndex: entry.orderIndex,
+                                                                           updatedAt: entry.updatedAt
+                                                                         };
+                                                        return mappedCard;
+                                                      }
+                                                    )
+                                                    .sort((lhs, rhs) => lhs.orderIndex - rhs.orderIndex);
+
+        return mappedColumn;
+      });
+    return mappedBoard;
   }
 
   DeleteBoard(boardId: number)
@@ -89,7 +120,7 @@ export class BoardsPageComponent implements OnInit
     console.log("Deleting board", boardId);
 
     this.taskManagerBackendService.DeleteBoard(boardId)
-                                  .subscribe((boards: any) => this.boards = this.ConvertToBoardArray(boards['data'] || new Array<BoardDto>()));
+                                  .subscribe((boards: any) => this.boards = this.ConvertToBoardArray(boards['data'] || new Array<TrackingLogDto>()));
   }
 
   AddColumn(boardId: number)

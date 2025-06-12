@@ -7,6 +7,8 @@ import { Column } from './column.interface';
 import { Board } from '../boards-page/board.interface';
 import { ColumnComponent } from '../column/column.component';
 import { CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { Status } from '../services/tracking-log-entry-status-dto.interface';
+import { Card } from '../column/card.interface';
 
 @Component({
   selector: 'board',
@@ -50,12 +52,13 @@ export class BoardComponent
     }
 
     this.taskManagerBackendService.AddColumn(this.board().id, this.newColumnForm.value.columnTitle!)
-                                  .subscribe((response: {data: Column, message: string, success: boolean}) => 
+                                  .subscribe((response: {data: Status, message: string, success: boolean}) => 
                                     {
                                       console.log("response: ", response)
                                       if (response.data !== null)
                                       {
-                                        this.board().columns.push(response.data)
+                                        let column = { id: response.data.id, title: response.data.title, boardId: response.data.trackingLogId, cards: [] as Array<Card>}
+                                        this.board().columns.push(column)
                                       }
                                     })
     this.newColumnForm.reset();
@@ -66,6 +69,6 @@ export class BoardComponent
     console.log("Deleting column", columnId);
 
     this.taskManagerBackendService.DeleteColumn(columnId)
-                                  .subscribe((columns: any) => this.board().columns = columns['data'].filter((column: Column) => column.boardId === this.board().id) || []);
+                                  .subscribe((columns: any) => this.board().columns = columns['data']);
   }
 }
