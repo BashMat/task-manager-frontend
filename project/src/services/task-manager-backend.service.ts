@@ -231,7 +231,7 @@ export class TaskManagerBackendService
         return this.httpClient.post<{data: Status, message: string, success: boolean}>(this.trackingLogEntryStatusesEndpoint, body, requestOptions);
     }
     
-    DeleteColumn(columnId: number): Observable<Status[]>
+    DeleteColumn(columnId: number): Observable<{data: Array<Status>, message: string, success: boolean}>
     {
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
@@ -245,7 +245,7 @@ export class TaskManagerBackendService
             headers: new HttpHeaders(headers), 
         };
     
-        return this.httpClient.delete<Status[]>(`${this.trackingLogEntryStatusesEndpoint}/${columnId}`, requestOptions);
+        return this.httpClient.delete<{data: Array<Status>, message: string, success: boolean}>(`${this.trackingLogEntryStatusesEndpoint}/${columnId}`, requestOptions);
     }
 
     AddCard(boardId: number, columnId: number, cardTitle: string, orderIndex: number): Observable<{data: TrackingLogEntry, message: string, success: boolean}> 

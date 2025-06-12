@@ -69,6 +69,9 @@ export class BoardComponent
     console.log("Deleting column", columnId);
 
     this.taskManagerBackendService.DeleteColumn(columnId)
-                                  .subscribe((columns: any) => this.board().columns = columns['data']);
+                                  .subscribe((response: {data: Array<Status>, message: string, success: boolean}) => 
+                                    {
+                                      this.board().columns = this.board().columns.filter((column: Column) => response.data.filter(status => status.id === column.id).length == 1);
+                                    });
   }
 }
