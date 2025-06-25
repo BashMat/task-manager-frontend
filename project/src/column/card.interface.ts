@@ -5,7 +5,7 @@ export interface Card
     description: string | null,
     boardId: number,
     columnId: number,
-    priority: number,
+    priority: number | null,
     orderIndex: number,
     updatedAt: Date
 }

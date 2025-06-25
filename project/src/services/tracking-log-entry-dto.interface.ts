@@ -7,7 +7,7 @@ export interface TrackingLogEntry
     status: Status,
     title: string,
     description: string | null,
-    priority: number,
+    priority: number | null,
     orderIndex: number,
     createdBy: any,
     CreatedAt: Date,
