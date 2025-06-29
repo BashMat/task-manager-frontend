@@ -6,8 +6,11 @@ html, body
 
 body
 {
+    position: relative;
     background: linear-gradient(#e66465, #9198e5);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .btn
@@ -32,19 +35,36 @@ body
     background: red;
 }
 
-.page-header-title
+header
+{
+    position: sticky;
+    top: 0;
+}
+
+.page-header
 {
     margin-bottom: 5px;
     background: rgba(255, 255, 255, 0.26);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
 }
 
 .page-header-title h1
 {
     margin: 10px;
+}
+
+.page-header a
+{
+    margin: 5px;
+}
+
+footer
+{
+    height: 100px;
+    background: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
