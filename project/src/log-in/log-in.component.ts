@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { TaskManagerBackendService } from '../services/task-manager-backend.service';
 
@@ -20,9 +20,13 @@ export class LogInComponent {
 
   @Output() switchComponentEvent = new EventEmitter<any>();
 
-  constructor(private taskManagerBackendService: TaskManagerBackendService)
+  constructor(private taskManagerBackendService: TaskManagerBackendService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router)
   {
     this.taskManagerBackendService = taskManagerBackendService;
+    this.activatedRoute = activatedRoute;
+    this.router = router;
   }
 
   GoToSignUp(): void
@@ -41,6 +45,21 @@ export class LogInComponent {
       console.log("Values cannot be null");
       return;
     }
-    this.taskManagerBackendService.LogIn(this.logInForm.value.logInData!, this.logInForm.value.password!); 
+    this.taskManagerBackendService.LogIn(this.logInForm.value.logInData!, this.logInForm.value.password!)
+                                  .subscribe(
+                                    {
+                                      next: () => 
+                                            {
+                                              const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+                                              console.log("Logged In.");
+                                              console.log("Returning to");
+                                              console.log(returnUrl);
+                                              this.router.navigateByUrl(returnUrl);
+                                            },
+                                      error: () => 
+                                             {
+                                               console.log("Error occured during loggin in");
+                                             }
+                                    }); 
   }
 }

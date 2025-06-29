@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
@@ -35,59 +36,53 @@ export class TaskManagerBackendService
         this.httpClient = httpClient;
     }
 
-    LogIn(logInData: string, password: string): void
+    LogIn(logInData: string, password: string): Observable<{data: string, message: string, success: boolean} | null>
     {
         console.log("Start Logging In");
         if (logInData === "")
         {
             console.log("Log In data cannot be empty");
-            return;
+            return of(null);
         }
     
         if (password === "")
         {
             console.log("Password data cannot be empty");
-            return;
+            return of(null);
         }
 
-        if (password.length < 4)
+        if (password.length < 8)
         {
             console.log("Password cannot be shorter than 4 characters");
-            return;
+            return of(null);
         }
 
         console.log("Sending POST");
 
-        let httpBody = JSON.stringify({ "logInData": logInData, "password": password });
+        const headers = {
+            'Content-type': 'application/json; charset=UTF-8',
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Authorization": "bearer " + this.token
+          }
+      
+        const requestOptions = {                                                                                                                                                                                 
+            headers: new HttpHeaders(headers), 
+        };
 
-        console.log("Body: ", httpBody);
-        fetch(this.logInEndpoint,
-            {
-                method: 'POST',
-                mode: 'cors',
-                body: httpBody,
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    "Access-Control-Allow-Headers": "*",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "*"
-                }
-            }).then(response => {
-                if (!response.ok) {
-                    console.log("Неверное имя пользователя или пароль!");
-                }
-                return response.json();
-            }
-            ).then(data => 
-                {
-                    console.log("Response data:", data);
-                    console.log("Data in data:", data.data);
-                    localStorage.setItem("token", data.data);
-                })
-            .catch((error) => {
-                console.log("Неверное имя пользователя или пароль!");
-            });
-        console.log("Finish Logging In");
+        let body = JSON.stringify({ "logInData": logInData, "password": password });
+
+        console.log("Body: ", body);
+        return this.httpClient
+                   .post<{data: string, message: string, success: boolean}>(this.logInEndpoint, body, requestOptions)
+                   .pipe(map(result => 
+                        {
+                            localStorage.setItem("token", result.data);
+                            return result; // return back same result.
+                        }
+                  )
+              );
     }
 
     SignUp(email: string, userName:string, password: string): void
