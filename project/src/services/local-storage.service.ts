@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
     providedIn: 'root'
@@ -13,5 +14,38 @@ export class LocalStorageService
       return null;
     }
     return localStorageEntry;
+  }
+
+
+  // TODO: This should be in some Auth service
+  HasValidToken(): boolean
+  {
+    let token = this.GetAccessToken();
+    if (token === null)
+    {
+      console.log("Token is null");
+      return false;
+    }
+
+    let decodedToken = jwtDecode(token);
+    let currentDate = new Date();
+
+    if (decodedToken.exp === null)
+    {
+      console.log("Token invalid.");
+      return false;
+    }
+
+    if (decodedToken.exp! * 1000 < currentDate.getTime())
+    {
+        console.log("Token expired.");
+        return false;
+    } 
+    else 
+    {
+        console.log("Valid token");
+        // TODO: add request to check token at backend
+        return true;
+    }
   }
 }

@@ -4,6 +4,12 @@ html, body
     padding: 0;
 }
 
+body
+{
+    background: linear-gradient(#e66465, #9198e5);
+    min-height: 100vh;
+}
+
 .btn
 {
     border-radius: 5px;
@@ -24,4 +30,21 @@ html, body
 .btn.danger:hover
 {
     background: red;
+}
+
+.page-header-title
+{
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-header-title h1
+{
+    margin: 10px;
 }
