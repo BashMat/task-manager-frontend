@@ -1,13 +1,13 @@
 import { Component, EventEmitter, input, Input, OnInit, Output } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TaskManagerBackendService } from '../services/task-manager-backend.service';
-import { LocalStorageService } from '../services/local-storage.service';
+import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Column } from './column.interface';
 import { Board } from '../boards-page/board.interface';
 import { ColumnComponent } from '../column/column.component';
 import { CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { Status } from '../services/tracking-log-entry-status-dto.interface';
+import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
 import { Card } from '../column/card.interface';
 
 @Component({

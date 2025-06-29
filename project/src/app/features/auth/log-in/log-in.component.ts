@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, RouterOutlet, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { TaskManagerBackendService } from '../services/task-manager-backend.service';
+import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 
 @Component({
   selector: 'log-in',

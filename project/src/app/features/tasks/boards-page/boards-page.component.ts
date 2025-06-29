@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TaskManagerBackendService } from '../services/task-manager-backend.service';
-import { LocalStorageService } from '../services/local-storage.service';
+import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TrackingLogDto } from '../services/tracking-log-dto.interface';
+import { TrackingLogDto } from '../../../core/services/tracking-log-dto.interface';
 import { BoardComponent } from "../board/board.component";
 import { Board } from './board.interface';
 import { Column } from '../board/column.interface';
-import { Status } from '../services/tracking-log-entry-status-dto.interface';
-import { TrackingLogEntry } from '../services/tracking-log-entry-dto.interface';
+import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
+import { TrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
 import { Card } from '../column/card.interface';
 
 @Component({
