@@ -1,12 +1,10 @@
 import { Component, EventEmitter, input, Output } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { Card } from '../column/card.interface';
 
 @Component({
   selector: 'card',
-  imports: [RouterOutlet],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css'
 })

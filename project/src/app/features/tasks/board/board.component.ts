@@ -1,5 +1,4 @@
 import { Component, EventEmitter, input, Input, OnInit, Output } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +11,7 @@ import { Card } from '../column/card.interface';
 
 @Component({
   selector: 'board',
-  imports: [RouterOutlet, ReactiveFormsModule, ColumnComponent, CdkDropListGroup],
+  imports: [ReactiveFormsModule, ColumnComponent, CdkDropListGroup],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })

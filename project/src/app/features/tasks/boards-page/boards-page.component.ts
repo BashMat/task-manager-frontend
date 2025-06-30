@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +12,7 @@ import { Card } from '../column/card.interface';
 
 @Component({
   selector: 'boards-page',
-  imports: [RouterOutlet, ReactiveFormsModule, BoardComponent],
+  imports: [ReactiveFormsModule, BoardComponent],
   templateUrl: './boards-page.component.html',
   styleUrl: './boards-page.component.css'
 })

@@ -34,7 +34,7 @@ export class NoAuthGuard implements CanActivate {
     {
         if (this.localStorageService.HasValidToken()) 
         {
-            this.router.navigate(['/profile']);
+            this.router.navigate(['/home']);
             return false;
         }
         
