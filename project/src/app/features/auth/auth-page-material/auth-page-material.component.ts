@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LogInMaterialComponent } from '../log-in-material/log-in-material.component';
-import { SignUpComponent } from '../sign-up/sign-up.component';
+import { SignUpMaterialComponent } from '../sign-up-material/sign-up-material.component';
 
 @Component({
   selector: 'auth-page-material',
-  imports: [RouterOutlet, LogInMaterialComponent, SignUpComponent],
+  imports: [RouterOutlet, LogInMaterialComponent, SignUpMaterialComponent],
   templateUrl: './auth-page-material.component.html',
   styleUrl: './auth-page-material.component.css'
 })
