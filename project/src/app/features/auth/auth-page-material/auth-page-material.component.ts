@@ -4,18 +4,18 @@ import { LogInMaterialComponent } from '../log-in-material/log-in-material.compo
 import { SignUpComponent } from '../sign-up/sign-up.component';
 
 @Component({
-  selector: 'authorization-page-material',
+  selector: 'auth-page-material',
   imports: [RouterOutlet, LogInMaterialComponent, SignUpComponent],
-  templateUrl: './authorization-page-material.component.html',
-  styleUrl: './authorization-page-material.component.css'
+  templateUrl: './auth-page-material.component.html',
+  styleUrl: './auth-page-material.component.css'
 })
-export class AuthorizationPageMaterialComponent
+export class AuthPageMaterialComponent
 {
   shouldShowLogInComponent: boolean = true;
 
   SwitchComponent(): void
   {
-    console.log("Switching Authorization Page component")
+    console.log("Switching Auth Page component")
     this.shouldShowLogInComponent = !this.shouldShowLogInComponent;
   }
 }
