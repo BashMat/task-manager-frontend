@@ -8,9 +8,9 @@
 
       @case (PageLayout.Unauthorized)
       {
-          <unauthorized-layout>
+          <unauthorized-layout-material>
               <router-outlet />
-          </unauthorized-layout>
+          </unauthorized-layout-material>
       }
 
       @case (PageLayout.Error)
@@ -22,8 +22,8 @@
 
       @default
       {
-          <unauthorized-layout>
+          <unauthorized-layout-material>
               <router-outlet />
-          </unauthorized-layout>
+          </unauthorized-layout-material>
       }
   }

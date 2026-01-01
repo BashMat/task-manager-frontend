@@ -5,6 +5,7 @@ import { AuthGuard, NoAuthGuard } from './authGuard';
 import { HomePageComponent } from './features/home/home-page/home-page.component';
 import { BoardsPageComponent } from './features/tasks/boards-page/boards-page.component';
 import { AuthorizationPageComponent } from './features/auth/authorization-page/authorization-page.component';
+import { AuthorizationPageMaterialComponent } from './features/auth/authorization-page-material/authorization-page-material.component';
 import { setLayout } from './shared/layouts/page-layout.resolver';
 import { PageLayout } from './shared/layouts/page-layout.enum';
 
@@ -20,7 +21,7 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        component: AuthorizationPageComponent,
+        component: AuthorizationPageMaterialComponent,
         canActivate: [NoAuthGuard]
     },
     {

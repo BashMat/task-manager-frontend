@@ -1,0 +1,13 @@
+<div>
+  @if (shouldShowLogInComponent)
+  {
+    <log-in-material (switchComponentEvent)="SwitchComponent()"></log-in-material>
+  }
+  @else
+  {
+    <sign-up (switchComponentEvent)="SwitchComponent()"></sign-up>
+  }
+
+</div>
+
+<router-outlet />

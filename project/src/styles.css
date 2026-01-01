@@ -1,10 +1,21 @@
+/* comment if non-tailwindcss styling should be used  */
+@import "tailwindcss";
+
 html, body
 {
+    height: 100%;
     margin: 0;
     padding: 0;
 }
 
-body
+body.mat-typography
+{
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: #e66465;
+}
+
+body.diy
 {
     position: relative;
     background: linear-gradient(#e66465, #9198e5);
@@ -61,7 +72,14 @@ header
     margin: 5px;
 }
 
-footer
+footer.material
+{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer.diy
 {
     position: absolute;
     left: 0;

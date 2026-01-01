@@ -1,0 +1,57 @@
+<div class="flex items-center justify-center min-h-screen">
+  <div class="w-full md:w-1/3 lg:w-1/2">
+    <form [formGroup]="logInForm" (ngSubmit)="LogIn()">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <div class="">
+            <img ngSrc="https://ui.angular-material.dev/app-ui/logo.svg" alt="Logo" height="48" width="48"
+              class="inline" />
+            <h1 class="text-3xl">Sign in</h1>
+            <p>to continue</p>
+
+            <div>
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="logInData" />
+              </mat-form-field>
+              @if ((logInForm.get('logInData')?.touched || logInForm.get('logInData')?.dirty) &&
+              logInForm.get('logInData')?.hasError('required')) {
+              <mat-error>
+                <mat-icon class="form-field-error-icon">error</mat-icon>
+                Email is required
+              </mat-error>
+              }
+            </div>
+            <div>
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" />
+              </mat-form-field>
+              @if ((logInForm.get('password')?.touched || logInForm.get('password')?.dirty) &&
+              logInForm.get('password')?.hasError('required')) {
+              <mat-error>
+                <mat-icon class="form-field-error-icon">error</mat-icon>
+                Password is required</mat-error>
+              }
+              @if ((logInForm.get('password')?.touched || logInForm.get('password')?.dirty) &&
+              logInForm.get('password')?.hasError('minlength')) {
+              <mat-error>
+                <mat-icon class="form-field-error-icon">error</mat-icon>
+                Password must be at least 8 characters
+              </mat-error>
+              }
+            </div>
+
+            <a mat-button href="/restore">Restore account</a>
+            <button mat-button type="button" (click)="GoToSignUp()">Go to Sign up form</button>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-flat-button type="submit">Sign in</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+</div>
+
+<router-outlet />
