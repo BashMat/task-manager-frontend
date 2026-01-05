@@ -1,7 +1,7 @@
-<div class="flex items-center justify-center min-h-screen">
-  <div class="w-full md:w-1/3 lg:w-1/2">
-    <form [formGroup]="signUpForm" (ngSubmit)="SignUp()">
-      <mat-card appearance="outlined">
+<div class="flex items-stretch md:items-center justify-stretch md:justify-center">
+  <div class="w-full h-dvh md:h-full md:w-1/2 md:mt-10">
+    <form [formGroup]="signUpForm" (ngSubmit)="SignUp()" class="h-full">
+      <mat-card appearance="outlined" class="h-full">
         <mat-card-content>
           <div class="">
             <img ngSrc="https://ui.angular-material.dev/app-ui/logo.svg" alt="Logo" height="48" width="48"
@@ -10,72 +10,65 @@
             <p>to continue</p>
 
             <div>
-              <mat-form-field appearance="fill" class="w-full">
+              <mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic">
                 <mat-label>Email</mat-label>
                 <input matInput type="email" formControlName="email" />
               </mat-form-field>
               @if ((signUpForm.get('email')?.touched || signUpForm.get('email')?.dirty) &&
               signUpForm.get('email')?.hasError('required')) {
               <mat-error>
-                <mat-icon class="form-field-error-icon">error</mat-icon>
                 Email is required
               </mat-error>
               }
               @if ((signUpForm.get('email')?.touched || signUpForm.get('email')?.dirty) &&
               signUpForm.get('email')?.hasError('email')) {
               <mat-error>
-                <mat-icon class="form-field-error-icon">error</mat-icon>
                 Email is invalid
               </mat-error>
               }
             </div>
-            <div>
-              <mat-form-field appearance="fill" class="w-full">
+            <div class="mt-2">
+              <mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic">
                 <mat-label>Username</mat-label>
                 <input matInput type="username" formControlName="username" />
               </mat-form-field>
               @if ((signUpForm.get('username')?.touched || signUpForm.get('username')?.dirty) &&
               signUpForm.get('username')?.hasError('required')) {
               <mat-error>
-                <mat-icon class="form-field-error-icon">error</mat-icon>
                 Username is required
               </mat-error>
               }
             </div>
-            <div>
-              <mat-form-field appearance="fill" class="w-full">
+            <div class="mt-2">
+              <mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="password" />
               </mat-form-field>
               @if ((signUpForm.get('password')?.touched || signUpForm.get('password')?.dirty) &&
               signUpForm.get('password')?.hasError('required')) {
               <mat-error>
-                <mat-icon class="form-field-error-icon">error</mat-icon>
                 Password is required</mat-error>
               }
               @if ((signUpForm.get('password')?.touched || signUpForm.get('password')?.dirty) &&
               signUpForm.get('password')?.hasError('minlength')) {
               <mat-error>
-                <mat-icon class="form-field-error-icon">error</mat-icon>
                 Password must be at least 8 characters
               </mat-error>
               }
             </div>
-            <div>
-              <mat-form-field appearance="fill" class="w-full">
+            <div class="mt-2">
+              <mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic">
                 <mat-label>Repeat password</mat-label>
                 <input matInput type="password" formControlName="passwordRepeated" />
               </mat-form-field>
               @if ((signUpForm.get('passwordRepeated')?.touched || signUpForm.get('passwordRepeated')?.dirty) &&
               signUpForm.get('passwordRepeated')?.hasError('required')) {
               <mat-error>
-                <mat-icon class="form-field-error-icon">error</mat-icon>
                 Password is required</mat-error>
               }
               @if ((signUpForm.get('passwordRepeated')?.touched || signUpForm.get('passwordRepeated')?.dirty) &&
               signUpForm.get('passwordRepeated')?.hasError('minlength')) {
               <mat-error>
-                <mat-icon class="form-field-error-icon">error</mat-icon>
                 Password must be at least 8 characters
               </mat-error>
               }
