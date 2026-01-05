@@ -3,7 +3,7 @@ import { TaskManagerBackendService } from '../../../core/services/task-manager-b
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TrackingLogDto } from '../../../core/services/tracking-log-dto.interface';
-import { BoardComponent } from "../board/board.component";
+import { BoardMaterialComponent } from '../board-material/board-material.component';
 import { Board } from './board.interface';
 import { Column } from '../board/column.interface';
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
@@ -15,7 +15,7 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'boards-page-material',
-  imports: [ ReactiveFormsModule, BoardComponent, MatToolbar, MatButtonModule, MatIcon ],
+  imports: [ ReactiveFormsModule, BoardMaterialComponent, MatToolbar, MatButtonModule, MatIcon ],
   templateUrl: './boards-page-material.component.html',
   styleUrl: './boards-page-material.component.css'
 })

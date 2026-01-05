@@ -12,7 +12,9 @@
 
   @for (board of boards; track board.id)
   {
-  <board [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board>
+    <div class="mt-5">
+      <board-material [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board-material>
+    </div>
   }
 
 </div>
