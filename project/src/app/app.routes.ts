@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard, NoAuthGuard } from './authGuard';
 import { HomePageComponent } from './features/home/home-page/home-page.component';
 import { BoardsPageComponent } from './features/tasks/boards-page/boards-page.component';
+import { BoardsPageMaterialComponent } from './features/tasks/boards-page-material/boards-page-material.component';
 import { AuthorizationPageComponent } from './features/auth/authorization-page/authorization-page.component';
 import { AuthPageMaterialComponent } from './features/auth/auth-page-material/auth-page-material.component';
 import { setLayout } from './shared/layouts/page-layout.resolver';
@@ -26,7 +27,7 @@ export const routes: Routes = [
     },
     {
         path: 'boards',
-        component: BoardsPageComponent,
+        component: BoardsPageMaterialComponent,
         canActivate: [AuthGuard],
         resolve: 
         {

@@ -1,0 +1,18 @@
+<div>
+  <mat-toolbar>
+    <form [formGroup]="newBoardForm" (submit)="AddBoard()">
+      <label htmlFor="board">New Board:</label>
+      <input class="ml-10" type="text" placeholder="Board..." id="board" autoComplete='off'
+        formControlName="boardTitle" />
+      <button class="ml-10" mat-mini-fab type="submit" aria-label="Add Board">
+        <mat-icon>add</mat-icon>
+      </button>
+    </form>
+  </mat-toolbar>
+
+  @for (board of boards; track board.id)
+  {
+  <board [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board>
+  }
+
+</div>
