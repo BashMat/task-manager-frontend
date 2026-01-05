@@ -16,6 +16,10 @@ export class LocalStorageService
     return localStorageEntry;
   }
 
+  DeleteAccessToken()
+  {
+    localStorage.removeItem("token");
+  }
 
   // TODO: This should be in some Auth service
   HasValidToken(): boolean

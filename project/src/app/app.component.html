@@ -1,9 +1,9 @@
 @switch (pageLayoutService.layout | async) {  
       @case (PageLayout.Authorized)
       {
-          <authorized-layout>
+          <authorized-layout-material>
               <router-outlet />
-          </authorized-layout>
+          </authorized-layout-material>
       }
 
       @case (PageLayout.Unauthorized)
@@ -15,9 +15,9 @@
 
       @case (PageLayout.Error)
       {
-          <authorized-layout>
+          <authorized-layout-material>
               <router-outlet />
-          </authorized-layout>
+          </authorized-layout-material>
       }
 
       @default
