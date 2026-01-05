@@ -1,3 +1,4 @@
+import {ChangeDetectionStrategy, signal} from '@angular/core';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, RouterOutlet, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
@@ -51,6 +52,12 @@ export class LogInMaterialComponent {
     this.taskManagerBackendService = taskManagerBackendService;
     this.activatedRoute = activatedRoute;
     this.router = router;
+  }
+
+  hide = signal(true);
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 
   GoToSignUp(): void

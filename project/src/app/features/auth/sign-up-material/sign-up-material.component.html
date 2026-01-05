@@ -42,7 +42,11 @@
             <div class="mt-2">
               <mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic">
                 <mat-label>Password</mat-label>
-                <input matInput type="password" formControlName="password" />
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" />
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide()">
+                  <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
               </mat-form-field>
               @if ((signUpForm.get('password')?.touched || signUpForm.get('password')?.dirty) &&
               signUpForm.get('password')?.hasError('required')) {
@@ -59,7 +63,11 @@
             <div class="mt-2">
               <mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic">
                 <mat-label>Repeat password</mat-label>
-                <input matInput type="password" formControlName="passwordRepeated" />
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="passwordRepeated" />
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide()">
+                  <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
               </mat-form-field>
               @if ((signUpForm.get('passwordRepeated')?.touched || signUpForm.get('passwordRepeated')?.dirty) &&
               signUpForm.get('passwordRepeated')?.hasError('required')) {
