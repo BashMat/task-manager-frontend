@@ -6,6 +6,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
   selector: 'unauthorized-header-material',
   templateUrl: './unauthorized-header-material.component.html',
   styleUrl: './unauthorized-header-material.component.css',
-  imports: [ MatToolbarModule ]
+  imports: [ RouterLink, MatToolbarModule ]
 })
 export class UnauthorizedHeaderMaterialComponent {}
