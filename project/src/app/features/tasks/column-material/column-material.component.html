@@ -2,29 +2,28 @@
   <mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-title-group>
-        <mat-card-title>{{board().title}}</mat-card-title>
+        <mat-card-title>{{column().title}}</mat-card-title>
       </mat-card-title-group>
-      <button mat-mini-fab type="button" (click)="DeleteBoard()">
+      <button mat-mini-fab type="button" (click)="DeleteColumn()">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-header>
     <mat-card-content>
       <div class="flex-row justify-between mt-2">
-        <form [formGroup]="newColumnForm" (submit)="AddColumn()">
-          <label htmlFor="column">New Column:</label>
+        <form [formGroup]="newCardForm" (submit)="AddCard()">
+          <label htmlFor="column">New Card:</label>
           <input class="ml-10" type="text" placeholder="Column..." id="column" autoComplete='off'
-            formControlName="columnTitle" />
+            formControlName="cardTitle" />
           <button mat-mini-fab type="submit">
             <mat-icon>add</mat-icon>
           </button>
         </form>
       </div>
-      <div class="flex flex-row" cdkDropListGroup>
-        @for (column of board().columns; track column.id)
+      <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
+        (cdkDropListDropped)="drop($event)">
+        @for (card of column().cards; track card.id)
         {
-          <div class="mt-5 mr-2">
-            <column-material [column]=column (deleteColumnEvent)="DeleteColumn($event)"></column-material>
-          </div>
+        <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag [cdkDragData]="card"></card>
         }
       </div>
     </mat-card-content>

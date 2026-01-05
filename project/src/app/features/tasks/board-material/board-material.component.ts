@@ -4,7 +4,7 @@ import { LocalStorageService } from '../../../core/services/local-storage.servic
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Column } from './column.interface';
 import { Board } from '../boards-page/board.interface';
-import { ColumnComponent } from '../column/column.component';
+import { ColumnMaterialComponent } from '../column-material/column-material.component';
 import { CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
 import { Card } from '../column/card.interface';
@@ -16,7 +16,7 @@ import { MatIcon } from "@angular/material/icon";
   selector: 'board-material',
   imports: [
     ReactiveFormsModule,
-    ColumnComponent,
+    ColumnMaterialComponent,
     CdkDropListGroup,
     MatCard,
     MatCardContent,
