@@ -1,0 +1,6 @@
+/* TODO: Perhaps find better way to style Angular Material components */
+.mat-mdc-card-header
+{
+    align-items: center;
+    padding: 10px;
+}

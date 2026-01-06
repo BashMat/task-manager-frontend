@@ -1,0 +1,16 @@
+<div>
+  <mat-card appearance="outlined">
+    <mat-card-header class="align-items-center">
+      <mat-card-title-group>
+        <mat-card-title>
+          <p class="max-w-75 max-h-20 overflow-auto">
+            {{card().title}}
+          </p>
+        </mat-card-title>
+      </mat-card-title-group>
+      <button mat-mini-fab type="button" (click)="DeleteCard()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-header>
+  </mat-card>
+</div>

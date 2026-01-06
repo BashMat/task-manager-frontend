@@ -21,9 +21,15 @@
       </div>
       <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
         (cdkDropListDropped)="drop($event)">
+        @if (column().cards.length == 0)
+        {
+          <div class="h-10"></div>
+        }
         @for (card of column().cards; track card.id)
         {
-        <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag [cdkDragData]="card"></card>
+          <div class="mt-5">
+            <card-material [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag [cdkDragData]="card"></card-material>
+          </div>
         }
       </div>
     </mat-card-content>

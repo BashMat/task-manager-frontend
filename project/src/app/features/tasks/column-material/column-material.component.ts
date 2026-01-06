@@ -3,20 +3,19 @@ import { TaskManagerBackendService } from '../../../core/services/task-manager-b
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
-import { CardComponent } from '../card/card.component';
+import { CardMaterialComponent } from '../card-material/card-material.component';
 import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { Column } from '../board-material/column.interface';
 import { Card } from './card.interface';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatCardTitleGroup } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
-import { MatIcon } from "@angular/material/icon";
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'column-material',
   imports: [
       ReactiveFormsModule,
-      CardComponent,
+      CardMaterialComponent,
       CdkDropList,
       CdkDrag,
       MatCard,
