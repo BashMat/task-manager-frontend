@@ -30,6 +30,10 @@ export class AuthorizedHeaderMaterialComponent {
   SignOut()
   {
     this.localStorageService.DeleteAccessToken();
-    this.router.navigateByUrl("/");
+    // TODO: Works for all pages only because /auth is not used for already authenticated user.
+    // If "/" is used, then during Sign Out from "/", navigateByUrl will not redirect because
+    // Router does not do same URL navigation by default. Simple implementation did not work.
+    // See: onSameUrlNavigation at NavigationBehaviorOptions and RouteReuseStrategy
+    this.router.navigateByUrl("/auth");
   }
 }
