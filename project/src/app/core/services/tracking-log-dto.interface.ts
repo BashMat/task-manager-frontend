@@ -7,9 +7,9 @@ export interface TrackingLogDto
     title: string,
     description: string | null,
     createdBy: any,
-    CreatedAt: Date,
+    createdAt: string,
     updatedBy: any,
-    updatedAt: Date,
+    updatedAt: string,
     trackingLogEntriesStatuses: Status[],
     trackingLogEntries: TrackingLogEntry[]
 }

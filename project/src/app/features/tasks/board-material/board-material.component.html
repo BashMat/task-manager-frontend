@@ -4,7 +4,10 @@
       <mat-card-title-group>
         <mat-card-title>{{board().title}}</mat-card-title>
       </mat-card-title-group>
-      <button mat-mini-fab type="button" (click)="DeleteBoard()">
+      <button mat-mini-fab type="button" (click)="OpenDetails()">
+        <mat-icon>details</mat-icon>
+      </button>
+      <button mat-mini-fab class="ml-2" type="button" (click)="DeleteBoard()">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-header>

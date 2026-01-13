@@ -5,10 +5,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TrackingLogDto } from '../../../core/services/tracking-log-dto.interface';
 import { BoardMaterialComponent } from '../board-material/board-material.component';
 import { Board } from './board.interface';
-import { Column } from '../board/column.interface';
+import { Column } from '../board-material/column.interface';
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
 import { TrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
-import { Card } from '../column/card.interface';
+import { Card } from '../column-material/card.interface';
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -84,7 +84,16 @@ export class BoardsPageMaterialComponent implements OnInit
 
   private ConvertToBoard(data: TrackingLogDto): Board
   {
-    let mappedBoard = { id: data.id, title: data.title, columns: [] as Array<Column> };
+    let mappedBoard = { 
+      id: data.id, 
+      title: data.title, 
+      description: data.description, 
+      createdBy: data.createdBy.userName,
+      createdAt: new Date(data.createdAt + "Z"),
+      updatedBy: data.updatedBy.userName,
+      updatedAt: new Date(data.updatedAt + "Z"),
+      columns: [] as Array<Column> 
+    } as Board;
     mappedBoard.columns = data.trackingLogEntriesStatuses.map((status: Status) => 
       {
         let mappedColumn = { id: status.id, title: status.title, boardId: status.trackingLogId, cards: [] as Array<Card> };

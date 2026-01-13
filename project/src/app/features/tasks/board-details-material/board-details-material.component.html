@@ -1,0 +1,30 @@
+<div mat-dialog-title class="h-15">
+  <div class="flex flex-row justify-between relative -top-12">
+    <div>
+      <p class="text-sm text-gray-400">{{ "#" + id()}}</p>
+      <h1>{{ title() }}</h1>
+    </div>
+    <button mat-mini-fab class="float-end" [mat-dialog-close]="true">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <div>
+    <p>Created by: {{ createdBy() }}</p>
+  </div>
+  <div>
+    <p>Created at: {{ createdAt() }}</p>
+  </div>
+  <div>
+    <p>Updated by: {{ updatedBy() }}</p>
+  </div>
+  <div class="mb-2">
+    <p>Updated at: {{ updatedAt() }}</p>
+  </div>
+  <mat-divider class="divider-wide"></mat-divider>
+  <div class="mt-2">
+    {{ description() ?? "Description..."}}
+  </div>
+</mat-dialog-content>

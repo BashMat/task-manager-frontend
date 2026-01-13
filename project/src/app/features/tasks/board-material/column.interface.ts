@@ -1,4 +1,4 @@
-import { Card } from "../column/card.interface";
+import { Card } from "../column-material/card.interface";
 
 export interface Column
 {

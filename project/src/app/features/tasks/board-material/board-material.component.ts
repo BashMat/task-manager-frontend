@@ -3,14 +3,24 @@ import { TaskManagerBackendService } from '../../../core/services/task-manager-b
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Column } from './column.interface';
-import { Board } from '../boards-page/board.interface';
+import { Board } from '../boards-page-material/board.interface';
 import { ColumnMaterialComponent } from '../column-material/column-material.component';
 import { CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
-import { Card } from '../column/card.interface';
+import { Card } from '../column-material/card.interface';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatCardTitleGroup } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIcon } from "@angular/material/icon";
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { BoardDetailsMaterialComponent } from '../board-details-material/board-details-material.component';
 
 @Component({
   selector: 'board-material',
@@ -42,11 +52,32 @@ export class BoardMaterialComponent
   )
   
   constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private localStorageService: LocalStorageService)
+              private localStorageService: LocalStorageService,
+              private dialog: MatDialog)
   {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
+    this.dialog = dialog;
     this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
+  }
+
+  OpenDetails()
+  {
+    let boardDto = this.board();
+    let dialogRef = this.dialog.open(BoardDetailsMaterialComponent, {
+      autoFocus: false,
+      height: "80%",
+      minWidth: "80vw",
+      data: { 
+        id: boardDto.id,
+        title: boardDto.title,
+        description: boardDto.description,
+        createdBy: boardDto.createdBy,
+        createdAt: boardDto.createdAt.toLocaleString(),
+        updatedBy: boardDto.updatedBy,
+        updatedAt: boardDto.updatedAt.toLocaleString()
+       }
+    });
   }
 
   DeleteBoard()
