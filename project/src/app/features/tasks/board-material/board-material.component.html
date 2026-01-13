@@ -19,7 +19,7 @@
           </button>
         </form>
       </div>
-      <div class="flex flex-row" cdkDropListGroup>
+      <div class="flex flex-row overflow-x-auto" cdkDropListGroup>
         @for (column of board().columns; track column.id)
         {
           <div class="mt-5 mr-2">
