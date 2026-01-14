@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TrackingLogDto } from '../../../core/services/tracking-log-dto.interface';
 import { BoardMaterialComponent } from '../board-material/board-material.component';
 import { Board } from './board.interface';
@@ -12,28 +11,34 @@ import { Card } from '../column-material/card.interface';
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { BoardCreationDialog } from '../board-creation-dialog/board-creation-dialog.component';
 
 @Component({
   selector: 'boards-page-material',
-  imports: [ ReactiveFormsModule, BoardMaterialComponent, MatToolbar, MatButtonModule, MatIcon ],
+  imports: [ BoardMaterialComponent, MatToolbar, MatButtonModule, MatIcon ],
   templateUrl: './boards-page-material.component.html',
   styleUrl: './boards-page-material.component.css'
 })
 export class BoardsPageMaterialComponent implements OnInit
 {
   boards: Array<Board> = [];
-
-  newBoardForm = new FormGroup(
-    {
-      boardTitle: new FormControl("")
-    }
-  )
   
   constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private localStorageService: LocalStorageService)
+              private localStorageService: LocalStorageService,
+              private dialog: MatDialog)
   {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
+    this.dialog = dialog;
     this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
@@ -44,24 +49,31 @@ export class BoardsPageMaterialComponent implements OnInit
 
   AddBoard(): void
   {
-    console.log("Adding board");
-    if (this.newBoardForm.value.boardTitle === null || this.newBoardForm.value.boardTitle === undefined)
-    {
-      console.log("Cannot add board without title")
-      return;
-    }
+    let dialogRef = this.dialog.open(BoardCreationDialog, {autoFocus: false})
 
-    this.taskManagerBackendService.AddBoard(this.newBoardForm.value.boardTitle!)
-                                  .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) => 
-                                    {
-                                      console.log("response: ", response)
-                                      if (response.data !== null)
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === null)
+      {
+        return;
+      }
+
+      console.log("Adding board");
+      if (result.title === null || result.title === undefined)
+      {
+        console.log("Cannot add board without title")
+        return;
+      }
+
+      this.taskManagerBackendService.AddBoard(result.title, result.description)
+                                    .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) => 
                                       {
-                                        this.boards.push(this.ConvertToBoard(response.data))
-                                      }
-                                    })
-    this.newBoardForm.reset();
-    //this.GetBoards();
+                                        console.log("response: ", response)
+                                        if (response.data !== null)
+                                        {
+                                          this.boards.push(this.ConvertToBoard(response.data))
+                                        }
+                                      })
+    });
   }
 
   GetBoards(): void

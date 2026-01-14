@@ -132,8 +132,8 @@ export class TaskManagerBackendService {
         console.log("Finish Logging In");
     }
 
-    AddBoard(boardTitle: string): Observable<{ data: TrackingLogDto, message: string, success: boolean }> {
-        console.log("Adding board", boardTitle);
+    AddBoard(title: string, description: string | null): Observable<{ data: TrackingLogDto, message: string, success: boolean }> {
+        console.log("Adding board", title);
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
             "Access-Control-Allow-Headers": "*",
@@ -147,8 +147,8 @@ export class TaskManagerBackendService {
         };
 
         const body = {
-            "Title": boardTitle,
-            "Description": null
+            "Title": title,
+            "Description": description === null ? null : (description.trim() === "" ? null : description)
         }
 
         return this.httpClient.post<{ data: TrackingLogDto, message: string, success: boolean }>(this.trackingLogsEndpoint, body, requestOptions);

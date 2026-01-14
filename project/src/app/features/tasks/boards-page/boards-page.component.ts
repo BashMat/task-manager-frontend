@@ -48,7 +48,7 @@ export class BoardsPageComponent implements OnInit
       return;
     }
 
-    this.taskManagerBackendService.AddBoard(this.newBoardForm.value.boardTitle!)
+    this.taskManagerBackendService.AddBoard(this.newBoardForm.value.boardTitle!, null)
                                   .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) => 
                                     {
                                       console.log("response: ", response)

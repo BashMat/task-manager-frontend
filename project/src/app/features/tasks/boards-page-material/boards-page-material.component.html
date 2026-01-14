@@ -1,13 +1,9 @@
 <div>
   <mat-toolbar>
-    <form [formGroup]="newBoardForm" (submit)="AddBoard()">
-      <label htmlFor="board">New Board:</label>
-      <input class="ml-10" type="text" placeholder="Board..." id="board" autoComplete='off'
-        formControlName="boardTitle" />
-      <button class="ml-10" mat-mini-fab type="submit" aria-label="Add Board">
+    <span class="flex-1"></span>
+    <button mat-mini-fab type="button" aria-label="Add Board" (click)="AddBoard()">
         <mat-icon>add</mat-icon>
-      </button>
-    </form>
+    </button>
   </mat-toolbar>
 
   @for (board of boards; track board.id)
