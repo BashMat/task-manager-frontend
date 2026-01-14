@@ -11,19 +11,24 @@ import { setLayout } from './shared/layouts/page-layout.resolver';
 import { PageLayout } from './shared/layouts/page-layout.enum';
 
 export const routes: Routes = [
-    {
-        path: '', 
-        component: HomePageComponent, 
-        canActivate: [AuthGuard], 
-        resolve: 
-        {
-            layout: setLayout(PageLayout.Authorized)
-        } 
-    },
+    // TODO: Reuse when other functionality is added
+    // {
+    //     path: '', 
+    //     component: HomePageComponent, 
+    //     canActivate: [AuthGuard], 
+    //     resolve: 
+    //     {
+    //         layout: setLayout(PageLayout.Authorized)
+    //     } 
+    // },
     {
         path: 'auth',
         component: AuthPageMaterialComponent,
-        canActivate: [NoAuthGuard]
+        canActivate: [NoAuthGuard],
+        resolve: 
+        {
+            layout: setLayout(PageLayout.Unauthorized)
+        }
     },
     {
         path: 'boards',
@@ -36,7 +41,7 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: ''
+        redirectTo: 'boards'
     }
 ];
 
