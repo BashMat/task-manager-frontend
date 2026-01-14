@@ -1,0 +1,24 @@
+<div mat-dialog-title>
+  Create
+</div>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Title</mat-label>
+    <input matInput type="text" [formControl]="title" required subscriptSizing="dynamic" />
+    @if ((this.title.touched || this.title.dirty) &&
+    this.title.hasError('required')) {
+    <mat-error>
+      Title is required
+    </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Description</mat-label>
+    <input matInput type="text" [formControl]="description" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button (click)="create()">Create</button>
+</mat-dialog-actions>

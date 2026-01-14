@@ -50,7 +50,7 @@ export class BoardComponent
       return;
     }
 
-    this.taskManagerBackendService.AddColumn(this.board().id, this.newColumnForm.value.columnTitle!)
+    this.taskManagerBackendService.AddColumn(this.board().id, this.newColumnForm.value.columnTitle!, null)
                                   .subscribe((response: {data: Status, message: string, success: boolean}) => 
                                     {
                                       console.log("response: ", response)

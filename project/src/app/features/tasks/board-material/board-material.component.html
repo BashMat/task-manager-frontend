@@ -4,7 +4,10 @@
       <mat-card-title-group>
         <mat-card-title>{{board().title}}</mat-card-title>
       </mat-card-title-group>
-      <button mat-mini-fab type="button" (click)="OpenDetails()">
+      <button mat-mini-fab type="button" (click)="AddColumn()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-mini-fab class="ml-2" type="button" (click)="OpenDetails()">
         <mat-icon>details</mat-icon>
       </button>
       <button mat-mini-fab class="ml-2" type="button" (click)="DeleteBoard()">
@@ -12,16 +15,6 @@
       </button>
     </mat-card-header>
     <mat-card-content>
-      <div class="flex-row justify-between mt-2">
-        <form [formGroup]="newColumnForm" (submit)="AddColumn()">
-          <label htmlFor="column">New Column:</label>
-          <input class="ml-10" type="text" placeholder="Column..." id="column" autoComplete='off'
-            formControlName="columnTitle" />
-          <button mat-mini-fab type="submit">
-            <mat-icon>add</mat-icon>
-          </button>
-        </form>
-      </div>
       <div class="flex flex-row overflow-x-auto" cdkDropListGroup>
         @for (column of board().columns; track column.id)
         {

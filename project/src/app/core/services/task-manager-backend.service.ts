@@ -148,10 +148,15 @@ export class TaskManagerBackendService {
 
         const body = {
             "Title": title,
-            "Description": description === null ? null : (description.trim() === "" ? null : description)
+            "Description": this.processNullableString(description)
         }
 
         return this.httpClient.post<{ data: TrackingLogDto, message: string, success: boolean }>(this.trackingLogsEndpoint, body, requestOptions);
+    }
+
+    processNullableString(str: string | null)
+    {
+        return str === null ? null : (str.trim() === "" ? null : str)
     }
 
     GetBoards(): Observable<TrackingLogDto[]> {
@@ -187,8 +192,8 @@ export class TaskManagerBackendService {
         return this.httpClient.delete<TrackingLogDto[]>(`${this.trackingLogsEndpoint}/${boardId}`, requestOptions);
     }
 
-    AddColumn(boardId: number, columnTitle: string): Observable<{ data: Status, message: string, success: boolean }> {
-        console.log("Adding column", columnTitle);
+    AddColumn(boardId: number, title: string, description: string | null): Observable<{ data: Status, message: string, success: boolean }> {
+        console.log("Adding column", title);
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
             "Access-Control-Allow-Headers": "*",
@@ -202,8 +207,8 @@ export class TaskManagerBackendService {
         };
 
         const body = {
-            "Title": columnTitle,
-            "Description": null,
+            "Title": title,
+            "Description": this.processNullableString(description),
             "TrackingLogId": boardId
         }
 
@@ -226,8 +231,8 @@ export class TaskManagerBackendService {
         return this.httpClient.delete<{ data: Array<Status>, message: string, success: boolean }>(`${this.trackingLogEntryStatusesEndpoint}/${columnId}`, requestOptions);
     }
 
-    AddCard(boardId: number, columnId: number, cardTitle: string, orderIndex: number): Observable<{ data: TrackingLogEntry, message: string, success: boolean }> {
-        console.log("Adding card", cardTitle);
+    AddCard(boardId: number, columnId: number, title: string, description: string | null, orderIndex: number): Observable<{ data: TrackingLogEntry, message: string, success: boolean }> {
+        console.log("Adding card", title);
         const headers = {
             'Content-type': 'application/json; charset=UTF-8',
             "Access-Control-Allow-Headers": "*",
@@ -241,8 +246,8 @@ export class TaskManagerBackendService {
         };
 
         const body = {
-            "Title": cardTitle,
-            "Description": null,
+            "Title": title,
+            "Description": this.processNullableString(description),
             "TrackingLogId": boardId,
             "StatusId": columnId,
             "OrderIndex": orderIndex

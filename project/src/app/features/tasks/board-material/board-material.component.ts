@@ -20,6 +20,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import { CreationDialog } from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
 import { BoardDetailsMaterialComponent } from '../board-details-material/board-details-material.component';
 import { DeletionWarningDialog } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
 
@@ -44,12 +45,6 @@ export class BoardMaterialComponent {
   board = input.required<Board>();
 
   @Output() deleteBoardEvent = new EventEmitter<number>();
-
-  newColumnForm = new FormGroup(
-    {
-      columnTitle: new FormControl("")
-    }
-  )
 
   constructor(private taskManagerBackendService: TaskManagerBackendService,
     private localStorageService: LocalStorageService,
@@ -83,22 +78,30 @@ export class BoardMaterialComponent {
   }
 
   AddColumn(): void {
-    console.log("Adding column");
+    let dialogRef = this.dialog.open(CreationDialog, { autoFocus: false })
 
-    if (this.newColumnForm.value.columnTitle === null || this.newColumnForm.value.columnTitle === undefined) {
-      console.log("Cannot add column without title")
-      return;
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === null)
+      {
+        return;
+      }
 
-    this.taskManagerBackendService.AddColumn(this.board().id, this.newColumnForm.value.columnTitle!)
-      .subscribe((response: { data: Status, message: string, success: boolean }) => {
-        console.log("response: ", response)
-        if (response.data !== null) {
-          let column = { id: response.data.id, title: response.data.title, boardId: response.data.trackingLogId, cards: [] as Array<Card> }
-          this.board().columns.push(column)
-        }
-      })
-    this.newColumnForm.reset();
+      console.log("Adding column");
+      if (result.title === null || result.title === undefined)
+      {
+        console.log("Cannot add column without title")
+        return;
+      }
+
+      this.taskManagerBackendService.AddColumn(this.board().id, result.title, result.description)
+        .subscribe((response: { data: Status, message: string, success: boolean }) => {
+          console.log("response: ", response)
+          if (response.data !== null) {
+            let column = { id: response.data.id, title: response.data.title, boardId: response.data.trackingLogId, cards: [] as Array<Card> }
+            this.board().columns.push(column)
+          }
+        })
+    })
   }
 
   DeleteColumn(columnId: number) {

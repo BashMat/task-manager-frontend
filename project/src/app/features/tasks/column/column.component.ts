@@ -54,7 +54,7 @@ export class ColumnComponent
                        ? 1
                        : this.column().cards[columnLength - 1].orderIndex + 1;
 
-    this.taskManagerBackendService.AddCard(this.column().boardId, this.column().id, this.newCardForm.value.cardTitle!, newCardIndex)
+    this.taskManagerBackendService.AddCard(this.column().boardId, this.column().id, this.newCardForm.value.cardTitle!, null, newCardIndex)
                                   .subscribe((response: {data: TrackingLogEntry, message: string, success: boolean}) => 
                                     {
                                       console.log("response: ", response)

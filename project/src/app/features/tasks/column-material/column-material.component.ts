@@ -12,6 +12,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from '@angular/material/icon';
 import { DeletionWarningDialog } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CreationDialog } from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
+import { MatDivider } from "@angular/material/divider";
 
 @Component({
   selector: 'column-material',
@@ -26,8 +28,9 @@ import { MatDialog } from '@angular/material/dialog';
     MatCardTitle,
     MatButtonModule,
     MatIconModule,
-    MatCardTitleGroup
-  ],
+    MatCardTitleGroup,
+    MatDivider
+],
   templateUrl: './column-material.component.html',
   styleUrl: './column-material.component.css'
 })
@@ -36,15 +39,9 @@ export class ColumnMaterialComponent {
 
   @Output() deleteColumnEvent = new EventEmitter<number>();
 
-  newCardForm = new FormGroup(
-    {
-      cardTitle: new FormControl("")
-    }
-  )
-
   constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private localStorageService: LocalStorageService,
-              private dialog: MatDialog) {
+    private localStorageService: LocalStorageService,
+    private dialog: MatDialog) {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
     this.dialog = dialog;
@@ -56,36 +53,46 @@ export class ColumnMaterialComponent {
   }
 
   AddCard(): void {
-    console.log("Adding card");
+    let dialogRef = this.dialog.open(CreationDialog, { autoFocus: false })
 
-    if (this.newCardForm.value.cardTitle === null || this.newCardForm.value.cardTitle === undefined) {
-      console.log("Cannot add card without title")
-      return;
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === null) {
+        return;
+      }
 
-    let columnLength = this.column().cards.length;
-    let newCardIndex = columnLength === 0
-      ? 1
-      : this.column().cards[columnLength - 1].orderIndex + 1;
+      console.log("Adding card");
+      if (result.title === null || result.title === undefined) {
+        console.log("Cannot add card without title")
+        return;
+      }
 
-    this.taskManagerBackendService.AddCard(this.column().boardId, this.column().id, this.newCardForm.value.cardTitle!, newCardIndex)
-      .subscribe((response: { data: TrackingLogEntry, message: string, success: boolean }) => {
-        console.log("response: ", response)
-        if (response.data !== null) {
-          let card = {
-            id: response.data.id,
-            title: response.data.title,
-            description: response.data.description,
-            boardId: response.data.trackingLogId,
-            columnId: response.data.status.id,
-            priority: response.data.priority,
-            orderIndex: response.data.orderIndex,
-            updatedAt: response.data.updatedAt
-          };
-          this.column().cards.push(card)
-        }
-      })
-    this.newCardForm.reset();
+      let columnLength = this.column().cards.length;
+      let newCardIndex = columnLength === 0
+        ? 1
+        : this.column().cards[columnLength - 1].orderIndex + 1;
+
+      this.taskManagerBackendService.AddCard(this.column().boardId,
+                                             this.column().id,
+                                             result.title,
+                                             result.description,
+                                             newCardIndex)
+        .subscribe((response: { data: TrackingLogEntry, message: string, success: boolean }) => {
+          console.log("response: ", response)
+          if (response.data !== null) {
+            let card = {
+              id: response.data.id,
+              title: response.data.title,
+              description: response.data.description,
+              boardId: response.data.trackingLogId,
+              columnId: response.data.status.id,
+              priority: response.data.priority,
+              orderIndex: response.data.orderIndex,
+              updatedAt: response.data.updatedAt
+            };
+            this.column().cards.push(card)
+          }
+        })
+    })
   }
 
   DeleteCard(cardId: number) {

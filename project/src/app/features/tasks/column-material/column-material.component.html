@@ -4,23 +4,18 @@
       <mat-card-title-group>
         <mat-card-title>{{column().title}}</mat-card-title>
       </mat-card-title-group>
-      <button mat-mini-fab type="button" (click)="DeleteColumn()">
+      <button mat-mini-fab class="ml-2" type="button" (click)="AddCard()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-mini-fab class="ml-2" type="button" (click)="DeleteColumn()">
         <mat-icon>delete_forever</mat-icon>
       </button>
     </mat-card-header>
+    <mat-divider class="divider-with-margin"></mat-divider>
     <mat-card-content>
-      <div class="flex-row justify-between mt-2">
-        <form [formGroup]="newCardForm" (submit)="AddCard()">
-          <label htmlFor="column">New Card:</label>
-          <input class="ml-10" type="text" placeholder="Column..." id="column" autoComplete='off'
-            formControlName="cardTitle" />
-          <button mat-mini-fab type="submit">
-            <mat-icon>add</mat-icon>
-          </button>
-        </form>
-      </div>
       <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
-        (cdkDropListDropped)="drop($event)">
+        (cdkDropListDropped)="drop($event)"
+        class="max-h-150 overflow-y-auto">
         @if (column().cards.length == 0)
         {
           <div class="h-10"></div>
