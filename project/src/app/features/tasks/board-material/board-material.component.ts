@@ -21,6 +21,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { BoardDetailsMaterialComponent } from '../board-details-material/board-details-material.component';
+import { DeletionWarningDialog } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
 
 @Component({
   selector: 'board-material',
@@ -35,12 +36,11 @@ import { BoardDetailsMaterialComponent } from '../board-details-material/board-d
     MatButtonModule,
     MatIcon,
     MatCardTitleGroup
-],
+  ],
   templateUrl: './board-material.component.html',
   styleUrl: './board-material.component.css'
 })
-export class BoardMaterialComponent
-{
+export class BoardMaterialComponent {
   board = input.required<Board>();
 
   @Output() deleteBoardEvent = new EventEmitter<number>();
@@ -50,25 +50,23 @@ export class BoardMaterialComponent
       columnTitle: new FormControl("")
     }
   )
-  
+
   constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private localStorageService: LocalStorageService,
-              private dialog: MatDialog)
-  {
+    private localStorageService: LocalStorageService,
+    private dialog: MatDialog) {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
     this.dialog = dialog;
     this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
-  OpenDetails()
-  {
+  OpenDetails() {
     let boardDto = this.board();
     let dialogRef = this.dialog.open(BoardDetailsMaterialComponent, {
       autoFocus: false,
       height: "80%",
       minWidth: "80vw",
-      data: { 
+      data: {
         id: boardDto.id,
         title: boardDto.title,
         description: boardDto.description,
@@ -76,46 +74,46 @@ export class BoardMaterialComponent
         createdAt: boardDto.createdAt.toLocaleString(),
         updatedBy: boardDto.updatedBy,
         updatedAt: boardDto.updatedAt.toLocaleString()
-       }
+      }
     });
   }
 
-  DeleteBoard()
-  {
+  DeleteBoard() {
     this.deleteBoardEvent.emit(this.board().id);
   }
 
-  AddColumn(): void
-  {
+  AddColumn(): void {
     console.log("Adding column");
 
-    if (this.newColumnForm.value.columnTitle === null || this.newColumnForm.value.columnTitle === undefined)
-    {
+    if (this.newColumnForm.value.columnTitle === null || this.newColumnForm.value.columnTitle === undefined) {
       console.log("Cannot add column without title")
       return;
     }
 
     this.taskManagerBackendService.AddColumn(this.board().id, this.newColumnForm.value.columnTitle!)
-                                  .subscribe((response: {data: Status, message: string, success: boolean}) => 
-                                    {
-                                      console.log("response: ", response)
-                                      if (response.data !== null)
-                                      {
-                                        let column = { id: response.data.id, title: response.data.title, boardId: response.data.trackingLogId, cards: [] as Array<Card>}
-                                        this.board().columns.push(column)
-                                      }
-                                    })
+      .subscribe((response: { data: Status, message: string, success: boolean }) => {
+        console.log("response: ", response)
+        if (response.data !== null) {
+          let column = { id: response.data.id, title: response.data.title, boardId: response.data.trackingLogId, cards: [] as Array<Card> }
+          this.board().columns.push(column)
+        }
+      })
     this.newColumnForm.reset();
   }
 
-  DeleteColumn(columnId: number)
-  {
-    console.log("Deleting column", columnId);
+  DeleteColumn(columnId: number) {
+    let dialogRef = this.dialog.open(DeletionWarningDialog)
 
-    this.taskManagerBackendService.DeleteColumn(columnId)
-                                  .subscribe((response: {data: Array<Status>, message: string, success: boolean}) => 
-                                    {
-                                      this.board().columns = this.board().columns.filter((column: Column) => response.data.filter(status => status.id === column.id).length == 1);
-                                    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === false) {
+        return;
+      }
+      console.log("Deleting column", columnId);
+
+      this.taskManagerBackendService.DeleteColumn(columnId)
+        .subscribe((response: { data: Array<Status>, message: string, success: boolean }) => {
+          this.board().columns = this.board().columns.filter((column: Column) => response.data.filter(status => status.id === column.id).length == 1);
+        });
+    });
   }
 }

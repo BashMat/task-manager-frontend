@@ -11,16 +11,9 @@ import { Card } from '../column-material/card.interface';
 import { MatToolbar } from "@angular/material/toolbar";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { BoardCreationDialog } from '../board-creation-dialog/board-creation-dialog.component';
+import { DeletionWarningDialog } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
 
 @Component({
   selector: 'boards-page-material',
@@ -140,24 +133,17 @@ export class BoardsPageMaterialComponent implements OnInit
 
   DeleteBoard(boardId: number)
   {
-    console.log("Deleting board", boardId);
+    let dialogRef = this.dialog.open(DeletionWarningDialog)
 
-    this.taskManagerBackendService.DeleteBoard(boardId)
-                                  .subscribe((boards: any) => this.boards = this.ConvertToBoardArray(boards['data'] || new Array<TrackingLogDto>()));
-  }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === false)
+      {
+        return;
+      }
+      console.log("Deleting board", boardId);
 
-  AddColumn(boardId: number)
-  {
-    console.log("Adding column for board", boardId)
-  }
-  
-  DeleteColumn(columnId: number)
-  {
-    console.log("Deleting column", columnId);
-  }
-  
-  DeleteCard(cardId: number)
-  {
-    console.log("Deleting card", cardId);
+      this.taskManagerBackendService.DeleteBoard(boardId)
+                                    .subscribe((boards: any) => this.boards = this.ConvertToBoardArray(boards['data'] || new Array<TrackingLogDto>()));
+    });
   }
 }
