@@ -1,16 +1,37 @@
 <div>
   <mat-toolbar>
     <span class="flex-1"></span>
-    <button mat-mini-fab type="button" aria-label="Add Board" (click)="AddBoard()">
-        <mat-icon>add</mat-icon>
+    <mat-button-toggle-group name="view" [value]="this.selectedView" aria-label="View" (change)="switchView($event.value)">
+      <mat-button-toggle [value]="this.view.Board">
+        <mat-icon>view_kanban</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="this.view.Table">
+        <mat-icon>table</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button mat-mini-fab class="ml-10" type="button" aria-label="Add Board" (click)="AddBoard()">
+      <mat-icon>add</mat-icon>
     </button>
   </mat-toolbar>
 
-  @for (board of boards; track board.id)
+  @if (this.selectedView == this.view.Board)
   {
-    <div class="my-2.5 mx-1">
-      <board-material [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board-material>
-    </div>
+    @for (board of boards; track board.id)
+    {
+      <div class="my-2.5 mx-1">
+        <board-material [board]=board (deleteBoardEvent)="DeleteBoard($event)"></board-material>
+      </div>
+    }
   }
+  @else if (this.selectedView == this.view.Table)
+  {
+    @for (board of boards; track board.id)
+    {
+      <div class="my-2.5 mx-1">
+        <log-table [board]=board></log-table>
+      </div>
+    }
+  }
+
 
 </div>

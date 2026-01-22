@@ -14,15 +14,27 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardCreationDialog } from '../board-creation-dialog/board-creation-dialog.component';
 import { DeletionWarningDialog } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { View } from './view.enum';
+import { LogTableComponent } from '../log-table/log-table.component';
 
 @Component({
   selector: 'boards-page-material',
-  imports: [ BoardMaterialComponent, MatToolbar, MatButtonModule, MatIcon ],
+  imports: [ 
+    BoardMaterialComponent,
+    MatToolbar,
+    MatButtonModule,
+    MatIcon,
+    MatButtonToggleModule,
+    LogTableComponent
+  ],
   templateUrl: './boards-page-material.component.html',
   styleUrl: './boards-page-material.component.css'
 })
 export class BoardsPageMaterialComponent implements OnInit
 {
+  view = View;
+  selectedView = this.view.Board;
   boards: Array<Board> = [];
   
   constructor(private taskManagerBackendService: TaskManagerBackendService,
@@ -38,6 +50,11 @@ export class BoardsPageMaterialComponent implements OnInit
   ngOnInit()
   {
     this.GetBoards()
+  }
+
+  switchView(value: View): void
+  {
+    this.selectedView = value;
   }
 
   AddBoard(): void
