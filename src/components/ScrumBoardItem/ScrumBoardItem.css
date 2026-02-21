@@ -1,0 +1,19 @@
+.scrum-board-item
+{
+    border: 1px solid #61dafb;
+    border-radius: 0.25em;
+}
+
+.scrum-board-item-header
+{
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    white-space: nowrap;
+}
+
+.scrum-board-item-header p
+{
+    margin-left: 10px;
+}

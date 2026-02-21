@@ -1,0 +1,48 @@
+.scrum-board-column
+{
+    border: 1px solid #61dafb;
+    border-radius: 0.25em;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.scrum-board-column-header
+{
+    width: 100%;
+    display: block;
+    position: relative;
+}
+
+.scrum-board-column-header h1
+{
+    margin-left: 10px;
+}
+
+.form-header-column
+{
+    display: inline-flex;
+    align-items: center;
+}
+
+
+.new-item-form
+{
+    display: inline-flex;
+    align-items: center;
+}
+
+.new-item-form input
+{
+    outline: none;
+    border: 1px solid;
+    border-radius: 0.25em;
+    padding: 0.5em 0.5em;
+    width: 80%;
+    margin: 5px;
+}
+
+.form-row-column
+{
+    display: block;
+    align-items: center;
+}

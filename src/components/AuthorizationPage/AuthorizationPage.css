@@ -1,0 +1,20 @@
+.authorization-page
+{
+    text-align: center;
+}
+
+.authorization-page-body
+{
+    text-align: center;
+}
+
+.form-authorization-row
+{
+    margin-bottom: 5px;
+    border: 1px solid white;
+}
+
+.message
+{
+    color: red;
+}

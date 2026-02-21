@@ -1,0 +1,89 @@
+body {
+    background-color: #282c34;
+    color: white;
+    font-family: Arial;
+    font-size: calc(10px + 2vmin);
+}
+
+/* body
+{
+    background-color: #282c34;
+    color: white;
+    font-family: Arial;
+    font-size: calc(10px + 2vmin);
+}
+
+.new-item-form
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.new-item-form input
+{
+    outline: none;
+    border: 1px solid;
+    border-radius: 0.25em;
+    padding: 0.5em 0.5em;
+}
+
+.form-row
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.new-item-input
+{
+    width: calc(calc(vmin + vmax)/2);
+}
+
+ul
+{
+    text-align: left;
+}
+
+ul label
+{
+    margin: 10px;
+} */
+
+ul {
+    list-style-type: none;
+    text-align: left;
+    list-style-position: inside;
+    padding: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+li {
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.scrum-board-page-header {
+    margin: 0 auto;
+}
+
+.outer-center
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-row-board-page {
+    align-self: center;
+}
+
+.new-board-form input {
+    align-self: center;
+    width: 50%;
+    margin: 5px;
+}
