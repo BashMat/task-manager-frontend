@@ -6,6 +6,7 @@ import { TrackingLogDto } from "./tracking-log-dto.interface";
 import { TrackingLogEntry } from "./tracking-log-entry-dto.interface";
 import { Status } from "./tracking-log-entry-status-dto.interface";
 import { Card } from "../../features/tasks/column/card.interface";
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,25 +14,26 @@ import { Card } from "../../features/tasks/column/card.interface";
 export class TaskManagerBackendService {
     token: string | null = null;
 
-    taskManagerBackendUrl = "http://localhost:5000";
     api = "api";
-    apiUrl = `${this.taskManagerBackendUrl}/${this.api}`;
+    apiUrl = () => `${this.configService.config?.taskManagerBackendBaseUrl}/${this.api}`;
     auth = "auth";
-    signUpEndpoint = `${this.apiUrl}/${this.auth}/signup`;
-    logInEndpoint = `${this.apiUrl}/${this.auth}/login`;
+    signUpEndpoint = () => `${this.apiUrl()}/${this.auth}/signup`;
+    logInEndpoint = () => `${this.apiUrl()}/${this.auth}/login`;
 
     tracking = "tracking";
     logs = "logs";
-    trackingLogsEndpoint = `${this.apiUrl}/${this.tracking}/${this.logs}`;
+    trackingLogsEndpoint = () => `${this.apiUrl()}/${this.tracking}/${this.logs}`;
 
     logEntryStatuses = "statuses";
-    trackingLogEntryStatusesEndpoint = `${this.apiUrl}/${this.tracking}/${this.logEntryStatuses}`;
+    trackingLogEntryStatusesEndpoint = () => `${this.apiUrl()}/${this.tracking}/${this.logEntryStatuses}`;
 
     logEntries = "log-entries";
-    trackingLogEntriesEndpoint = `${this.apiUrl}/${this.tracking}/${this.logEntries}`;
+    trackingLogEntriesEndpoint = () => `${this.apiUrl()}/${this.tracking}/${this.logEntries}`;
 
-    constructor(private httpClient: HttpClient) {
+    constructor(private httpClient: HttpClient,
+                private configService: ConfigService) {
         this.httpClient = httpClient;
+        this.configService = configService;
     }
 
     LogIn(logInData: string, password: string): Observable<{ data: string, message: string, success: boolean } | null> {
@@ -69,7 +71,7 @@ export class TaskManagerBackendService {
 
         console.log("Body: ", body);
         return this.httpClient
-            .post<{ data: string, message: string, success: boolean }>(this.logInEndpoint, body, requestOptions)
+            .post<{ data: string, message: string, success: boolean }>(this.logInEndpoint(), body, requestOptions)
             .pipe(map(result => {
                 localStorage.setItem("token", result.data);
                 return result; // return back same result.
@@ -105,7 +107,7 @@ export class TaskManagerBackendService {
         let httpBody = JSON.stringify({ "email": email, "userName": userName, "password": password });
 
         console.log("Body: ", httpBody);
-        fetch(this.signUpEndpoint,
+        fetch(this.signUpEndpoint(),
             {
                 method: 'POST',
                 mode: 'cors',
@@ -151,7 +153,7 @@ export class TaskManagerBackendService {
             "Description": this.processNullableString(description)
         }
 
-        return this.httpClient.post<{ data: TrackingLogDto, message: string, success: boolean }>(this.trackingLogsEndpoint, body, requestOptions);
+        return this.httpClient.post<{ data: TrackingLogDto, message: string, success: boolean }>(this.trackingLogsEndpoint(), body, requestOptions);
     }
 
     processNullableString(str: string | null)
@@ -173,7 +175,7 @@ export class TaskManagerBackendService {
             headers: new HttpHeaders(headers),
         };
 
-        return this.httpClient.get<TrackingLogDto[]>(this.trackingLogsEndpoint, requestOptions);
+        return this.httpClient.get<TrackingLogDto[]>(this.trackingLogsEndpoint(), requestOptions);
     }
 
     DeleteBoard(boardId: number): Observable<TrackingLogDto[]> {
@@ -189,7 +191,7 @@ export class TaskManagerBackendService {
             headers: new HttpHeaders(headers),
         };
 
-        return this.httpClient.delete<TrackingLogDto[]>(`${this.trackingLogsEndpoint}/${boardId}`, requestOptions);
+        return this.httpClient.delete<TrackingLogDto[]>(`${this.trackingLogsEndpoint()}/${boardId}`, requestOptions);
     }
 
     AddColumn(boardId: number, title: string, description: string | null): Observable<{ data: Status, message: string, success: boolean }> {
@@ -212,7 +214,7 @@ export class TaskManagerBackendService {
             "TrackingLogId": boardId
         }
 
-        return this.httpClient.post<{ data: Status, message: string, success: boolean }>(this.trackingLogEntryStatusesEndpoint, body, requestOptions);
+        return this.httpClient.post<{ data: Status, message: string, success: boolean }>(this.trackingLogEntryStatusesEndpoint(), body, requestOptions);
     }
 
     DeleteColumn(columnId: number): Observable<{ data: Array<Status>, message: string, success: boolean }> {
@@ -228,7 +230,7 @@ export class TaskManagerBackendService {
             headers: new HttpHeaders(headers),
         };
 
-        return this.httpClient.delete<{ data: Array<Status>, message: string, success: boolean }>(`${this.trackingLogEntryStatusesEndpoint}/${columnId}`, requestOptions);
+        return this.httpClient.delete<{ data: Array<Status>, message: string, success: boolean }>(`${this.trackingLogEntryStatusesEndpoint()}/${columnId}`, requestOptions);
     }
 
     AddCard(boardId: number, columnId: number, title: string, description: string | null, orderIndex: number): Observable<{ data: TrackingLogEntry, message: string, success: boolean }> {
@@ -253,7 +255,7 @@ export class TaskManagerBackendService {
             "OrderIndex": orderIndex
         }
 
-        return this.httpClient.post<{ data: TrackingLogEntry, message: string, success: boolean }>(this.trackingLogEntriesEndpoint, body, requestOptions);
+        return this.httpClient.post<{ data: TrackingLogEntry, message: string, success: boolean }>(this.trackingLogEntriesEndpoint(), body, requestOptions);
     }
 
     DeleteCard(cardId: number): Observable<TrackingLogEntry[]> {
@@ -269,7 +271,7 @@ export class TaskManagerBackendService {
             headers: new HttpHeaders(headers),
         };
 
-        return this.httpClient.delete<TrackingLogEntry[]>(`${this.trackingLogEntriesEndpoint}/${cardId}`, requestOptions);
+        return this.httpClient.delete<TrackingLogEntry[]>(`${this.trackingLogEntriesEndpoint()}/${cardId}`, requestOptions);
     }
 
     MoveCard(cardToMove: Card, columnId: number, orderIndex: number): Observable<{ data: TrackingLogEntry, message: string, success: boolean }> {
@@ -297,6 +299,6 @@ export class TaskManagerBackendService {
             "UpdatedAt": cardToMove.updatedAt
         }
 
-        return this.httpClient.put<{ data: TrackingLogEntry, message: string, success: boolean }>(`${this.trackingLogEntriesEndpoint}/${cardToMove.id}`, body, requestOptions);
+        return this.httpClient.put<{ data: TrackingLogEntry, message: string, success: boolean }>(`${this.trackingLogEntriesEndpoint()}/${cardToMove.id}`, body, requestOptions);
     }
 }
