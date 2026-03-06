@@ -10,7 +10,7 @@ export interface TrackingLogEntry
     priority: number | null,
     orderIndex: number,
     createdBy: any,
-    CreatedAt: Date,
+    createdAt: string,
     updatedBy: any,
-    updatedAt: Date,
+    updatedAt: string,
 }

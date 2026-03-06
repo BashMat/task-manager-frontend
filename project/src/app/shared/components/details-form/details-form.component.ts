@@ -15,12 +15,12 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'board-details-material',
+  selector: 'details-form',
   imports: [MatDialogModule, MatDivider, MatIconModule, MatButtonModule ],
-  templateUrl: './board-details-material.component.html',
-  styleUrl: './board-details-material.component.css'
+  templateUrl: './details-form.component.html',
+  styleUrl: './details-form.component.css'
 })
-export class BoardDetailsMaterialComponent
+export class DetailsForm
 { 
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   readonly id = model(this.data.id);

@@ -21,7 +21,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { CreationDialog } from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
-import { BoardDetailsMaterialComponent } from '../board-details-material/board-details-material.component';
+import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
 import { DeletionWarningDialog } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
 
 @Component({
@@ -57,7 +57,7 @@ export class BoardMaterialComponent {
 
   OpenDetails() {
     let boardDto = this.board();
-    let dialogRef = this.dialog.open(BoardDetailsMaterialComponent, {
+    let dialogRef = this.dialog.open(DetailsForm, {
       autoFocus: false,
       height: "80%",
       minWidth: "80vw",

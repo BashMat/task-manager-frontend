@@ -9,11 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { MatDialog } from '@angular/material/dialog';
-import { BoardDetailsMaterialComponent } from '../board-details-material/board-details-material.component';
 import { CreationDialog } from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
 import { Card } from '../column/card.interface';
 import { MatCardModule } from '@angular/material/card';
+import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
 
 @Component({
   selector: 'log-table',
@@ -80,7 +80,7 @@ export class LogTableComponent implements OnInit, AfterViewInit {
 
   OpenDetails() {
       let boardDto = this.board();
-      let dialogRef = this.dialog.open(BoardDetailsMaterialComponent, {
+      let dialogRef = this.dialog.open(DetailsForm, {
         autoFocus: false,
         height: "80%",
         minWidth: "80vw",
@@ -92,6 +92,31 @@ export class LogTableComponent implements OnInit, AfterViewInit {
           createdAt: boardDto.createdAt.toLocaleString(),
           updatedBy: boardDto.updatedBy,
           updatedAt: boardDto.updatedAt.toLocaleString()
+        }
+      });
+    }
+
+    OpenRowDetails(row: any) {
+      let trackingLogEntryId = row.id;
+      let trackingLogEntry = this.board().columns.flatMap(o => o.cards).find(o => o.id === trackingLogEntryId);
+
+      if (trackingLogEntry === undefined)
+      {
+        return;
+      }
+
+      let dialogRef = this.dialog.open(DetailsForm, {
+        autoFocus: false,
+        height: "80%",
+        minWidth: "80vw",
+        data: {
+          id: trackingLogEntry.id,
+          title: trackingLogEntry.title,
+          description: trackingLogEntry.description,
+          createdBy: trackingLogEntry.createdBy,
+          createdAt: trackingLogEntry.createdAt.toLocaleString(),
+          updatedBy: trackingLogEntry.updatedBy,
+          updatedAt: trackingLogEntry.updatedAt.toLocaleString()
         }
       });
     }
@@ -161,6 +186,9 @@ export class LogTableComponent implements OnInit, AfterViewInit {
                   columnId: response.data.status.id,
                   priority: response.data.priority,
                   orderIndex: response.data.orderIndex,
+                  createdBy: response.data.createdBy,
+                  createdAt: response.data.createdAt,
+                  updatedBy: response.data.updatedBy,
                   updatedAt: response.data.updatedAt
                 };
                 status.cards.push(card);

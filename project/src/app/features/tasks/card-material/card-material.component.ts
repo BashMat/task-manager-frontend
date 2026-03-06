@@ -5,6 +5,8 @@ import { Card } from '../column-material/card.interface';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardTitleGroup } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from '@angular/material/icon';
+import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'card-material',
@@ -26,10 +28,13 @@ export class CardMaterialComponent
   @Output() deleteCardEvent = new EventEmitter<number>();
   
   constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private localStorageService: LocalStorageService)
+              private localStorageService: LocalStorageService,
+              private dialog: MatDialog)
   {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
+    this.dialog = dialog;
+
     this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
@@ -37,4 +42,22 @@ export class CardMaterialComponent
   {
     this.deleteCardEvent.emit(this.card().id);
   }
+
+  OpenDetails() {
+      let cardDto = this.card();
+      let dialogRef = this.dialog.open(DetailsForm, {
+        autoFocus: false,
+        height: "80%",
+        minWidth: "80vw",
+        data: {
+          id: cardDto.id,
+          title: cardDto.title,
+          description: cardDto.description,
+          createdBy: cardDto.createdBy,
+          createdAt: cardDto.createdAt.toLocaleString(),
+          updatedBy: cardDto.updatedBy,
+          updatedAt: cardDto.updatedAt.toLocaleString()
+        }
+      });
+    }
 }

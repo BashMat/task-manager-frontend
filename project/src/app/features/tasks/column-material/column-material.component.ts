@@ -87,6 +87,9 @@ export class ColumnMaterialComponent {
               columnId: response.data.status.id,
               priority: response.data.priority,
               orderIndex: response.data.orderIndex,
+              createdBy: response.data.createdBy,
+              createdAt: response.data.createdAt,
+              updatedBy: response.data.updatedBy,
               updatedAt: response.data.updatedAt
             };
             this.column().cards.push(card)

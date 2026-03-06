@@ -102,7 +102,10 @@ export class BoardsPageComponent implements OnInit
                                                                            columnId: entry.status.id,
                                                                            priority: entry.priority,
                                                                            orderIndex: entry.orderIndex,
-                                                                           updatedAt: entry.updatedAt
+                                                                           createdBy: entry.createdBy,
+                                                                          createdAt: entry.createdAt,
+                                                                          updatedBy: entry.updatedBy,
+                                                                          updatedAt: entry.updatedAt
                                                                          };
                                                         return mappedCard;
                                                       }

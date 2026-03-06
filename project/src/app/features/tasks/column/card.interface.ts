@@ -7,5 +7,8 @@ export interface Card
     columnId: number,
     priority: number | null,
     orderIndex: number,
-    updatedAt: Date
+    createdBy: string,
+    createdAt: string,
+    updatedBy: string,
+    updatedAt: string
 }

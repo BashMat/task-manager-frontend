@@ -20,7 +20,7 @@ import { LogTableComponent } from '../log-table/log-table.component';
 
 @Component({
   selector: 'boards-page-material',
-  imports: [ 
+  imports: [
     BoardMaterialComponent,
     MatToolbar,
     MatButtonModule,
@@ -36,7 +36,7 @@ export class BoardsPageMaterialComponent implements OnInit
   view = View;
   selectedView = this.view.Board;
   boards: Array<Board> = [];
-  
+
   constructor(private taskManagerBackendService: TaskManagerBackendService,
               private localStorageService: LocalStorageService,
               private dialog: MatDialog)
@@ -75,7 +75,7 @@ export class BoardsPageMaterialComponent implements OnInit
       }
 
       this.taskManagerBackendService.AddBoard(result.title, result.description)
-                                    .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) => 
+                                    .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) =>
                                       {
                                         console.log("response: ", response)
                                         if (response.data !== null)
@@ -89,14 +89,14 @@ export class BoardsPageMaterialComponent implements OnInit
   GetBoards(): void
   {
     this.taskManagerBackendService.GetBoards()
-                                  .subscribe((boards: any) => 
+                                  .subscribe((boards: any) =>
                                     this.boards = this.ConvertToBoardArray(boards['data'] || new Array<Board>()));
   }
 
   private ConvertToBoardArray(data: any): Array<Board>
   {
     console.log("Converting...")
-    let converted = data.map((log: TrackingLogDto) => 
+    let converted = data.map((log: TrackingLogDto) =>
       {
         return this.ConvertToBoard(log);
       });
@@ -106,17 +106,17 @@ export class BoardsPageMaterialComponent implements OnInit
 
   private ConvertToBoard(data: TrackingLogDto): Board
   {
-    let mappedBoard = { 
-      id: data.id, 
-      title: data.title, 
-      description: data.description, 
+    let mappedBoard = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
       createdBy: data.createdBy.userName,
       createdAt: new Date(data.createdAt + "Z"),
       updatedBy: data.updatedBy.userName,
       updatedAt: new Date(data.updatedAt + "Z"),
-      columns: [] as Array<Column> 
+      columns: [] as Array<Column>
     } as Board;
-    mappedBoard.columns = data.trackingLogEntriesStatuses.map((status: Status) => 
+    mappedBoard.columns = data.trackingLogEntriesStatuses.map((status: Status) =>
       {
         let mappedColumn = { id: status.id, title: status.title, boardId: status.trackingLogId, cards: [] as Array<Card> };
         console.log(mappedColumn);
@@ -126,7 +126,7 @@ export class BoardsPageMaterialComponent implements OnInit
                                                              array: TrackingLogEntry[]
                                                             ) => { return entry.status.id === mappedColumn.id} );
         console.log(filtered)
-        mappedColumn.cards = filtered.map((entry: TrackingLogEntry) => 
+        mappedColumn.cards = filtered.map((entry: TrackingLogEntry) =>
                                                       {
                                                         let mappedCard = {
                                                                            id: entry.id,
@@ -136,6 +136,9 @@ export class BoardsPageMaterialComponent implements OnInit
                                                                            columnId: entry.status.id,
                                                                            priority: entry.priority,
                                                                            orderIndex: entry.orderIndex,
+                                                                           createdBy: entry.createdBy.userName,
+                                                                           createdAt: entry.createdAt,
+                                                                           updatedBy: entry.updatedBy.userName,
                                                                            updatedAt: entry.updatedAt
                                                                          };
                                                         return mappedCard;
