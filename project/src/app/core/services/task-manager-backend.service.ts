@@ -69,7 +69,6 @@ export class TaskManagerBackendService {
 
         let body = JSON.stringify({ "logInData": logInData, "password": password });
 
-        console.log("Body: ", body);
         return this.httpClient
             .post<{ data: string, message: string, success: boolean }>(this.logInEndpoint(), body, requestOptions)
             .pipe(map(result => {
