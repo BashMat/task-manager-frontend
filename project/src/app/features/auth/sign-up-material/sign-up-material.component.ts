@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'sign-up-material',
@@ -54,8 +55,12 @@ export class SignUpMaterialComponent {
 
   @Output() switchComponentEvent = new EventEmitter<any>();
 
-  constructor(private taskManagerBackendService: TaskManagerBackendService) {
+  constructor(private taskManagerBackendService: TaskManagerBackendService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
     this.taskManagerBackendService = taskManagerBackendService;
+    this.activatedRoute = activatedRoute;
+    this.router = router
   }
 
   hide = signal(true);
@@ -82,6 +87,32 @@ export class SignUpMaterialComponent {
       return;
     }
 
-    this.taskManagerBackendService.SignUp(this.signUpForm.value.email, this.signUpForm.value.username, this.signUpForm.value.password)
+    this.taskManagerBackendService.SignUpNew(this.signUpForm.value.email!, this.signUpForm.value.username, this.signUpForm.value.password)
+                                  .subscribe(
+                                    {
+                                      next: () => 
+                                            {
+                                              this.taskManagerBackendService.LogIn(this.signUpForm.value.email!, this.signUpForm.value.password!)
+                                                                            .subscribe(
+                                                                                      {
+                                                                                        next: () => 
+                                                                                              {
+                                                                                                const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+                                                                                                console.log("Logged In.");
+                                                                                                console.log("Returning to");
+                                                                                                console.log(returnUrl);
+                                                                                                this.router.navigateByUrl(returnUrl);
+                                                                                              },
+                                                                                        error: () => 
+                                                                                              {
+                                                                                                console.log("Error occured during loggin in");
+                                                                                              }
+                                                                                      });
+                                            },
+                                      error: () => 
+                                             {
+                                               console.log("Error occured during loggin in");
+                                             }
+                                    }); 
   }
 }

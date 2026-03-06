@@ -134,6 +134,47 @@ export class TaskManagerBackendService {
         console.log("Finish Logging In");
     }
 
+    SignUpNew(email: string, userName: string, password: string): Observable<{ data: any, message: string, success: boolean } | null> {
+        console.log("Start Signing Up");
+        if (email === "" || !email.includes("@")) {
+            console.log("Email is invalid");
+            return of(null);
+        }
+
+        if (userName === "") {
+            console.log("Username cannot be empty");
+            return of(null);
+        }
+
+        if (password === "") {
+            console.log("Password data cannot be empty");
+            return of(null);
+        }
+
+        if (password.length < 4) {
+            console.log("Password cannot be shorter than 4 characters");
+            return of(null);
+        }
+
+        const headers = {
+            'Content-type': 'application/json; charset=UTF-8',
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Authorization": "bearer " + this.token
+        }
+
+        const requestOptions = {
+            headers: new HttpHeaders(headers),
+        };
+
+        console.log("Sending POST");
+
+        let httpBody = JSON.stringify({ "email": email, "userName": userName, "password": password });
+
+        return this.httpClient.post<{ data: string, message: string, success: boolean }>(this.signUpEndpoint(), httpBody, requestOptions);
+    }
+
     AddBoard(title: string, description: string | null): Observable<{ data: TrackingLogDto, message: string, success: boolean }> {
         console.log("Adding board", title);
         const headers = {
