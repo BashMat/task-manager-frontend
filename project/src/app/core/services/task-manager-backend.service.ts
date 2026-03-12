@@ -7,7 +7,7 @@ import { TrackingLogEntry } from "./tracking-log-entry-dto.interface";
 import { Status } from "./tracking-log-entry-status-dto.interface";
 import { ConfigService } from '../config/config.service';
 import {LocalStorageService} from './local-storage.service';
-import {Card} from '../../features/tasks/column-material/card.interface';
+import {Card} from '../../features/tasks/column/card.interface';
 
 @Injectable({
     providedIn: 'root'

@@ -2,7 +2,7 @@ import { Component, ViewChild, input, OnInit, AfterViewInit, Output, EventEmitte
 import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { TrackingLogEntry } from './tracking-log-entry.interface';
 import { TrackingLogEntry as ServiceTrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
-import { Board } from '../boards-page-material/board.interface';
+import { Board } from '../boards-page/board.interface';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { CreationDialog } from '../../../shared/components/dialogs/creation-dial
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
 import { MatCardModule } from '@angular/material/card';
 import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
-import {Card} from '../column-material/card.interface';
+import {Card} from '../column/card.interface';
 
 @Component({
   selector: 'log-table',

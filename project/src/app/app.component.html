@@ -1,29 +1,29 @@
-@switch (pageLayoutService.layout | async) {  
+@switch (pageLayoutService.layout | async) {
       @case (PageLayout.Authorized)
       {
-          <authorized-layout-material>
+          <authorized-layout>
               <router-outlet />
-          </authorized-layout-material>
+          </authorized-layout>
       }
 
       @case (PageLayout.Unauthorized)
       {
-          <unauthorized-layout-material>
+          <unauthorized-layout>
               <router-outlet />
-          </unauthorized-layout-material>
+          </unauthorized-layout>
       }
 
       @case (PageLayout.Error)
       {
-          <authorized-layout-material>
+          <authorized-layout>
               <router-outlet />
-          </authorized-layout-material>
+          </authorized-layout>
       }
 
       @default
       {
-          <unauthorized-layout-material>
+          <unauthorized-layout>
               <router-outlet />
-          </unauthorized-layout-material>
+          </unauthorized-layout>
       }
   }
