@@ -35,14 +35,13 @@ export class LogTableComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource(Array.of<TrackingLogEntry>());
 
   @Output() deleteBoardEvent = new EventEmitter<number>();
-  
+
     constructor(private taskManagerBackendService: TaskManagerBackendService,
       private localStorageService: LocalStorageService,
       private dialog: MatDialog) {
       this.taskManagerBackendService = taskManagerBackendService;
       this.localStorageService = localStorageService;
       this.dialog = dialog;
-      this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
     }
 
   ngOnInit() {
@@ -120,27 +119,27 @@ export class LogTableComponent implements OnInit, AfterViewInit {
         }
       });
     }
-  
+
     DeleteBoard() {
       this.deleteBoardEvent.emit(this.board().id);
     }
-  
+
     AddColumn(): void {
       let dialogRef = this.dialog.open(CreationDialog, { autoFocus: false })
-  
+
       dialogRef.afterClosed().subscribe(result => {
         if (result === null)
         {
           return;
         }
-  
+
         console.log("Adding column");
         if (result.title === null || result.title === undefined)
         {
           console.log("Cannot add column without title")
           return;
         }
-  
+
         this.taskManagerBackendService.AddColumn(this.board().id, result.title, result.description)
           .subscribe((response: { data: Status, message: string, success: boolean }) => {
             console.log("response: ", response)
@@ -154,12 +153,12 @@ export class LogTableComponent implements OnInit, AfterViewInit {
 
     AddCard(): void {
         let dialogRef = this.dialog.open(CreationDialog, { autoFocus: false })
-    
+
         dialogRef.afterClosed().subscribe(result => {
           if (result === null) {
             return;
           }
-    
+
           console.log("Adding card");
           if (result.title === null || result.title === undefined) {
             console.log("Cannot add card without title")
@@ -168,7 +167,7 @@ export class LogTableComponent implements OnInit, AfterViewInit {
 
           // TODO: add status selection in dialog
           var status = this.board().columns.at(0)!;
-    
+
           this.taskManagerBackendService.AddCard(this.board().id,
                                                 status.id,
                                                  result.title,

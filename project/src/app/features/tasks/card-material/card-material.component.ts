@@ -26,7 +26,7 @@ export class CardMaterialComponent
   card = input.required<Card>();
 
   @Output() deleteCardEvent = new EventEmitter<number>();
-  
+
   constructor(private taskManagerBackendService: TaskManagerBackendService,
               private localStorageService: LocalStorageService,
               private dialog: MatDialog)
@@ -34,8 +34,6 @@ export class CardMaterialComponent
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
     this.dialog = dialog;
-
-    this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
   DeleteCard()

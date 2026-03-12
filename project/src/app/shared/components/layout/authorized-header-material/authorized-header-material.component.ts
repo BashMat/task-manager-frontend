@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatToolbarModule,
     MatIcon,
     MatIconButton,
-    MatMenuModule 
+    MatMenuModule
   ],
   templateUrl: './authorized-header-material.component.html',
   styleUrl: './authorized-header-material.component.css'
@@ -29,7 +29,7 @@ export class AuthorizedHeaderMaterialComponent {
 
   SignOut()
   {
-    this.localStorageService.DeleteAccessToken();
+    this.localStorageService.DeleteTokens();
     // TODO: Works for all pages only because /auth is not used for already authenticated user.
     // If "/" is used, then during Sign Out from "/", navigateByUrl will not redirect because
     // Router does not do same URL navigation by default. Simple implementation did not work.

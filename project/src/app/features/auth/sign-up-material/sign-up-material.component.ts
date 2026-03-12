@@ -90,12 +90,12 @@ export class SignUpMaterialComponent {
     this.taskManagerBackendService.SignUpNew(this.signUpForm.value.email!, this.signUpForm.value.username, this.signUpForm.value.password)
                                   .subscribe(
                                     {
-                                      next: () => 
+                                      next: () =>
                                             {
-                                              this.taskManagerBackendService.LogIn(this.signUpForm.value.email!, this.signUpForm.value.password!)
+                                              this.taskManagerBackendService.IssueTokenByPassword(this.signUpForm.value.email!, this.signUpForm.value.password!)
                                                                             .subscribe(
                                                                                       {
-                                                                                        next: () => 
+                                                                                        next: () =>
                                                                                               {
                                                                                                 const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
                                                                                                 console.log("Logged In.");
@@ -103,16 +103,16 @@ export class SignUpMaterialComponent {
                                                                                                 console.log(returnUrl);
                                                                                                 this.router.navigateByUrl(returnUrl);
                                                                                               },
-                                                                                        error: () => 
+                                                                                        error: () =>
                                                                                               {
                                                                                                 console.log("Error occured during loggin in");
                                                                                               }
                                                                                       });
                                             },
-                                      error: () => 
+                                      error: () =>
                                              {
                                                console.log("Error occured during loggin in");
                                              }
-                                    }); 
+                                    });
   }
 }

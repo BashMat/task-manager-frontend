@@ -37,9 +37,9 @@ export class LogInMaterialComponent {
 
   logInForm = new FormGroup(
     {
-      logInData: new FormControl("", 
+      logInData: new FormControl("",
         [ Validators.required ]),
-      password: new FormControl("", 
+      password: new FormControl("",
         [ Validators.required, Validators.minLength(8) ]),
     });
 
@@ -70,16 +70,16 @@ export class LogInMaterialComponent {
   {
     console.log("Log In button pressed.")
     console.log("Log In Data:", this.logInForm.value.logInData)
-    if (this.logInForm.value.logInData === null || this.logInForm.value.password === null || 
+    if (this.logInForm.value.logInData === null || this.logInForm.value.password === null ||
       this.logInForm.value.logInData === undefined || this.logInForm.value.password === undefined)
     {
       console.log("Values cannot be null");
       return;
     }
-    this.taskManagerBackendService.LogIn(this.logInForm.value.logInData!, this.logInForm.value.password!)
+    this.taskManagerBackendService.IssueTokenByPassword(this.logInForm.value.logInData!, this.logInForm.value.password!)
                                   .subscribe(
                                     {
-                                      next: () => 
+                                      next: () =>
                                             {
                                               const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
                                               console.log("Logged In.");
@@ -87,10 +87,10 @@ export class LogInMaterialComponent {
                                               console.log(returnUrl);
                                               this.router.navigateByUrl(returnUrl);
                                             },
-                                      error: () => 
+                                      error: () =>
                                              {
                                                console.log("Error occured during loggin in");
                                              }
-                                    }); 
+                                    });
   }
 }

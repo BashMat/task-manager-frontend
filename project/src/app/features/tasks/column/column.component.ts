@@ -25,13 +25,12 @@ export class ColumnComponent
       cardTitle: new FormControl("")
     }
   )
-  
+
   constructor(private taskManagerBackendService: TaskManagerBackendService,
               private localStorageService: LocalStorageService)
   {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
-    this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
   DeleteColumn()
@@ -55,13 +54,13 @@ export class ColumnComponent
                        : this.column().cards[columnLength - 1].orderIndex + 1;
 
     this.taskManagerBackendService.AddCard(this.column().boardId, this.column().id, this.newCardForm.value.cardTitle!, null, newCardIndex)
-                                  .subscribe((response: {data: TrackingLogEntry, message: string, success: boolean}) => 
+                                  .subscribe((response: {data: TrackingLogEntry, message: string, success: boolean}) =>
                                     {
                                       console.log("response: ", response)
                                       if (response.data !== null)
                                       {
                                         let card = {
-                                                      id: response.data.id, 
+                                                      id: response.data.id,
                                                       title: response.data.title,
                                                       description: response.data.description,
                                                       boardId: response.data.trackingLogId,
@@ -114,13 +113,13 @@ export class ColumnComponent
     this.taskManagerBackendService.MoveCard(event.previousContainer.data[event.previousIndex],
                                             event.container.id as unknown as number,
                                             newOrderIndex)
-                                  .subscribe((response: {data: TrackingLogEntry, message: string, success: boolean}) => 
+                                  .subscribe((response: {data: TrackingLogEntry, message: string, success: boolean}) =>
                                     {
                                       console.log("Put request for Card was received!")
                                       console.log(response)
                                       if (response.data !== null)
                                       {
-                                        this.column().cards = this.column().cards.map((card: Card) => 
+                                        this.column().cards = this.column().cards.map((card: Card) =>
                                         {
                                           if (card.id == response.data.id)
                                           {

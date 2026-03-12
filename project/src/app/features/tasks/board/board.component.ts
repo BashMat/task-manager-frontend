@@ -26,13 +26,12 @@ export class BoardComponent
       columnTitle: new FormControl("")
     }
   )
-  
+
   constructor(private taskManagerBackendService: TaskManagerBackendService,
               private localStorageService: LocalStorageService)
   {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
-    this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
   DeleteBoard()
@@ -51,7 +50,7 @@ export class BoardComponent
     }
 
     this.taskManagerBackendService.AddColumn(this.board().id, this.newColumnForm.value.columnTitle!, null)
-                                  .subscribe((response: {data: Status, message: string, success: boolean}) => 
+                                  .subscribe((response: {data: Status, message: string, success: boolean}) =>
                                     {
                                       console.log("response: ", response)
                                       if (response.data !== null)
@@ -68,7 +67,7 @@ export class BoardComponent
     console.log("Deleting column", columnId);
 
     this.taskManagerBackendService.DeleteColumn(columnId)
-                                  .subscribe((response: {data: Array<Status>, message: string, success: boolean}) => 
+                                  .subscribe((response: {data: Array<Status>, message: string, success: boolean}) =>
                                     {
                                       this.board().columns = this.board().columns.filter((column: Column) => response.data.filter(status => status.id === column.id).length == 1);
                                     });

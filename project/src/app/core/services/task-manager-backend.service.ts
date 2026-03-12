@@ -7,18 +7,18 @@ import { TrackingLogEntry } from "./tracking-log-entry-dto.interface";
 import { Status } from "./tracking-log-entry-status-dto.interface";
 import { Card } from "../../features/tasks/column/card.interface";
 import { ConfigService } from '../config/config.service';
+import {LocalStorageService} from './local-storage.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TaskManagerBackendService {
-    token: string | null = null;
-
     api = "api";
     apiUrl = () => `${this.configService.config?.taskManagerBackendBaseUrl}/${this.api}`;
     auth = "auth";
     signUpEndpoint = () => `${this.apiUrl()}/${this.auth}/signup`;
     logInEndpoint = () => `${this.apiUrl()}/${this.auth}/login`;
+    issueTokenEndpoint = () => `${this.apiUrl()}/${this.auth}/token`;
 
     tracking = "tracking";
     logs = "logs";
@@ -31,9 +31,11 @@ export class TaskManagerBackendService {
     trackingLogEntriesEndpoint = () => `${this.apiUrl()}/${this.tracking}/${this.logEntries}`;
 
     constructor(private httpClient: HttpClient,
-                private configService: ConfigService) {
+                private configService: ConfigService,
+                private localStorageService: LocalStorageService) {
         this.httpClient = httpClient;
         this.configService = configService;
+        this.localStorageService = localStorageService;
     }
 
     LogIn(logInData: string, password: string): Observable<{ data: string, message: string, success: boolean } | null> {
@@ -60,7 +62,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -78,6 +80,85 @@ export class TaskManagerBackendService {
             )
             );
     }
+
+  IssueTokenByPassword(username: string, password: string): Observable<{ data: { access_token: string, refresh_token: string}, message: string, success: boolean } | null> {
+    console.log("Start Logging In");
+    if (username === "") {
+      console.log("Username data cannot be empty");
+      return of(null);
+    }
+
+    if (password === "") {
+      console.log("Password data cannot be empty");
+      return of(null);
+    }
+
+    if (password.length < 8) {
+      console.log("Password cannot be shorter than 8 characters");
+      return of(null);
+    }
+
+    console.log("Sending POST");
+
+    const headers = {
+      'Content-type': 'application/json; charset=UTF-8',
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*"
+    }
+
+    const requestOptions = {
+      headers: new HttpHeaders(headers),
+    };
+
+    let body = JSON.stringify({ "grant_type": "password", "username": username, "password": password });
+
+    return this.httpClient
+      .post<{ data: { access_token: string, refresh_token: string}, message: string, success: boolean }>(this.issueTokenEndpoint(), body, requestOptions)
+      .pipe(map(result => {
+            this.localStorageService.SetTokens(result.data.access_token, result.data.refresh_token)
+            return result;
+          }
+        )
+      );
+  }
+
+  IssueTokenByRefreshToken(): Observable<{ data: { access_token: string, refresh_token: string}, message: string, success: boolean } | null> {
+    console.log("Start Issuing Token");
+
+    let refreshToken = this.localStorageService.GetRefreshToken();
+
+    if (refreshToken === null)
+    {
+      console.log("Refresh token is null");
+      return of(null);
+    }
+
+
+    console.log("Sending POST");
+
+    const headers = {
+      'Content-type': 'application/json; charset=UTF-8',
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*"
+    }
+
+    const requestOptions = {
+      headers: new HttpHeaders(headers),
+    };
+
+    let body = JSON.stringify({ "grant_type": "refresh_token", "refresh_token": refreshToken });
+
+    return this.httpClient
+      .post<{ data: { access_token: string, refresh_token: string}, message: string, success: boolean }>(this.issueTokenEndpoint(), body, requestOptions)
+      .pipe(map(result => {
+            this.localStorageService.SetTokens(result.data.access_token, result.data.refresh_token)
+            return result;
+          }
+        )
+      );
+  }
 
     SignUp(email: string, userName: string, password: string): void {
         console.log("Start Signing Up");
@@ -160,7 +241,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -181,7 +262,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -208,7 +289,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -224,7 +305,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -241,7 +322,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -263,7 +344,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -280,7 +361,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -304,7 +385,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {
@@ -322,7 +403,7 @@ export class TaskManagerBackendService {
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
-            "Authorization": "bearer " + this.token
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
         }
 
         const requestOptions = {

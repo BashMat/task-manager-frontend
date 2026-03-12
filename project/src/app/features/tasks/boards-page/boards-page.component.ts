@@ -25,13 +25,12 @@ export class BoardsPageComponent implements OnInit
       boardTitle: new FormControl("")
     }
   )
-  
+
   constructor(private taskManagerBackendService: TaskManagerBackendService,
               private localStorageService: LocalStorageService)
   {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
-    this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
   ngOnInit()
@@ -49,7 +48,7 @@ export class BoardsPageComponent implements OnInit
     }
 
     this.taskManagerBackendService.AddBoard(this.newBoardForm.value.boardTitle!, null)
-                                  .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) => 
+                                  .subscribe((response: {data: TrackingLogDto, message: string, success: boolean}) =>
                                     {
                                       console.log("response: ", response)
                                       if (response.data !== null)
@@ -64,14 +63,14 @@ export class BoardsPageComponent implements OnInit
   GetBoards(): void
   {
     this.taskManagerBackendService.GetBoards()
-                                  .subscribe((boards: any) => 
+                                  .subscribe((boards: any) =>
                                     this.boards = this.ConvertToBoardArray(boards['data'] || new Array<Board>()));
   }
 
   private ConvertToBoardArray(data: any): Array<Board>
   {
     console.log("Converting...")
-    let converted = data.map((log: TrackingLogDto) => 
+    let converted = data.map((log: TrackingLogDto) =>
       {
         return this.ConvertToBoard(log);
       });
@@ -82,7 +81,7 @@ export class BoardsPageComponent implements OnInit
   private ConvertToBoard(data: TrackingLogDto): Board
   {
     let mappedBoard = { id: data.id, title: data.title, columns: [] as Array<Column> };
-    mappedBoard.columns = data.trackingLogEntriesStatuses.map((status: Status) => 
+    mappedBoard.columns = data.trackingLogEntriesStatuses.map((status: Status) =>
       {
         let mappedColumn = { id: status.id, title: status.title, boardId: status.trackingLogId, cards: [] as Array<Card> };
         console.log(mappedColumn);
@@ -92,7 +91,7 @@ export class BoardsPageComponent implements OnInit
                                                              array: TrackingLogEntry[]
                                                             ) => { return entry.status.id === mappedColumn.id} );
         console.log(filtered)
-        mappedColumn.cards = filtered.map((entry: TrackingLogEntry) => 
+        mappedColumn.cards = filtered.map((entry: TrackingLogEntry) =>
                                                       {
                                                         let mappedCard = {
                                                                            id: entry.id,
@@ -129,12 +128,12 @@ export class BoardsPageComponent implements OnInit
   {
     console.log("Adding column for board", boardId)
   }
-  
+
   DeleteColumn(columnId: number)
   {
     console.log("Deleting column", columnId);
   }
-  
+
   DeleteCard(cardId: number)
   {
     console.log("Deleting card", cardId);

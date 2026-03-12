@@ -47,12 +47,11 @@ export class BoardMaterialComponent {
   @Output() deleteBoardEvent = new EventEmitter<number>();
 
   constructor(private taskManagerBackendService: TaskManagerBackendService,
-    private localStorageService: LocalStorageService,
-    private dialog: MatDialog) {
+              private localStorageService: LocalStorageService,
+              private dialog: MatDialog) {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
     this.dialog = dialog;
-    this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
   OpenDetails() {
@@ -78,17 +77,15 @@ export class BoardMaterialComponent {
   }
 
   AddColumn(): void {
-    let dialogRef = this.dialog.open(CreationDialog, { autoFocus: false })
+    let dialogRef = this.dialog.open(CreationDialog, {autoFocus: false})
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === null)
-      {
+      if (result === null) {
         return;
       }
 
       console.log("Adding column");
-      if (result.title === null || result.title === undefined)
-      {
+      if (result.title === null || result.title === undefined) {
         console.log("Cannot add column without title")
         return;
       }
@@ -97,7 +94,12 @@ export class BoardMaterialComponent {
         .subscribe((response: { data: Status, message: string, success: boolean }) => {
           console.log("response: ", response)
           if (response.data !== null) {
-            let column = { id: response.data.id, title: response.data.title, boardId: response.data.trackingLogId, cards: [] as Array<Card> }
+            let column = {
+              id: response.data.id,
+              title: response.data.title,
+              boardId: response.data.trackingLogId,
+              cards: [] as Array<Card>
+            }
             this.board().columns.push(column)
           }
         })

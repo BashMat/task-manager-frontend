@@ -16,15 +16,32 @@ export class LocalStorageService
     return localStorageEntry;
   }
 
-  DeleteAccessToken()
+  GetRefreshToken(): string | null
+  {
+    let localStorageEntry = localStorage.getItem('refreshToken');
+    if (!localStorageEntry || localStorageEntry === null || localStorageEntry === "null")
+    {
+      return null;
+    }
+    return localStorageEntry;
+  }
+
+  SetTokens(accessToken: string, refreshToken: string)
+  {
+    localStorage.setItem('token', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+  }
+
+  DeleteTokens()
   {
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
   }
 
   // TODO: This should be in some Auth service
   HasValidToken(): boolean
   {
-    let token = this.GetAccessToken();
+    let token = this.GetRefreshToken();
     if (token === null)
     {
       console.log("Token is null");
@@ -44,8 +61,8 @@ export class LocalStorageService
     {
         console.log("Token expired.");
         return false;
-    } 
-    else 
+    }
+    else
     {
         console.log("Valid token");
         // TODO: add request to check token at backend

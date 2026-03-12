@@ -45,7 +45,6 @@ export class ColumnMaterialComponent {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
     this.dialog = dialog;
-    this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
   DeleteColumn() {

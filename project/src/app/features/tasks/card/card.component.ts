@@ -13,13 +13,12 @@ export class CardComponent
   card = input.required<Card>();
 
   @Output() deleteCardEvent = new EventEmitter<number>();
-  
+
   constructor(private taskManagerBackendService: TaskManagerBackendService,
               private localStorageService: LocalStorageService)
   {
     this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
-    this.taskManagerBackendService.token = this.localStorageService.GetAccessToken();
   }
 
   DeleteCard()
