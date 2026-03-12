@@ -3,15 +3,17 @@ import { provideRouter } from '@angular/router';
 import { inject } from '@angular/core';
 import { ConfigService } from './core/config/config.service';
 import { routes } from './app.routes';
-import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {refreshTokenInterceptor} from './core/services/refresh-token.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers:
   [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withFetch()), provideAnimationsAsync(),
+    provideHttpClient(withFetch(), withInterceptors([refreshTokenInterceptor])),
+    provideAnimationsAsync(),
     ConfigService,
     provideAppInitializer(async () => {
       const configService = inject(ConfigService);
