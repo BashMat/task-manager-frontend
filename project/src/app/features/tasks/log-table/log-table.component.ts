@@ -11,9 +11,9 @@ import { LocalStorageService } from '../../../core/services/local-storage.servic
 import { MatDialog } from '@angular/material/dialog';
 import { CreationDialog } from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
-import { Card } from '../column/card.interface';
 import { MatCardModule } from '@angular/material/card';
 import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
+import {Card} from '../column-material/card.interface';
 
 @Component({
   selector: 'log-table',

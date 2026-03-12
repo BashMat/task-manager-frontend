@@ -5,9 +5,9 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { TrackingLogDto } from "./tracking-log-dto.interface";
 import { TrackingLogEntry } from "./tracking-log-entry-dto.interface";
 import { Status } from "./tracking-log-entry-status-dto.interface";
-import { Card } from "../../features/tasks/column/card.interface";
 import { ConfigService } from '../config/config.service';
 import {LocalStorageService} from './local-storage.service';
+import {Card} from '../../features/tasks/column-material/card.interface';
 
 @Injectable({
     providedIn: 'root'
