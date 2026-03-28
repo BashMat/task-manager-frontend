@@ -8,6 +8,7 @@ import {setLayout} from './shared/layouts/page-layout.resolver';
 import {PageLayout} from './shared/layouts/page-layout.enum';
 import { ProfilePageComponent } from './features/profile/profile-page/profile-page.component';
 import { userResolver } from './shared/user.resolver';
+import { autoLayout } from './shared/layouts/auto-layout.resolver';
 
 export const routes: Routes = [
   // TODO: Reuse when other functionality is added
@@ -43,7 +44,8 @@ export const routes: Routes = [
     component: ProfilePageComponent,
     resolve:
     {
-      username: userResolver()
+      username: userResolver(),
+      layout: autoLayout()
     }
   },
   {
@@ -58,3 +60,4 @@ export const routes: Routes = [
 })
 export class AppRoutingModule {
 }
+
