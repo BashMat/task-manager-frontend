@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
+import {Component, EventEmitter, input, Output, signal, effect, inject} from '@angular/core';
 import {TaskManagerBackendService} from '../../../core/services/task-manager-backend.service';
 import {LocalStorageService} from '../../../core/services/local-storage.service';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -17,6 +17,8 @@ import {
 } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
 import {Board} from '../boards-page/board.interface';
 import {ColumnComponent} from '../column/column.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'board',
@@ -30,22 +32,38 @@ import {ColumnComponent} from '../column/column.component';
     MatCardTitle,
     MatButtonModule,
     MatIcon,
-    MatCardTitleGroup
+    MatCardTitleGroup,
+    MatMenuModule,
+    CommonModule
   ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css'
 })
 export class BoardComponent {
   board = input.required<Board>();
+  isCollapsed = signal(false);
+  private taskManagerBackendService = inject(TaskManagerBackendService);
+  private localStorageService = inject(LocalStorageService);
+  private dialog = inject(MatDialog);
 
   @Output() deleteBoardEvent = new EventEmitter<number>();
 
-  constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private localStorageService: LocalStorageService,
-              private dialog: MatDialog) {
-    this.taskManagerBackendService = taskManagerBackendService;
-    this.localStorageService = localStorageService;
-    this.dialog = dialog;
+  constructor() {
+    effect(() => {
+      const boardId = this.board().id;
+      const storageKey = `board_collapsed_${boardId}`;
+      const savedState = localStorage.getItem(storageKey);
+      if (savedState !== null) {
+        this.isCollapsed.set(JSON.parse(savedState));
+      }
+    });
+  }
+
+  toggleCollapse() {
+    this.isCollapsed.update(val => !val);
+    const boardId = this.board().id;
+    const storageKey = `board_collapsed_${boardId}`;
+    localStorage.setItem(storageKey, JSON.stringify(this.isCollapsed()));
   }
 
   OpenDetails() {

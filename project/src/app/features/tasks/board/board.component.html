@@ -1,28 +1,44 @@
-<div>
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title-group>
+<div class="group">
+  <mat-card appearance="outlined" class="transition-all">
+    <mat-card-header class="flex items-center justify-between p-4">
+      <mat-card-title-group class="flex items-center gap-4 flex-1">
         <mat-card-title>{{board().title}}</mat-card-title>
       </mat-card-title-group>
-      <button mat-mini-fab type="button" (click)="AddColumn()">
-        <mat-icon>add</mat-icon>
+
+      <button mat-icon-button (click)="toggleCollapse()" [attr.aria-label]="isCollapsed() ? 'Expand' : 'Collapse'" class="mr-2">
+        <mat-icon>{{ isCollapsed() ? 'expand_more' : 'expand_less' }}</mat-icon>
       </button>
-      <button mat-mini-fab class="ml-2" type="button" (click)="OpenDetails()">
-        <mat-icon>details</mat-icon>
+
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu" aria-label="Board actions">
+        <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-mini-fab class="ml-2" type="button" (click)="DeleteBoard()">
-        <mat-icon>delete_forever</mat-icon>
-      </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item (click)="AddColumn()">
+          <mat-icon>add</mat-icon>
+          <span>Add new Status</span>
+        </button>
+        <button mat-menu-item (click)="OpenDetails()">
+          <mat-icon>details</mat-icon>
+          <span>Details</span>
+        </button>
+        <button mat-menu-item (click)="DeleteBoard()" class="text-red-600">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
     </mat-card-header>
-    <mat-card-content>
-      <div class="flex flex-row overflow-x-auto" cdkDropListGroup>
-        @for (column of board().columns; track column.id)
-        {
-          <div class="mt-5 mr-2">
-            <column [column]=column (deleteColumnEvent)="DeleteColumn($event)"></column>
-          </div>
-        }
-      </div>
-    </mat-card-content>
+
+    @if (!isCollapsed()) {
+      <mat-card-content>
+        <div class="flex flex-row overflow-x-auto" cdkDropListGroup>
+          @for (column of board().columns; track column.id)
+          {
+            <div class="mt-5 mr-2">
+              <column [column]=column (deleteColumnEvent)="DeleteColumn($event)"></column>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    }
   </mat-card>
 </div>

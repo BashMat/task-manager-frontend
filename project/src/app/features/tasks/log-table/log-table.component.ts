@@ -1,4 +1,4 @@
-import { Component, ViewChild, input, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, input, OnInit, AfterViewInit, Output, EventEmitter, signal, effect, inject } from '@angular/core';
 import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { TrackingLogEntry } from './tracking-log-entry.interface';
 import { TrackingLogEntry as ServiceTrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
@@ -14,15 +14,18 @@ import { Status } from '../../../core/services/tracking-log-entry-status-dto.int
 import { MatCardModule } from '@angular/material/card';
 import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
 import {Card} from '../column/card.interface';
+import { MatMenuModule } from '@angular/material/menu';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'log-table',
-  imports: [MatTableModule, MatSortModule, MatButtonModule, MatIconModule, MatCardModule],
+  imports: [MatTableModule, MatSortModule, MatButtonModule, MatIconModule, MatCardModule, MatMenuModule, CommonModule],
   templateUrl: './log-table.component.html',
   styleUrl: './log-table.component.css'
 })
 export class LogTableComponent implements OnInit, AfterViewInit {
   board = input.required<Board>();
+  isCollapsed = signal(false);
 
   displayedColumns: string[] = ['id', 'title', 'status', 'priority'];
   colors: string[] = ["bg-blue-400", "bg-cyan-400", "bg-pink-400", "bg-red-400", "bg-green-400"];
@@ -36,13 +39,27 @@ export class LogTableComponent implements OnInit, AfterViewInit {
 
   @Output() deleteBoardEvent = new EventEmitter<number>();
 
-    constructor(private taskManagerBackendService: TaskManagerBackendService,
-      private localStorageService: LocalStorageService,
-      private dialog: MatDialog) {
-      this.taskManagerBackendService = taskManagerBackendService;
-      this.localStorageService = localStorageService;
-      this.dialog = dialog;
-    }
+  private taskManagerBackendService = inject(TaskManagerBackendService);
+  private localStorageService = inject(LocalStorageService);
+  private dialog = inject(MatDialog);
+
+  constructor() {
+    effect(() => {
+      const boardId = this.board().id;
+      const storageKey = `board_collapsed_${boardId}`;
+      const savedState = localStorage.getItem(storageKey);
+      if (savedState !== null) {
+        this.isCollapsed.set(JSON.parse(savedState));
+      }
+    });
+  }
+
+  toggleCollapse() {
+    this.isCollapsed.update(val => !val);
+    const boardId = this.board().id;
+    const storageKey = `board_collapsed_${boardId}`;
+    localStorage.setItem(storageKey, JSON.stringify(this.isCollapsed()));
+  }
 
   ngOnInit() {
     this.dataSource.data = this.board().columns.flatMap(column =>
