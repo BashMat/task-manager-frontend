@@ -1,5 +1,9 @@
-<header class="fixed left-0 top-0 z-10">
-    <mat-toolbar>
-        <a routerLink="/">BashMat Task Manager</a>
+<header class="fixed left-0 top-0 z-10 w-full">
+    <mat-toolbar class="flex items-center justify-between px-4">
+        <a routerLink="/" class="text-lg">BashMat Task Manager</a>
+
+        <div class="flex items-center gap-4 flex-1 justify-center">
+            <ng-content select="[headerActions]"></ng-content>
+        </div>
     </mat-toolbar>
 </header>

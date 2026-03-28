@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthorizedHeaderComponent } from '../../components/layout/authorized-header/authorized-header.component';
 
 @Component({
   selector: 'authorized-layout',
-  imports: [ AuthorizedHeaderComponent ],
+  imports: [],
   templateUrl: './authorized-layout.component.html',
   styleUrl: './authorized-layout.component.css'
 })

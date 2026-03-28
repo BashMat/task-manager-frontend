@@ -8,7 +8,6 @@ import {Column} from '../board/column.interface';
 import {Status} from '../../../core/services/tracking-log-entry-status-dto.interface';
 import {TrackingLogEntry} from '../../../core/services/tracking-log-entry-dto.interface';
 import {Card} from '../column/card.interface';
-import {MatToolbar} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
@@ -19,16 +18,17 @@ import {
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {View} from './view.enum';
 import {LogTableComponent} from '../log-table/log-table.component';
+import {DynamicHeaderComponent} from '../../../shared/components/dynamic-header.component';
 
 @Component({
   selector: 'boards-page',
   imports: [
     BoardComponent,
-    MatToolbar,
     MatButtonModule,
     MatIcon,
     MatButtonToggleModule,
-    LogTableComponent
+    LogTableComponent,
+    DynamicHeaderComponent
   ],
   templateUrl: './boards-page.component.html',
   styleUrl: './boards-page.component.css'

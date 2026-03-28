@@ -1,20 +1,21 @@
-<div>
-  <mat-toolbar>
-    <span class="flex-1"></span>
-    <mat-button-toggle-group name="view" [value]="this.selectedView" aria-label="View" (change)="switchView($event.value)">
-      <mat-button-toggle [value]="this.view.Board">
+<dynamic-header>
+  <div headerActions class="flex items-center gap-4">
+    <mat-button-toggle-group name="view" [value]="selectedView" aria-label="View" (change)="switchView($event.value)">
+      <mat-button-toggle [value]="view.Board">
         <mat-icon>view_kanban</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle [value]="this.view.Table">
+      <mat-button-toggle [value]="view.Table">
         <mat-icon>view_list</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
-    <button mat-mini-fab class="ml-10" type="button" aria-label="Add Board" (click)="AddBoard()">
+    <button mat-mini-fab type="button" aria-label="Add Board" (click)="AddBoard()">
       <mat-icon>add</mat-icon>
     </button>
-  </mat-toolbar>
+  </div>
+</dynamic-header>
 
-  @if (this.selectedView == this.view.Board)
+<div>
+  @if (selectedView == view.Board)
   {
     @for (board of boards; track board.id)
     {
@@ -23,7 +24,7 @@
       </div>
     }
   }
-  @else if (this.selectedView == this.view.Table)
+  @else if (selectedView == view.Table)
   {
     @for (board of boards; track board.id)
     {
@@ -32,6 +33,4 @@
       </div>
     }
   }
-
-
 </div>

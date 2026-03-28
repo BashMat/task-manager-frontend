@@ -12,10 +12,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DynamicHeaderComponent } from '../../../shared/components/dynamic-header.component';
 
 @Component({
   selector: 'profile-page',
-  imports: [RouterOutlet, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, MatListModule, MatButtonModule, FormsModule, CommonModule],
+  imports: [RouterOutlet, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, MatListModule, MatButtonModule, FormsModule, CommonModule, DynamicHeaderComponent],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.css'
 })
