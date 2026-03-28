@@ -1,6 +1,6 @@
 <dynamic-header>
   <div headerActions class="flex items-center gap-4">
-    <mat-button-toggle-group name="view" [value]="selectedView" aria-label="View" (change)="switchView($event.value)">
+    <mat-button-toggle-group name="view" [value]="selectedView()" aria-label="View" (change)="switchView($event.value)">
       <mat-button-toggle [value]="view.Board">
         <mat-icon>view_kanban</mat-icon>
       </mat-button-toggle>
@@ -8,14 +8,15 @@
         <mat-icon>view_list</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
-    <button mat-mini-fab type="button" aria-label="Add Board" (click)="AddBoard()">
+    <button mat-flat-button type="button" aria-label="Add Tracking Log" (click)="AddBoard()">
+      <label>Add new Log</label>
       <mat-icon>add</mat-icon>
     </button>
   </div>
 </dynamic-header>
 
 <div>
-  @if (selectedView == view.Board)
+  @if (selectedView() == view.Board)
   {
     @for (board of boards; track board.id)
     {
@@ -24,7 +25,7 @@
       </div>
     }
   }
-  @else if (selectedView == view.Table)
+  @else if (selectedView() == view.Table)
   {
     @for (board of boards; track board.id)
     {

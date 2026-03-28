@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal, effect, inject} from '@angular/core';
 import {TaskManagerBackendService} from '../../../core/services/task-manager-backend.service';
 import {LocalStorageService} from '../../../core/services/local-storage.service';
 import {TrackingLogDto} from '../../../core/services/tracking-log-dto.interface';
@@ -35,13 +35,19 @@ import {DynamicHeaderComponent} from '../../../shared/components/dynamic-header.
 })
 export class BoardsPageComponent implements OnInit {
   view = View;
-  selectedView = this.view.Board;
+  selectedView = signal(this.view.Board);
   boards: Array<Board> = [];
 
-  constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private dialog: MatDialog) {
-    this.taskManagerBackendService = taskManagerBackendService;
-    this.dialog = dialog;
+  private taskManagerBackendService = inject(TaskManagerBackendService);
+  private dialog = inject(MatDialog);
+
+  constructor() {
+    effect(() => {
+      const savedView = localStorage.getItem('selected_board_view');
+      if (savedView !== null) {
+        this.selectedView.set(JSON.parse(savedView));
+      }
+    });
   }
 
   ngOnInit() {
@@ -49,7 +55,8 @@ export class BoardsPageComponent implements OnInit {
   }
 
   switchView(value: View): void {
-    this.selectedView = value;
+    this.selectedView.set(value);
+    localStorage.setItem('selected_board_view', JSON.stringify(value));
   }
 
   AddBoard(): void {
