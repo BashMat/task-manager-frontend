@@ -1,32 +1,47 @@
-<div>
+<div class="w-80 flex-shrink-0">
   <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title-group>
+    <mat-card-header class="flex items-center justify-between p-4">
+      <mat-card-title-group class="flex-1">
         <mat-card-title>{{column().title}}</mat-card-title>
       </mat-card-title-group>
-      <button mat-mini-fab class="ml-2" type="button" (click)="AddCard()">
-        <mat-icon>add</mat-icon>
+
+      <button mat-icon-button (click)="toggleCollapse()" [attr.aria-label]="isCollapsed() ? 'Expand' : 'Collapse'" class="mr-2">
+        <mat-icon>{{ isCollapsed() ? 'expand_more' : 'expand_less' }}</mat-icon>
       </button>
-      <button mat-mini-fab class="ml-2" type="button" (click)="DeleteColumn()">
-        <mat-icon>delete_forever</mat-icon>
+
+      <button mat-icon-button [matMenuTriggerFor]="actionsMenu" aria-label="Column actions">
+        <mat-icon>more_vert</mat-icon>
       </button>
+      <mat-menu #actionsMenu="matMenu">
+        <button mat-menu-item (click)="AddCard()">
+          <mat-icon>add</mat-icon>
+          <span>Add new Entry</span>
+        </button>
+        <button mat-menu-item (click)="DeleteColumn()" class="text-red-600">
+          <mat-icon>delete_forever</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
     </mat-card-header>
-    <mat-divider class="divider-with-margin"></mat-divider>
-    <mat-card-content>
-      <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
-        (cdkDropListDropped)="drop($event)"
-        class="max-h-150 overflow-y-auto">
-        @if (column().cards.length == 0)
-        {
-          <div class="h-10"></div>
-        }
-        @for (card of column().cards; track card.id)
-        {
-          <div class="mt-5">
-            <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag [cdkDragData]="card"></card>
-          </div>
-        }
-      </div>
-    </mat-card-content>
+
+    @if (!isCollapsed()) {
+      <mat-divider class="divider-with-margin"></mat-divider>
+      <mat-card-content>
+        <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
+          (cdkDropListDropped)="drop($event)"
+          class="max-h-150 overflow-y-auto">
+          @if (column().cards.length == 0)
+          {
+            <div class="h-10"></div>
+          }
+          @for (card of column().cards; track card.id)
+          {
+            <div class="mt-5">
+              <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag [cdkDragData]="card"></card>
+            </div>
+          }
+        </div>
+      </mat-card-content>
+    }
   </mat-card>
 </div>

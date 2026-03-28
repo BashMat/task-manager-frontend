@@ -7,6 +7,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from '@angular/material/icon';
 import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'card',
@@ -18,7 +19,8 @@ import { MatDialog } from '@angular/material/dialog';
       MatCardTitle,
       MatButtonModule,
       MatIconModule,
-      MatCardTitleGroup
+      MatCardTitleGroup,
+      MatMenuModule
   ]
 })
 export class CardComponent

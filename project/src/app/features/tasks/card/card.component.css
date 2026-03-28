@@ -4,3 +4,17 @@
     align-items: center;
     padding: 10px;
 }
+
+.mat-mdc-card-title {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+.card-actions-button {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+mat-card:hover .card-actions-button {
+    opacity: 1;
+}

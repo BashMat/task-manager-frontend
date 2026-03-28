@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
+import {Component, EventEmitter, input, Output, signal, effect, inject} from '@angular/core';
 import {TaskManagerBackendService} from '../../../core/services/task-manager-backend.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TrackingLogEntry} from '../../../core/services/tracking-log-entry-dto.interface';
@@ -15,6 +15,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {CreationDialog} from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
 import {MatDivider} from '@angular/material/divider';
 import {CardComponent} from '../card/card.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'column',
@@ -30,20 +32,38 @@ import {CardComponent} from '../card/card.component';
     MatIconModule,
     MatCardTitleGroup,
     MatDivider,
-    CardComponent
+    CardComponent,
+    MatMenuModule,
+    CommonModule
   ],
   templateUrl: './column.component.html',
   styleUrl: './column.component.css'
 })
 export class ColumnComponent {
   column = input.required<Column>();
+  isCollapsed = signal(false);
 
   @Output() deleteColumnEvent = new EventEmitter<number>();
 
-  constructor(private taskManagerBackendService: TaskManagerBackendService,
-              private dialog: MatDialog) {
-    this.taskManagerBackendService = taskManagerBackendService;
-    this.dialog = dialog;
+  private taskManagerBackendService = inject(TaskManagerBackendService);
+  private dialog = inject(MatDialog);
+
+  constructor() {
+    effect(() => {
+      const columnId = this.column().id;
+      const storageKey = `column_collapsed_${columnId}`;
+      const savedState = localStorage.getItem(storageKey);
+      if (savedState !== null) {
+        this.isCollapsed.set(JSON.parse(savedState));
+      }
+    });
+  }
+
+  toggleCollapse() {
+    this.isCollapsed.update(val => !val);
+    const columnId = this.column().id;
+    const storageKey = `column_collapsed_${columnId}`;
+    localStorage.setItem(storageKey, JSON.stringify(this.isCollapsed()));
   }
 
   DeleteColumn() {
