@@ -26,6 +26,12 @@ export class AuthorizedHeaderComponent {
     this.router = router;
   }
 
+  GoToUserProfile() {
+    // TODO: Use actual username
+    let username = "test";
+    this.router.navigateByUrl(`/${username}`);
+  }
+
   SignOut() {
     this.localStorageService.DeleteTokens();
     // TODO: Works for all pages only because /auth is not used for already authenticated user.

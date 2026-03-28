@@ -1,0 +1,64 @@
+<div class="flex justify-center items-start p-8 min-h-screen">
+  <mat-card class="w-full max-w-md shadow-lg">
+    <mat-card-header class="pb-6 flex flex-col gap-4">
+      <div class="flex items-center gap-4">
+        <img src="/user-icon.svg" alt="User Icon" class="w-48 h-48">
+        <mat-card-title class="text-2xl font-bold text-gray-800">{{ username() }}</mat-card-title>
+      </div>
+      <!-- TODO: Uncomment then write API is available s-->
+      <!--<div class="flex gap-2 justify-end">
+        <button mat-flat-button color="primary" *ngIf="!isEditing()" (click)="toggleEdit()">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button mat-flat-button color="accent" *ngIf="isEditing()" (click)="save()">
+          <mat-icon>save</mat-icon>
+          Save
+        </button>
+        <button mat-stroked-button *ngIf="isEditing()" (click)="cancel()">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+      </div>-->
+    </mat-card-header>
+
+    <mat-card-content class="mt-5">
+      <div *ngIf="!isEditing()" class="flex flex-col gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+          <p class="text-lg text-gray-900">{{ username() }}</p>
+        </div>
+
+        <div *ngIf="firstName()">
+          <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+          <p class="text-lg text-gray-900">{{ firstName() }}</p>
+        </div>
+
+        <div *ngIf="lastName()">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+          <p class="text-lg text-gray-900">{{ lastName() }}</p>
+        </div>
+      </div>
+
+      <form *ngIf="isEditing()" class="flex flex-col gap-6">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="editUsername" name="username">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>First Name</mat-label>
+          <input matInput [(ngModel)]="editFirstName" name="firstName">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Last Name</mat-label>
+          <input matInput [(ngModel)]="editLastName" name="lastName">
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<router-outlet />

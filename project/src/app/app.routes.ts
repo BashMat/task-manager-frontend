@@ -6,6 +6,8 @@ import {BoardsPageComponent} from './features/tasks/boards-page/boards-page.comp
 import {AuthPageComponent} from './features/auth/auth-page/auth-page.component';
 import {setLayout} from './shared/layouts/page-layout.resolver';
 import {PageLayout} from './shared/layouts/page-layout.enum';
+import { ProfilePageComponent } from './features/profile/profile-page/profile-page.component';
+import { userResolver } from './shared/user.resolver';
 
 export const routes: Routes = [
   // TODO: Reuse when other functionality is added
@@ -35,6 +37,14 @@ export const routes: Routes = [
       {
         layout: setLayout(PageLayout.Authorized)
       }
+  },
+  {
+    path: ':username',
+    component: ProfilePageComponent,
+    resolve:
+    {
+      username: userResolver()
+    }
   },
   {
     path: '**',
