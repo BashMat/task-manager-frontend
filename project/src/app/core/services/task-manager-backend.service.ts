@@ -20,6 +20,9 @@ export class TaskManagerBackendService {
     logInEndpoint = () => `${this.apiUrl()}/${this.auth}/login`;
     issueTokenEndpoint = () => `${this.apiUrl()}/${this.auth}/token`;
 
+    users = "users";
+    currentEndpoint = () => `${this.apiUrl()}/${this.users}/current`;
+
     tracking = "tracking";
     logs = "logs";
     trackingLogsEndpoint = () => `${this.apiUrl()}/${this.tracking}/${this.logs}`;
@@ -253,6 +256,22 @@ export class TaskManagerBackendService {
         let httpBody = JSON.stringify({ "email": email, "userName": userName, "password": password });
 
         return this.httpClient.post<{ data: string, message: string, success: boolean }>(this.signUpEndpoint(), httpBody, requestOptions);
+    }
+
+    GetCurrentUserData(): Observable<{ data: { id: string, userName: string }, message: string, success: boolean }> {
+      const headers = {
+        'Content-type': 'application/json; charset=UTF-8',
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Authorization": "bearer " + this.localStorageService.GetAccessToken()
+      }
+
+      const requestOptions = {
+        headers: new HttpHeaders(headers),
+      };
+
+      return this.httpClient.get<{ data: { id: string, userName: string }, message: string, success: boolean }>(this.currentEndpoint(), requestOptions);
     }
 
     AddBoard(title: string, description: string | null): Observable<{ data: TrackingLogDto, message: string, success: boolean }> {

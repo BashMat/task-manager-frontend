@@ -5,6 +5,7 @@ import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 import {LocalStorageService} from '../../../../core/services/local-storage.service';
 import {MatMenuModule} from '@angular/material/menu';
+import {TaskManagerBackendService} from '../../../../core/services/task-manager-backend.service';
 
 @Component({
   selector: 'authorized-header',
@@ -20,16 +21,23 @@ import {MatMenuModule} from '@angular/material/menu';
 })
 export class AuthorizedHeaderComponent {
 
-  constructor(private localStorageService: LocalStorageService,
+  constructor(private taskManagerBackendService: TaskManagerBackendService,
+              private localStorageService: LocalStorageService,
               private router: Router) {
+    this.taskManagerBackendService = taskManagerBackendService;
     this.localStorageService = localStorageService;
     this.router = router;
   }
 
   GoToUserProfile() {
-    // TODO: Use actual username
-    let username = "test";
-    this.router.navigateByUrl(`/${username}`);
+    this.taskManagerBackendService.GetCurrentUserData().subscribe((response)=> {
+        if (response.success) {
+          this.router.navigateByUrl(`/${response.data.userName}`);
+        } else {
+          console.log("Error occurred while trying to get current user data from server");
+        }
+      }
+    )
   }
 
   SignOut() {

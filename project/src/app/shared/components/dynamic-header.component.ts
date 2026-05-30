@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
+import {TaskManagerBackendService} from '../../core/services/task-manager-backend.service';
 
 @Component({
   selector: 'dynamic-header',
@@ -18,15 +19,21 @@ export class DynamicHeaderComponent {
   private authService = inject(AuthService);
   private localStorageService = inject(LocalStorageService);
   private router = inject(Router);
+  private taskManagerBackendService = inject(TaskManagerBackendService);
 
   isAuthenticated() {
     return this.authService.isAuthenticated();
   }
 
   GoToUserProfile() {
-    // TODO: Use actual username
-    let username = "test";
-    this.router.navigateByUrl(`/${username}`);
+    this.taskManagerBackendService.GetCurrentUserData().subscribe((response)=> {
+        if (response.success) {
+          this.router.navigateByUrl(`/${response.data.userName}`);
+        } else {
+          console.log("Error occurred while trying to get current user data from server");
+        }
+      }
+    )
   }
 
   SignOut() {
