@@ -6,6 +6,7 @@ import {Column} from './column.interface';
 import {CdkDropListGroup} from '@angular/cdk/drag-drop';
 import {Status} from '../../../core/services/tracking-log-entry-status-dto.interface';
 import {Card} from '../column/card.interface';
+import {TrackingLogEntry} from '../../../core/services/tracking-log-entry-dto.interface';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatCardTitleGroup} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
@@ -86,6 +87,36 @@ export class BoardComponent {
 
   DeleteBoard() {
     this.deleteBoardEvent.emit(this.board().id);
+  }
+
+  UpdateCard(dto: TrackingLogEntry) {
+    const mapped: Card = {
+      id: dto.id,
+      title: dto.title,
+      description: dto.description,
+      boardId: dto.trackingLogId,
+      columnId: dto.status.id,
+      priority: dto.priority,
+      orderIndex: dto.orderIndex,
+      createdBy: dto.createdBy,
+      createdAt: dto.createdAt,
+      updatedBy: dto.updatedBy,
+      updatedAt: dto.updatedAt
+    };
+
+    const columns = this.board().columns;
+    const targetColumn = columns.find(column => column.id === dto.status.id);
+    if (targetColumn === undefined) {
+      return;
+    }
+    const sourceColumn = columns.find(column => column.cards.some(card => card.id === dto.id));
+
+    if (sourceColumn !== undefined && sourceColumn.id !== targetColumn.id) {
+      sourceColumn.cards = sourceColumn.cards.filter(card => card.id !== dto.id);
+      targetColumn.cards = [...targetColumn.cards, mapped];
+    } else {
+      targetColumn.cards = targetColumn.cards.map(card => card.id === dto.id ? mapped : card);
+    }
   }
 
   AddColumn(): void {

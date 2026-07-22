@@ -1,0 +1,90 @@
+<div mat-dialog-title class="dialog-header">
+  <div class="flex flex-row justify-end gap-2">
+    @if (!isEditing()) {
+      <button mat-icon-button (click)="toggleEdit()" color="primary">
+        <mat-icon>edit</mat-icon>
+      </button>
+    } @else {
+      <button mat-icon-button (click)="save()" color="accent">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-icon-button (click)="cancel()">
+        <mat-icon>block</mat-icon>
+      </button>
+    }
+    <button mat-icon-button [mat-dialog-close]="true">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<mat-dialog-content class="dialog-body">
+  <div class="title-block">
+    <p class="entry-id">{{ "#" + data.id }}</p>
+    @if (!isEditing()) {
+      <p class="title-text cursor-pointer" (click)="toggleEdit()">{{ title() }}</p>
+    } @else {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="title-edit-field w-full">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  [maxlength]="titleMaxLength"
+                  [ngModel]="editTitle"
+                  (ngModelChange)="onTitleModelChange($event)"
+                  (keydown)="onTitleKeydown($event)"
+                  name="title"></textarea>
+        <mat-hint align="end">{{ editTitle.length }}/{{ titleMaxLength }}</mat-hint>
+      </mat-form-field>
+    }
+  </div>
+
+  <div class="status-block flex flex-row items-center gap-3">
+    <span class="text-sm text-gray-400">Status</span>
+    @if (!isEditing()) {
+      <span class="status-value cursor-pointer" (click)="toggleEdit()">
+        <span class="status-dot" [style.background-color]="statusColor(statusName(statusId())).bg"></span>{{ statusName(statusId()) }}
+      </span>
+    } @else {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="status-select">
+        <mat-select [(value)]="editStatusId" panelClass="status-panel">
+          <mat-select-trigger>
+            <span class="status-dot" [style.background-color]="statusColor(statusName(editStatusId)).bg"></span>{{ statusName(editStatusId) }}
+          </mat-select-trigger>
+          @for (s of data.statuses; track s.id) {
+            <mat-option [value]="s.id">
+              <span class="status-dot" [style.background-color]="statusColor(s.title).bg"></span>{{ s.title }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </div>
+
+  <div>
+    <p>Created by: {{ data.createdBy }}</p>
+  </div>
+  <div>
+    <p>Created at: {{ data.createdAt }}</p>
+  </div>
+  <div>
+    <p>Updated by: {{ updatedBy() }}</p>
+  </div>
+  <div class="mb-2">
+    <p>Updated at: {{ updatedAt() }}</p>
+  </div>
+
+  <mat-divider class="divider-wide"></mat-divider>
+  <p class="text-sm text-gray-400 mt-2 mb-1">Description</p>
+  <div>
+    @if (!isEditing()) {
+      <p class="description-text cursor-pointer" (click)="toggleEdit()">{{ description() ?? "Description..." }}</p>
+    } @else {
+      <textarea class="description-textarea"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="10"
+                [maxlength]="descriptionMaxLength"
+                [(ngModel)]="editDescription"
+                name="description"></textarea>
+      <span class="description-counter">{{ editDescription.length }}/{{ descriptionMaxLength }}</span>
+    }
+  </div>
+</mat-dialog-content>

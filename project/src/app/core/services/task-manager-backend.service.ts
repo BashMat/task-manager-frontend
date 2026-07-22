@@ -441,4 +441,22 @@ export class TaskManagerBackendService {
 
         return this.httpClient.put<{ data: TrackingLogEntry, message: string, success: boolean }>(`${this.trackingLogEntriesEndpoint()}/${cardToMove.id}`, body, requestOptions);
     }
+
+    EditLogEntry(patch: { id: number, title?: string | null, description?: string | null, trackingLogEntryStatusId?: number }): Observable<{ data: TrackingLogEntry, message: string, success: boolean }> {
+        console.log("Editing log entry", patch.id);
+
+        const headers = {
+            'Content-type': 'application/json; charset=UTF-8',
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Authorization": "bearer " + this.localStorageService.GetAccessToken()
+        }
+
+        const requestOptions = {
+            headers: new HttpHeaders(headers),
+        };
+
+        return this.httpClient.post<{ data: TrackingLogEntry, message: string, success: boolean }>(`${this.trackingLogEntriesEndpoint()}/edit`, patch, requestOptions);
+    }
 }

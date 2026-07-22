@@ -41,9 +41,11 @@ import {CommonModule} from '@angular/common';
 })
 export class ColumnComponent {
   column = input.required<Column>();
+  boardColumns = input<Column[]>([]);
   isCollapsed = signal(false);
 
   @Output() deleteColumnEvent = new EventEmitter<number>();
+  @Output() cardUpdatedEvent = new EventEmitter<TrackingLogEntry>();
 
   private taskManagerBackendService = inject(TaskManagerBackendService);
   private dialog = inject(MatDialog);

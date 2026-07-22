@@ -1,0 +1,109 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.dialog-header {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  margin: 0;
+}
+
+.dialog-header.mat-mdc-dialog-title::before {
+  display: none !important;
+}
+
+.dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: auto;
+}
+
+.title-block {
+  margin: 4px 0 20px;
+}
+
+.entry-id {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+}
+
+.title-text {
+  display: inline-block;
+  margin: 4px 0 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.description-text {
+  display: inline-block;
+  white-space: pre-wrap;       /* keep the user's line breaks in read mode */
+  overflow-wrap: anywhere;     /* still break very long unbroken text */
+}
+
+.title-edit-field .mat-mdc-input-element {
+  color: inherit;
+  font-size: 1.25rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: normal;
+  padding: 0 !important;
+  margin: 0;
+  resize: none;
+  overflow: hidden;
+}
+
+.mat-divider.divider-wide {
+  margin: 0 -24px;
+}
+
+.status-block {
+  margin-bottom: 16px;
+}
+
+.status-value {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.status-select {
+  min-width: 9rem;
+}
+
+:host ::ng-deep .status-select .mat-mdc-form-field-infix {
+  min-height: 36px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.description-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  overflow: hidden;
+  padding: 12px;
+  font: inherit;
+  color: var(--mat-sys-on-surface, inherit);
+  background: transparent;
+  border: 1px solid var(--mat-sys-outline, rgba(0, 0, 0, 0.38));
+  border-radius: 4px;
+}
+
+.description-textarea:focus {
+  outline: none;
+  border: 2px solid var(--mat-sys-primary, #1565c0);
+  padding: 11px;
+}
+
+.description-counter {
+  display: block;
+  text-align: right;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+}

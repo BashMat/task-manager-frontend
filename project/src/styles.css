@@ -8,6 +8,30 @@ html, body
     padding: 0;
 }
 
+/* Make the editable details dialog a flex column so <mat-dialog-content> can be
+   the single scroll region inside the fixed-height dialog. */
+.editable-details-dialog .mat-mdc-dialog-surface
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.status-panel .mat-mdc-option
+{
+    min-height: 36px;
+}
+
+.status-dot
+{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    flex: 0 0 auto;
+}
+
 body.mat-typography
 {
     margin: 0;

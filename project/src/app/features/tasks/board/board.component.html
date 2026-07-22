@@ -34,7 +34,7 @@
           @for (column of board().columns; track column.id)
           {
             <div class="mt-5 mr-2">
-              <column [column]=column (deleteColumnEvent)="DeleteColumn($event)"></column>
+              <column [column]=column [boardColumns]="board().columns" (deleteColumnEvent)="DeleteColumn($event)" (cardUpdatedEvent)="UpdateCard($event)"></column>
             </div>
           }
         </div>

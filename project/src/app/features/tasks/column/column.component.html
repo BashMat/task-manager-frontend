@@ -37,7 +37,7 @@
           @for (card of column().cards; track card.id)
           {
             <div class="mt-5">
-              <card [card]=card (deleteCardEvent)="DeleteCard($event)" cdkDrag [cdkDragData]="card"></card>
+              <card [card]=card [boardColumns]="boardColumns()" (deleteCardEvent)="DeleteCard($event)" (updateCardEvent)="cardUpdatedEvent.emit($event)" cdkDrag [cdkDragData]="card"></card>
             </div>
           }
         </div>

@@ -13,6 +13,7 @@ import { CreationDialog } from '../../../shared/components/dialogs/creation-dial
 import { Status } from '../../../core/services/tracking-log-entry-status-dto.interface';
 import { MatCardModule } from '@angular/material/card';
 import { DetailsForm } from '../../../shared/components/details-form/details-form.component';
+import { EditableDetailsForm } from '../../../shared/components/editable-details-form/editable-details-form.component';
 import {Card} from '../column/card.interface';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
@@ -121,19 +122,41 @@ export class LogTableComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      let dialogRef = this.dialog.open(DetailsForm, {
+      let dialogRef = this.dialog.open(EditableDetailsForm, {
         autoFocus: false,
         height: "80%",
         minWidth: "80vw",
+        panelClass: "editable-details-dialog",
         data: {
           id: trackingLogEntry.id,
           title: trackingLogEntry.title,
           description: trackingLogEntry.description,
+          statusId: trackingLogEntry.columnId,
+          statuses: this.board().columns.map(c => ({ id: c.id, title: c.title })),
           createdBy: trackingLogEntry.createdBy,
           createdAt: trackingLogEntry.createdAt.toLocaleString(),
           updatedBy: trackingLogEntry.updatedBy,
           updatedAt: trackingLogEntry.updatedAt.toLocaleString()
         }
+      });
+
+      dialogRef.componentInstance.saved.subscribe((result: ServiceTrackingLogEntry) => {
+        trackingLogEntry.title = result.title;
+        trackingLogEntry.description = result.description;
+        trackingLogEntry.columnId = result.status.id;
+        trackingLogEntry.updatedBy = result.updatedBy;
+        trackingLogEntry.updatedAt = result.updatedAt;
+
+        const columns = this.board().columns;
+        const source = columns.find(c => c.cards.some(card => card.id === result.id));
+        const target = columns.find(c => c.id === result.status.id);
+        if (source !== undefined && target !== undefined && source.id !== target.id) {
+          source.cards = source.cards.filter(card => card.id !== result.id);
+          target.cards = [...target.cards, trackingLogEntry];
+        }
+
+        this.dataSource.data = this.dataSource.data.map(r =>
+          r.id === result.id ? { ...r, title: result.title, status: result.status.title } : r);
       });
     }
 
