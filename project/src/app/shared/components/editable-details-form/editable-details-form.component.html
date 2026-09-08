@@ -63,13 +63,13 @@
     <p>Created by: {{ data.createdBy }}</p>
   </div>
   <div>
-    <p>Created at: {{ data.createdAt }}</p>
+    <p>Created at: {{ data.createdAt | localDateTime }}</p>
   </div>
   <div>
     <p>Updated by: {{ updatedBy() }}</p>
   </div>
   <div class="mb-2">
-    <p>Updated at: {{ updatedAt() }}</p>
+    <p>Updated at: {{ updatedAt() | localDateTime }}</p>
   </div>
 
   <mat-divider class="divider-wide"></mat-divider>

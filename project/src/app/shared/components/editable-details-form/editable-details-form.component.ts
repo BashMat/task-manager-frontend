@@ -11,6 +11,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { Subject } from 'rxjs';
 import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 import { TrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
+import { LocalDateTimePipe } from '../../pipes/local-date-time.pipe';
 
 export interface EditableDialogData {
   id: number;
@@ -35,7 +36,8 @@ export interface EditableDialogData {
     MatIconModule,
     MatButtonModule,
     FormsModule,
-    TextFieldModule
+    TextFieldModule,
+    LocalDateTimePipe
   ],
   templateUrl: './editable-details-form.component.html',
   styleUrl: './editable-details-form.component.css'

@@ -78,9 +78,9 @@ export class BoardComponent {
         title: boardDto.title,
         description: boardDto.description,
         createdBy: boardDto.createdBy,
-        createdAt: boardDto.createdAt.toLocaleString(),
+        createdAt: boardDto.createdAt,
         updatedBy: boardDto.updatedBy,
-        updatedAt: boardDto.updatedAt.toLocaleString()
+        updatedAt: boardDto.updatedAt
       }
     });
   }

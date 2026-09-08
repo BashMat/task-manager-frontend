@@ -61,9 +61,9 @@ export class CardComponent
           statusId: cardDto.columnId,
           statuses: this.boardColumns().map(c => ({ id: c.id, title: c.title })),
           createdBy: cardDto.createdBy,
-          createdAt: cardDto.createdAt.toLocaleString(),
+          createdAt: cardDto.createdAt,
           updatedBy: cardDto.updatedBy,
-          updatedAt: cardDto.updatedAt.toLocaleString()
+          updatedAt: cardDto.updatedAt
         }
       });
 

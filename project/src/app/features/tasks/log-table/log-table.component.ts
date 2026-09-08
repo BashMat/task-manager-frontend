@@ -106,9 +106,9 @@ export class LogTableComponent implements OnInit, AfterViewInit {
           title: boardDto.title,
           description: boardDto.description,
           createdBy: boardDto.createdBy,
-          createdAt: boardDto.createdAt.toLocaleString(),
+          createdAt: boardDto.createdAt,
           updatedBy: boardDto.updatedBy,
-          updatedAt: boardDto.updatedAt.toLocaleString()
+          updatedAt: boardDto.updatedAt
         }
       });
     }
@@ -134,9 +134,9 @@ export class LogTableComponent implements OnInit, AfterViewInit {
           statusId: trackingLogEntry.columnId,
           statuses: this.board().columns.map(c => ({ id: c.id, title: c.title })),
           createdBy: trackingLogEntry.createdBy,
-          createdAt: trackingLogEntry.createdAt.toLocaleString(),
+          createdAt: trackingLogEntry.createdAt,
           updatedBy: trackingLogEntry.updatedBy,
-          updatedAt: trackingLogEntry.updatedAt.toLocaleString()
+          updatedAt: trackingLogEntry.updatedAt
         }
       });
 

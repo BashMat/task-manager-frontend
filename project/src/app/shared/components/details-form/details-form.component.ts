@@ -3,6 +3,7 @@ import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
+import { LocalDateTimePipe } from '../../pipes/local-date-time.pipe';
 
 export interface DialogData {
   id: number;
@@ -16,7 +17,7 @@ export interface DialogData {
 
 @Component({
   selector: 'details-form',
-  imports: [MatDialogModule, MatDivider, MatIconModule, MatButtonModule ],
+  imports: [MatDialogModule, MatDivider, MatIconModule, MatButtonModule, LocalDateTimePipe ],
   templateUrl: './details-form.component.html',
   styleUrl: './details-form.component.css'
 })
