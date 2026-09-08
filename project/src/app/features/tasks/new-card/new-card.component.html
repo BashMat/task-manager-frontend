@@ -1,0 +1,44 @@
+@if (!isExpanded()) {
+  @if (variant() === 'placeholder') {
+    <div class="collapsed placeholder" (click)="expand()">
+      <mat-icon class="add-icon">add</mat-icon>
+      <span class="label">{{ placeholder() }}</span>
+    </div>
+  } @else {
+    <div class="collapsed thin" (click)="expand()">
+      <span class="thin-bar"></span>
+      <span class="thin-add"><mat-icon>add</mat-icon></span>
+    </div>
+  }
+} @else {
+  <div class="expanded" [class.top]="variant() === 'thin'">
+    <div class="row">
+      <textarea #titleInput
+                class="input"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
+                [maxlength]="titleMaxLength"
+                [ngModel]="titleValue"
+                (ngModelChange)="onTitleChange($event)"
+                [placeholder]="placeholder()"
+                (keydown.enter)="$event.preventDefault(); submit()"
+                (keydown.escape)="cancel()"
+                (blur)="cancel()"></textarea>
+      <div class="actions">
+        <button mat-icon-button
+                class="action"
+                aria-label="Add"
+                (mousedown)="$event.preventDefault(); submit()">
+          <mat-icon>save</mat-icon>
+        </button>
+        <button mat-icon-button
+                class="action"
+                aria-label="Cancel"
+                (mousedown)="$event.preventDefault(); cancel()">
+          <mat-icon>block</mat-icon>
+        </button>
+      </div>
+    </div>
+    <span class="counter" (mousedown)="$event.preventDefault()">{{ titleValue.length }}/{{ titleMaxLength }}</span>
+  </div>
+}

@@ -27,19 +27,24 @@
     @if (!isCollapsed()) {
       <mat-divider class="divider-with-margin"></mat-divider>
       <mat-card-content>
-        <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
-          (cdkDropListDropped)="drop($event)"
-          class="max-h-150 overflow-y-auto">
-          @if (column().cards.length == 0)
-          {
-            <div class="h-10"></div>
-          }
-          @for (card of column().cards; track card.id)
-          {
-            <div class="mt-5">
-              <card [card]=card [boardColumns]="boardColumns()" (deleteCardEvent)="DeleteCard($event)" (updateCardEvent)="cardUpdatedEvent.emit($event)" cdkDrag [cdkDragData]="card"></card>
-            </div>
-          }
+        <div class="max-h-150 overflow-y-auto pr-1">
+          <new-card variant="thin" (create)="addCardAtTop($event)"></new-card>
+          <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
+            (cdkDropListDropped)="drop($event)">
+            @if (column().cards.length == 0)
+            {
+              <div class="h-10"></div>
+            }
+            @for (card of column().cards; track card.id)
+            {
+              <div class="mt-5">
+                <card [card]=card [boardColumns]="boardColumns()" (deleteCardEvent)="DeleteCard($event)" (updateCardEvent)="cardUpdatedEvent.emit($event)" cdkDrag [cdkDragData]="card"></card>
+              </div>
+            }
+          </div>
+          <div class="mt-5">
+            <new-card variant="placeholder" (create)="addCardAtBottom($event)"></new-card>
+          </div>
         </div>
       </mat-card-content>
     }

@@ -15,6 +15,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {CreationDialog} from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
 import {MatDivider} from '@angular/material/divider';
 import {CardComponent} from '../card/card.component';
+import {NewCardComponent} from '../new-card/new-card.component';
 import {MatMenuModule} from '@angular/material/menu';
 import {CommonModule} from '@angular/common';
 
@@ -33,6 +34,7 @@ import {CommonModule} from '@angular/common';
     MatCardTitleGroup,
     MatDivider,
     CardComponent,
+    NewCardComponent,
     MatMenuModule,
     CommonModule
   ],
@@ -99,23 +101,50 @@ export class ColumnComponent {
           .subscribe((response: { data: TrackingLogEntry, message: string, success: boolean }) => {
             console.log('response: ', response);
             if (response.data !== null) {
-              let card = {
-                id: response.data.id,
-                title: response.data.title,
-                description: response.data.description,
-                boardId: response.data.trackingLogId,
-                columnId: response.data.status.id,
-                priority: response.data.priority,
-                orderIndex: response.data.orderIndex,
-                createdBy: response.data.createdBy,
-                createdAt: response.data.createdAt,
-                updatedBy: response.data.updatedBy,
-                updatedAt: response.data.updatedAt
-              };
-              this.column().cards.push(card);
+              this.column().cards.push(this.mapEntryToCard(response.data));
             }
           });
     });
+  }
+
+  addCardAtBottom(title: string) {
+    const cards = this.column().cards;
+    const orderIndex = cards.length === 0 ? 1 : cards[cards.length - 1].orderIndex + 1;
+
+    this.taskManagerBackendService.AddCard(this.column().boardId, this.column().id, title, null, orderIndex)
+        .subscribe((response: { data: TrackingLogEntry, message: string, success: boolean }) => {
+          if (response.data !== null) {
+            this.column().cards.push(this.mapEntryToCard(response.data));
+          }
+        });
+  }
+
+  addCardAtTop(title: string) {
+    const cards = this.column().cards;
+    const orderIndex = cards.length === 0 ? 1 : cards[0].orderIndex / 2;
+
+    this.taskManagerBackendService.AddCard(this.column().boardId, this.column().id, title, null, orderIndex)
+        .subscribe((response: { data: TrackingLogEntry, message: string, success: boolean }) => {
+          if (response.data !== null) {
+            this.column().cards.unshift(this.mapEntryToCard(response.data));
+          }
+        });
+  }
+
+  private mapEntryToCard(entry: TrackingLogEntry): Card {
+    return {
+      id: entry.id,
+      title: entry.title,
+      description: entry.description,
+      boardId: entry.trackingLogId,
+      columnId: entry.status.id,
+      priority: entry.priority,
+      orderIndex: entry.orderIndex,
+      createdBy: entry.createdBy,
+      createdAt: entry.createdAt,
+      updatedBy: entry.updatedBy,
+      updatedAt: entry.updatedAt
+    };
   }
 
   DeleteCard(cardId: number) {
