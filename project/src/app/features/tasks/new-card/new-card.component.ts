@@ -1,8 +1,9 @@
-import { Component, ElementRef, EventEmitter, Output, input, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, computed, input, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { statusColor } from '../../../shared/utils/status-color';
 
 @Component({
   selector: 'new-card',
@@ -13,8 +14,12 @@ import { MatButtonModule } from '@angular/material/button';
 export class NewCardComponent {
   variant = input<'placeholder' | 'thin'>('placeholder');
   placeholder = input<string>('New entry');
+  statusName = input<string>('');
 
   @Output() create = new EventEmitter<string>();
+  @Output() expanded = new EventEmitter<void>();
+
+  color = computed(() => statusColor(this.statusName()));
 
   readonly titleMaxLength = 256;
 
@@ -26,7 +31,11 @@ export class NewCardComponent {
 
   expand() {
     this.isExpanded.set(true);
-    setTimeout(() => this.titleInput()?.nativeElement.focus());
+    this.expanded.emit();
+    setTimeout(() => {
+      this.titleInput()?.nativeElement.focus({preventScroll: true});
+      this.autosize()?.resizeToFitContent(true);
+    });
   }
 
   onTitleChange(value: string) {

@@ -1,5 +1,5 @@
 <div class="w-80 flex-shrink-0">
-  <mat-card appearance="outlined">
+  <mat-card appearance="outlined" [style.background-color]="columnBackground()">
     <mat-card-header class="flex items-center justify-between p-4">
       <mat-card-title-group class="flex-1">
         <mat-card-title>{{column().title}}</mat-card-title>
@@ -25,10 +25,11 @@
     </mat-card-header>
 
     @if (!isCollapsed()) {
-      <mat-divider class="divider-with-margin"></mat-divider>
       <mat-card-content>
-        <div class="max-h-150 overflow-y-auto pr-1">
-          <new-card variant="thin" (create)="addCardAtTop($event)"></new-card>
+        <div class="column-scroll max-h-150 overflow-y-auto pr-1" #scrollContainer>
+          <div class="top-new-card" [style.background-color]="columnBackground()">
+            <new-card variant="thin" [statusName]="column().title" (expanded)="scrollToTop()" (create)="addCardAtTop($event)"></new-card>
+          </div>
           <div cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
             (cdkDropListDropped)="drop($event)">
             @if (column().cards.length == 0)
@@ -37,13 +38,13 @@
             }
             @for (card of column().cards; track card.id)
             {
-              <div class="mt-5">
+              <div [class.mt-2]="$first" [class.mt-5]="!$first">
                 <card [card]=card [boardColumns]="boardColumns()" (deleteCardEvent)="DeleteCard($event)" (updateCardEvent)="cardUpdatedEvent.emit($event)" cdkDrag [cdkDragData]="card"></card>
               </div>
             }
           </div>
           <div class="mt-5">
-            <new-card variant="placeholder" (create)="addCardAtBottom($event)"></new-card>
+            <new-card variant="placeholder" [statusName]="column().title" (create)="addCardAtBottom($event)"></new-card>
           </div>
         </div>
       </mat-card-content>

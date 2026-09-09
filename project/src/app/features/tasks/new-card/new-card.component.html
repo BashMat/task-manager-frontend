@@ -1,13 +1,16 @@
 @if (!isExpanded()) {
   @if (variant() === 'placeholder') {
-    <div class="collapsed placeholder" (click)="expand()">
-      <mat-icon class="add-icon">add</mat-icon>
+    <div class="collapsed placeholder" (click)="expand()" [style.border-color]="color().bg">
+      <mat-icon class="add-icon" [style.color]="color().bg">add</mat-icon>
       <span class="label">{{ placeholder() }}</span>
     </div>
   } @else {
     <div class="collapsed thin" (click)="expand()">
-      <span class="thin-bar"></span>
-      <span class="thin-add"><mat-icon>add</mat-icon></span>
+      <span class="thin-bar" [style.background-color]="color().bg"></span>
+      <span class="thin-add"
+            [style.background-color]="color().bg"
+            [style.border-color]="color().bg"
+            [style.color]="color().fg"><mat-icon>add</mat-icon></span>
     </div>
   }
 } @else {

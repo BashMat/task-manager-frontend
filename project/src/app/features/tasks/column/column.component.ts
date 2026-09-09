@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output, signal, effect, inject} from '@angular/core';
+import {Component, EventEmitter, input, Output, signal, effect, inject, computed, viewChild, ElementRef} from '@angular/core';
 import {TaskManagerBackendService} from '../../../core/services/task-manager-backend.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TrackingLogEntry} from '../../../core/services/tracking-log-entry-dto.interface';
@@ -13,9 +13,9 @@ import {
 } from '../../../shared/components/dialogs/deletion-warning-dialog/deletion-warning-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {CreationDialog} from '../../../shared/components/dialogs/creation-dialog/creation-dialog.component';
-import {MatDivider} from '@angular/material/divider';
 import {CardComponent} from '../card/card.component';
 import {NewCardComponent} from '../new-card/new-card.component';
+import {statusColor} from '../../../shared/utils/status-color';
 import {MatMenuModule} from '@angular/material/menu';
 import {CommonModule} from '@angular/common';
 
@@ -32,7 +32,6 @@ import {CommonModule} from '@angular/common';
     MatButtonModule,
     MatIconModule,
     MatCardTitleGroup,
-    MatDivider,
     CardComponent,
     NewCardComponent,
     MatMenuModule,
@@ -46,8 +45,13 @@ export class ColumnComponent {
   boardColumns = input<Column[]>([]);
   isCollapsed = signal(false);
 
+  headerColor = computed(() => statusColor(this.column().title));
+  columnBackground = computed(() => `color-mix(in srgb, ${this.headerColor().bg} 10%, white)`);
+
   @Output() deleteColumnEvent = new EventEmitter<number>();
   @Output() cardUpdatedEvent = new EventEmitter<TrackingLogEntry>();
+
+  private scrollContainer = viewChild<ElementRef<HTMLElement>>('scrollContainer');
 
   private taskManagerBackendService = inject(TaskManagerBackendService);
   private dialog = inject(MatDialog);
@@ -129,6 +133,15 @@ export class ColumnComponent {
             this.column().cards.unshift(this.mapEntryToCard(response.data));
           }
         });
+  }
+
+  scrollToTop() {
+    requestAnimationFrame(() => {
+      const el = this.scrollContainer()?.nativeElement;
+      if (el) {
+        el.scrollTop = 0;
+      }
+    });
   }
 
   private mapEntryToCard(entry: TrackingLogEntry): Card {

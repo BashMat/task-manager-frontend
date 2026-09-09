@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { TaskManagerBackendService } from '../../../core/services/task-manager-backend.service';
 import { TrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
 import { LocalDateTimePipe } from '../../pipes/local-date-time.pipe';
+import { statusColor as resolveStatusColor } from '../../utils/status-color';
 
 export interface EditableDialogData {
   id: number;
@@ -62,32 +63,11 @@ export class EditableDetailsForm implements OnDestroy {
   editDescription = '';
   editStatusId = this.data.statusId;
 
-  // TODO: Use colours from backend
-  private readonly palette = [
-    { bg: '#e57373', fg: '#ffffff' },
-    { bg: '#f06292', fg: '#ffffff' },
-    { bg: '#ba68c8', fg: '#ffffff' },
-    { bg: '#64b5f6', fg: '#ffffff' },
-    { bg: '#4db6ac', fg: '#ffffff' },
-    { bg: '#81c784', fg: '#1b1b1b' },
-    { bg: '#ffb74d', fg: '#1b1b1b' },
-    { bg: '#a1887f', fg: '#ffffff' }
-  ];
-
   statusName(id: number): string {
     return this.data.statuses.find(s => s.id === id)?.title ?? '';
   }
 
-  statusColor(name: string): { bg: string; fg: string } {
-    if (!name) {
-      return { bg: '#e0e0e0', fg: '#1b1b1b' };
-    }
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = (hash * 31 + name.charCodeAt(i)) | 0;
-    }
-    return this.palette[Math.abs(hash) % this.palette.length];
-  }
+  protected readonly statusColor = resolveStatusColor;
 
   toggleEdit() {
     if (!this.isEditing()) {
