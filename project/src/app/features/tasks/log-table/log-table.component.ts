@@ -17,6 +17,7 @@ import { EditableDetailsForm } from '../../../shared/components/editable-details
 import {Card} from '../column/card.interface';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
+import { statusColor as resolveStatusColor } from '../../../shared/utils/status-color';
 
 @Component({
   selector: 'log-table',
@@ -29,9 +30,8 @@ export class LogTableComponent implements OnInit, AfterViewInit {
   isCollapsed = signal(false);
 
   displayedColumns: string[] = ['id', 'title', 'status', 'priority'];
-  colors: string[] = ["bg-blue-400", "bg-cyan-400", "bg-pink-400", "bg-red-400", "bg-green-400"];
-  defaultColor: string = "bg-amber-400";
-  titleToColor: Map<string, string> = new Map<string, string>();
+
+  protected readonly statusColor = resolveStatusColor;
 
   @ViewChild(MatTable) table!: MatTable<TrackingLogEntry>;
   @ViewChild(MatSort) sort!: MatSort;
@@ -65,13 +65,6 @@ export class LogTableComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.dataSource.data = this.board().columns.flatMap(column =>
       column.cards.map(card => {
-
-        // TODO: Add colors to backend and just use them
-        let curColor = this.colors.pop();
-        if (curColor !== undefined) {
-          this.titleToColor.set(column.title, curColor);
-        }
-
         return {
           id: card.id,
           status: column.title,
@@ -85,14 +78,6 @@ export class LogTableComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
-  }
-
-  getStatusColorClass(status: string) {
-    if (this.titleToColor.has(status)) {
-      return this.titleToColor.get(status);
-    }
-
-    return this.defaultColor;
   }
 
   OpenDetails() {
