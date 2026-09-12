@@ -61,6 +61,18 @@ export class LogTableComponent implements OnInit, AfterViewInit {
       if (savedState !== null) {
         this.isCollapsed.set(JSON.parse(savedState));
       }
+
+      const savedWidths = localStorage.getItem(`logtable_colwidths_${boardId}`);
+      if (savedWidths !== null) {
+        try {
+          const parsed: unknown = JSON.parse(savedWidths);
+          if (this.isValidWidths(parsed)) {
+            this.widths.set(parsed);
+          }
+        } catch (error) {
+          console.error(`Failed to parse stored column widths for board ${boardId}`, error);
+        }
+      }
     });
   }
 
@@ -115,6 +127,18 @@ export class LogTableComponent implements OnInit, AfterViewInit {
   }
 
   onResizeEnd() {
+    localStorage.setItem(`logtable_colwidths_${this.board().id}`, JSON.stringify(this.widths()));
+  }
+
+  private isValidWidths(value: unknown): value is Record<string, number> {
+    if (value === null || typeof value !== 'object') {
+      return false;
+    }
+    const obj = value as Record<string, unknown>;
+    if (Object.keys(obj).length !== this.columnOrder.length) {
+      return false;
+    }
+    return this.columnOrder.every(key => typeof obj[key] === 'number' && Number.isFinite(obj[key]));
   }
 
   private headerMinPx(key: string, table: HTMLElement): number {
