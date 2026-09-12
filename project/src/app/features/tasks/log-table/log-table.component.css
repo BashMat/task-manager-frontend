@@ -1,0 +1,11 @@
+.demo-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.demo-table th,
+.demo-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

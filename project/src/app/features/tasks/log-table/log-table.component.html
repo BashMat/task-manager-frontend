@@ -37,24 +37,24 @@
         <div>
           <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['id']">No.</th>
               <td mat-cell *matCellDef="let element">{{element.id}}</td>
             </ng-container>
 
             <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['title']">Title</th>
               <td mat-cell *matCellDef="let element">{{element.title}}</td>
             </ng-container>
 
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['status']">Status</th>
               <td mat-cell *matCellDef="let element">
                 <span class="status-dot" [style.background-color]="statusColor(element.status).bg"></span>{{element.status}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="priority">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Priority</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['priority']">Priority</th>
               <td mat-cell *matCellDef="let element">{{element.priority}}</td>
             </ng-container>
 

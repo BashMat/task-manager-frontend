@@ -31,6 +31,10 @@ export class LogTableComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['id', 'title', 'status', 'priority'];
 
+  private readonly columnOrder = ['id', 'title', 'status', 'priority'];
+  private readonly DEFAULT_WIDTHS: Record<string, number> = { id: 12, title: 46, status: 24, priority: 18 }; // sum = 100
+  widths = signal<Record<string, number>>({ ...this.DEFAULT_WIDTHS });
+
   protected readonly statusColor = resolveStatusColor;
 
   @ViewChild(MatTable) table!: MatTable<TrackingLogEntry>;
