@@ -5,9 +5,11 @@ import { AfterViewInit, Directive, ElementRef, OnDestroy, Renderer2, input, outp
 })
 export class ColumnResizeDirective implements AfterViewInit, OnDestroy {
   colResize = input.required<string>();
+  mode = input<'drag' | 'autoFit'>('drag');
 
   resizeBy = output<{ key: string; dx: number }>();
   resizeEnd = output<void>();
+  autoFit = output<{ key: string }>();
 
   private handle?: HTMLElement;
   private dragging = false;
@@ -19,6 +21,8 @@ export class ColumnResizeDirective implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.renderer.setStyle(this.el.nativeElement, 'position', 'relative');
 
+    const autoFitOnly = this.mode() === 'autoFit';
+
     const handle = this.renderer.createElement('span') as HTMLElement;
     this.renderer.addClass(handle, 'col-resize-handle');
     const handleStyles: Record<string, string> = {
@@ -27,7 +31,7 @@ export class ColumnResizeDirective implements AfterViewInit, OnDestroy {
       bottom: '0',
       right: '0',
       width: '10px',
-      cursor: 'col-resize',
+      cursor: autoFitOnly ? 'pointer' : 'col-resize',
       'user-select': 'none',
       'touch-action': 'none',
       'z-index': '2'
@@ -55,12 +59,26 @@ export class ColumnResizeDirective implements AfterViewInit, OnDestroy {
     this.renderer.appendChild(this.el.nativeElement, handle);
     this.handle = handle;
 
-    this.cleanupFns.push(
-      this.renderer.listen(handle, 'pointerdown', (ev: PointerEvent) => this.onPointerDown(ev)),
-      this.renderer.listen(handle, 'pointermove', (ev: PointerEvent) => this.onPointerMove(ev)),
-      this.renderer.listen(handle, 'pointerup', (ev: PointerEvent) => this.onPointerUp(ev)),
-      this.renderer.listen(handle, 'click', (ev: MouseEvent) => ev.stopPropagation())
-    );
+    if (autoFitOnly) {
+      this.cleanupFns.push(
+        this.renderer.listen(handle, 'click', (ev: MouseEvent) => ev.stopPropagation()),
+        this.renderer.listen(handle, 'dblclick', (ev: MouseEvent) => {
+          ev.stopPropagation();
+          this.autoFit.emit({ key: this.colResize() });
+        })
+      );
+    } else {
+      this.cleanupFns.push(
+        this.renderer.listen(handle, 'pointerdown', (ev: PointerEvent) => this.onPointerDown(ev)),
+        this.renderer.listen(handle, 'pointermove', (ev: PointerEvent) => this.onPointerMove(ev)),
+        this.renderer.listen(handle, 'pointerup', (ev: PointerEvent) => this.onPointerUp(ev)),
+        this.renderer.listen(handle, 'click', (ev: MouseEvent) => ev.stopPropagation()),
+        this.renderer.listen(handle, 'dblclick', (ev: MouseEvent) => {
+          ev.stopPropagation();
+          this.autoFit.emit({ key: this.colResize() });
+        })
+      );
+    }
   }
 
   private onPointerDown(ev: PointerEvent): void {

@@ -126,6 +126,42 @@ export class LogTableComponent implements OnInit, AfterViewInit {
     this.widths.set(w);
   }
 
+  onAutoFit(e: { key: string }) {
+    const table: HTMLElement | undefined = this.tableRef()?.nativeElement;
+    if (!table) {
+      return;
+    }
+    const tableWidth = table.clientWidth;
+    if (tableWidth <= 0) {
+      return;
+    }
+    const i = this.columnOrder.indexOf(e.key);
+    const partnerKey = this.columnOrder[i + 1] ?? this.columnOrder[i - 1];
+    if (!partnerKey) {
+      return;
+    }
+    const cells = table.querySelectorAll<HTMLElement>(`tbody .mat-column-${e.key}`);
+    const range = document.createRange();
+    let contentPx = 0;
+    cells.forEach(cell => {
+      range.selectNodeContents(cell);
+      const style = getComputedStyle(cell);
+      const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+      contentPx = Math.max(contentPx, Math.ceil(range.getBoundingClientRect().width) + padding);
+    });
+    contentPx += 8;
+    const minSelfPct = (this.headerMinPx(e.key, table) / tableWidth) * 100;
+    const minPartnerPct = (this.headerMinPx(partnerKey, table) / tableWidth) * 100;
+    const w = { ...this.widths() };
+    const pairTotal = w[e.key] + w[partnerKey];
+    let targetPct = (contentPx / tableWidth) * 100;
+    targetPct = Math.max(minSelfPct, Math.min(targetPct, pairTotal - minPartnerPct));
+    w[e.key] = targetPct;
+    w[partnerKey] = pairTotal - targetPct;
+    this.widths.set(w);
+    this.onResizeEnd();
+  }
+
   onResizeEnd() {
     localStorage.setItem(`logtable_colwidths_${this.board().id}`, JSON.stringify(this.widths()));
   }

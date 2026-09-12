@@ -38,26 +38,27 @@
           <table mat-table matSort #tableRef [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['id']"
-                  colResize="id" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()">No.</th>
+                  colResize="id" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()" (autoFit)="onAutoFit($event)">No.</th>
               <td mat-cell *matCellDef="let element">{{element.id}}</td>
             </ng-container>
 
             <ng-container matColumnDef="title">
               <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['title']"
-                  colResize="title" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()">Title</th>
+                  colResize="title" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()" (autoFit)="onAutoFit($event)">Title</th>
               <td mat-cell *matCellDef="let element">{{element.title}}</td>
             </ng-container>
 
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['status']"
-                  colResize="status" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()">Status</th>
+                  colResize="status" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()" (autoFit)="onAutoFit($event)">Status</th>
               <td mat-cell *matCellDef="let element">
                 <span class="status-dot" [style.background-color]="statusColor(element.status).bg"></span>{{element.status}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="priority">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['priority']">Priority</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['priority']"
+                  colResize="priority" mode="autoFit" (autoFit)="onAutoFit($event)">Priority</th>
               <td mat-cell *matCellDef="let element">{{element.priority}}</td>
             </ng-container>
 
