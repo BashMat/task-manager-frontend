@@ -1,4 +1,4 @@
-import { Component, ViewChild, input, OnInit, AfterViewInit, Output, EventEmitter, signal, effect, inject } from '@angular/core';
+import { Component, ViewChild, input, OnInit, AfterViewInit, Output, EventEmitter, signal, effect, inject, viewChild, ElementRef } from '@angular/core';
 import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { TrackingLogEntry } from './tracking-log-entry.interface';
 import { TrackingLogEntry as ServiceTrackingLogEntry } from '../../../core/services/tracking-log-entry-dto.interface';
@@ -18,10 +18,11 @@ import {Card} from '../column/card.interface';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { statusColor as resolveStatusColor } from '../../../shared/utils/status-color';
+import { ColumnResizeDirective } from './column-resize.directive';
 
 @Component({
   selector: 'log-table',
-  imports: [MatTableModule, MatSortModule, MatButtonModule, MatIconModule, MatCardModule, MatMenuModule, CommonModule],
+  imports: [MatTableModule, MatSortModule, MatButtonModule, MatIconModule, MatCardModule, MatMenuModule, CommonModule, ColumnResizeDirective],
   templateUrl: './log-table.component.html',
   styleUrl: './log-table.component.css'
 })
@@ -32,13 +33,17 @@ export class LogTableComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['id', 'title', 'status', 'priority'];
 
   private readonly columnOrder = ['id', 'title', 'status', 'priority'];
-  private readonly DEFAULT_WIDTHS: Record<string, number> = { id: 12, title: 46, status: 24, priority: 18 }; // sum = 100
+  private readonly DEFAULT_WIDTHS: Record<string, number> = { id: 12, title: 46, status: 24, priority: 18 };
+  private readonly MIN_COLUMN_PX = 48;
+  private readonly minPxCache = new Map<string, number>();
+  private measureCanvas?: HTMLCanvasElement;
   widths = signal<Record<string, number>>({ ...this.DEFAULT_WIDTHS });
 
   protected readonly statusColor = resolveStatusColor;
 
   @ViewChild(MatTable) table!: MatTable<TrackingLogEntry>;
   @ViewChild(MatSort) sort!: MatSort;
+  private tableRef = viewChild('tableRef', { read: ElementRef });
 
   dataSource = new MatTableDataSource(Array.of<TrackingLogEntry>());
 
@@ -82,6 +87,59 @@ export class LogTableComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
+  }
+
+  onResizeBy(e: { key: string; dx: number }) {
+    const table = this.tableRef()?.nativeElement;
+    if (!table) {
+      return;
+    }
+    const tableWidth = table.clientWidth;
+    if (tableWidth <= 0) {
+      return;
+    }
+    const i = this.columnOrder.indexOf(e.key);
+    const nextKey = this.columnOrder[i + 1];
+    if (!nextKey) {
+      return;
+    }
+    const minSelfPct = (this.headerMinPx(e.key, table) / tableWidth) * 100;
+    const minNextPct = (this.headerMinPx(nextKey, table) / tableWidth) * 100;
+    const w = { ...this.widths() };
+    let deltaPct = (e.dx / tableWidth) * 100;
+    deltaPct = Math.max(deltaPct, minSelfPct - w[e.key]);
+    deltaPct = Math.min(deltaPct, w[nextKey] - minNextPct);
+    w[e.key] += deltaPct;
+    w[nextKey] -= deltaPct;
+    this.widths.set(w);
+  }
+
+  onResizeEnd() {
+  }
+
+  private headerMinPx(key: string, table: HTMLElement): number {
+    const cached = this.minPxCache.get(key);
+    if (cached !== undefined) {
+      return cached;
+    }
+    const th = table.querySelector<HTMLElement>(`thead .mat-column-${key}`);
+    if (!th) {
+      return this.MIN_COLUMN_PX;
+    }
+    const label = (th.textContent ?? '').trim();
+    const style = getComputedStyle(th);
+    this.measureCanvas ??= document.createElement('canvas');
+    const ctx = this.measureCanvas.getContext('2d');
+    if (!ctx) {
+      return this.MIN_COLUMN_PX;
+    }
+    ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const textPx = ctx.measureText(label).width;
+    const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    const sortArrowRoom = 24;
+    const minPx = Math.ceil(textPx + padding + sortArrowRoom);
+    this.minPxCache.set(key, minPx);
+    return minPx;
   }
 
   OpenDetails() {

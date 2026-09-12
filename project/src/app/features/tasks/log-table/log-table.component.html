@@ -35,19 +35,22 @@
     @if (!isCollapsed()) {
       <mat-card-content>
         <div>
-          <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+          <table mat-table matSort #tableRef [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['id']">No.</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['id']"
+                  colResize="id" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()">No.</th>
               <td mat-cell *matCellDef="let element">{{element.id}}</td>
             </ng-container>
 
             <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['title']">Title</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['title']"
+                  colResize="title" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()">Title</th>
               <td mat-cell *matCellDef="let element">{{element.title}}</td>
             </ng-container>
 
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['status']">Status</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header [style.width.%]="widths()['status']"
+                  colResize="status" (resizeBy)="onResizeBy($event)" (resizeEnd)="onResizeEnd()">Status</th>
               <td mat-cell *matCellDef="let element">
                 <span class="status-dot" [style.background-color]="statusColor(element.status).bg"></span>{{element.status}}
               </td>
