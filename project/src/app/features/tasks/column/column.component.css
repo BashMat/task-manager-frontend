@@ -15,3 +15,52 @@ mat-card {
 .column-scroll::-webkit-scrollbar {
     display: none;
 }
+
+:host {
+    display: block;
+    height: 100%;
+}
+
+.column-root {
+    height: 100%;
+}
+
+.column-root.filled {
+    display: flex;
+    flex-direction: column;
+}
+
+.column-root.filled mat-card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.column-root.filled mat-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.column-root.filled .column-scroll {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+.column-root.filled .card-list {
+    flex: 1 1 auto;
+}
+
+.new-entry {
+    order: 1;
+}

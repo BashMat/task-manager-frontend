@@ -1,3 +1,8 @@
+:host
+{
+    display: block;
+}
+
 /* TODO: Perhaps find better way to style Angular Material components */
 .mat-mdc-card-header
 {

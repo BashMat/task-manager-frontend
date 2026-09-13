@@ -114,3 +114,34 @@ footer.diy
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
+.cdk-drag-placeholder
+{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px dashed var(--mat-sys-outline-variant);
+    border-radius: var(--mat-sys-corner-medium, 12px);
+    background: color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
+}
+
+.cdk-drag-placeholder *
+{
+    visibility: hidden;
+}
+
+.cdk-drag-preview
+{
+    border-radius: var(--mat-sys-corner-medium, 12px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
+}
+
+.cdk-drag-animating
+{
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder)
+{
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
