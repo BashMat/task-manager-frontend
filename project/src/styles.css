@@ -120,9 +120,9 @@ footer.diy
     display: block;
     width: 100%;
     box-sizing: border-box;
-    border: 2px dashed var(--mat-sys-outline-variant);
+    border: 2px dashed var(--column-color, var(--mat-sys-outline-variant));
     border-radius: var(--mat-sys-corner-medium, 12px);
-    background: color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
+    background: color-mix(in srgb, var(--column-color, var(--mat-sys-primary)) 10%, transparent);
 }
 
 .cdk-drag-placeholder *

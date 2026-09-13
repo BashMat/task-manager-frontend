@@ -30,7 +30,7 @@
           <div class="top-new-card" [style.background-color]="columnBackground()">
             <new-card variant="thin" [statusName]="column().title" (expanded)="scrollToTop()" (create)="addCardAtTop($event)"></new-card>
           </div>
-          <div class="card-list" cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
+          <div class="card-list" [style.--column-color]="headerColor().bg" cdkDropList [id]="column().id.toString()" [cdkDropListData]="column().cards"
             (cdkDropListDropped)="drop($event)">
             @for (card of column().cards; track card.id)
             {
