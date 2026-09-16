@@ -32,11 +32,16 @@ html, body
     flex: 0 0 auto;
 }
 
+.bg-picker-backdrop
+{
+    background: rgba(0, 0, 0, 0.12);
+}
+
 body.mat-typography
 {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    background: #e66465;
+    background: var(--app-bg, #e1e5ec);
 }
 
 body.diy

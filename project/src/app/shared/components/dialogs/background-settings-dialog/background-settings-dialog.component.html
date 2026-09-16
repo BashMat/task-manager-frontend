@@ -1,0 +1,35 @@
+<div mat-dialog-title>Background color</div>
+<mat-dialog-content>
+  <p class="section-label">Presets</p>
+  <div class="swatch-grid">
+    @for (option of backgroundPreference.options; track option.hex) {
+      <button
+        type="button"
+        class="swatch"
+        [class.selected]="selectedColor() === option.hex"
+        [style.background]="option.hex"
+        [attr.aria-label]="option.name"
+        [matTooltip]="option.name"
+        (click)="SelectColor(option.hex)">
+        @if (selectedColor() === option.hex) {
+          <mat-icon>check</mat-icon>
+        }
+      </button>
+    }
+  </div>
+
+  <p class="section-label">Custom color</p>
+  <div class="custom-row">
+    <input
+      type="color"
+      class="color-input"
+      aria-label="Pick a custom color"
+      [ngModel]="selectedColor()"
+      (ngModelChange)="SelectColor($event)" />
+    <span class="hex-readout">{{ selectedColor().toUpperCase() }}</span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="Cancel()">Cancel</button>
+  <button mat-flat-button (click)="Save()">Save</button>
+</mat-dialog-actions>

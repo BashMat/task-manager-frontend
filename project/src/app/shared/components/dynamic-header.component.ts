@@ -6,8 +6,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import {TaskManagerBackendService} from '../../core/services/task-manager-backend.service';
+import { BackgroundSettingsDialog } from './dialogs/background-settings-dialog/background-settings-dialog.component';
 
 @Component({
   selector: 'dynamic-header',
@@ -20,9 +22,18 @@ export class DynamicHeaderComponent {
   private localStorageService = inject(LocalStorageService);
   private router = inject(Router);
   private taskManagerBackendService = inject(TaskManagerBackendService);
+  private dialog = inject(MatDialog);
 
   isAuthenticated() {
     return this.authService.isAuthenticated();
+  }
+
+  OpenSettings() {
+    this.dialog.open(BackgroundSettingsDialog, {
+      width: '360px',
+      autoFocus: false,
+      backdropClass: 'bg-picker-backdrop'
+    });
   }
 
   GoToUserProfile() {

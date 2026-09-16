@@ -2,6 +2,7 @@ import { ApplicationConfig, provideAppInitializer, provideZoneChangeDetection } 
 import { provideRouter } from '@angular/router';
 import { inject } from '@angular/core';
 import { ConfigService } from './core/config/config.service';
+import { BackgroundPreferenceService } from './core/services/background-preference.service';
 import { routes } from './app.routes';
 import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -17,6 +18,9 @@ export const appConfig: ApplicationConfig = {
     ConfigService,
     provideAppInitializer(async () => {
       const configService = inject(ConfigService);
-      await configService.load()})
+      await configService.load()}),
+    provideAppInitializer(() => {
+      inject(BackgroundPreferenceService).init();
+    })
   ]
 };
