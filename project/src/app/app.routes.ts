@@ -9,6 +9,7 @@ import {PageLayout} from './shared/layouts/page-layout.enum';
 import { ProfilePageComponent } from './features/profile/profile-page/profile-page.component';
 import { userResolver } from './shared/user.resolver';
 import { autoLayout } from './shared/layouts/auto-layout.resolver';
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 export const routes: Routes = [
   // TODO: Reuse when other functionality is added
@@ -42,15 +43,25 @@ export const routes: Routes = [
   {
     path: ':username',
     component: ProfilePageComponent,
+    canActivate: [AuthGuard],
     resolve:
     {
-      username: userResolver(),
-      layout: autoLayout()
+      profile: userResolver(),
+      layout: setLayout(PageLayout.Authorized)
     }
   },
   {
+    path: '',
+    redirectTo: 'boards',
+    pathMatch: 'full'
+  },
+  {
     path: '**',
-    redirectTo: 'boards'
+    component: NotFoundComponent,
+    resolve:
+    {
+      layout: autoLayout()
+    }
   }
 ];
 
