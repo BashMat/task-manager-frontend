@@ -13,17 +13,26 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DynamicHeaderComponent } from '../../../shared/components/dynamic-header.component';
+import { NotFoundComponent } from '../../../shared/components/not-found/not-found.component';
+import { ProfileResult } from '../../../shared/user.resolver';
 
 @Component({
   selector: 'profile-page',
-  imports: [RouterOutlet, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, MatListModule, MatButtonModule, FormsModule, CommonModule, DynamicHeaderComponent],
+  imports: [RouterOutlet, MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, MatListModule, MatButtonModule, FormsModule, CommonModule, DynamicHeaderComponent, NotFoundComponent],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.css'
 })
 export class ProfilePageComponent {
   private route = inject(ActivatedRoute);
   private data = toSignal(this.route.data);
-  username = computed(() => this.getData('username'));
+
+  profile = computed<ProfileResult | undefined>(() => this.data()?.['profile']);
+  status = computed(() => this.profile()?.status);
+
+  username = computed(() => {
+    const profile = this.profile();
+    return profile?.status === 'visible' ? profile.user.userName : null;
+  });
   firstName = computed(() => this.getData('firstName'));
   lastName = computed(() => this.getData('lastName'));
 
