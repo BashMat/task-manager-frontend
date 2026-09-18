@@ -14,10 +14,20 @@
                         <mat-icon>account_circle</mat-icon>
                         <span>Profile</span>
                     </button>
+                    <button mat-menu-item (click)="GoToBoards()">
+                        <mat-icon>view_kanban</mat-icon>
+                        <span>Tracking Logs</span>
+                    </button>
+
+                    <mat-divider></mat-divider>
+
                     <button mat-menu-item (click)="OpenSettings()">
                         <mat-icon>settings</mat-icon>
                         <span>Settings</span>
                     </button>
+
+                    <mat-divider></mat-divider>
+
                     <button mat-menu-item (click)="SignOut()">
                         <mat-icon>logout</mat-icon>
                         <span>Sign out</span>

@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import {TaskManagerBackendService} from '../../core/services/task-manager-backend.service';
@@ -13,7 +14,7 @@ import { BackgroundSettingsDialog } from './dialogs/background-settings-dialog/b
 
 @Component({
   selector: 'dynamic-header',
-  imports: [RouterLink, MatToolbarModule, MatIcon, MatIconButton, MatMenuModule, CommonModule],
+  imports: [RouterLink, MatToolbarModule, MatIcon, MatIconButton, MatMenuModule, MatDividerModule, CommonModule],
   templateUrl: './dynamic-header.component.html',
   styleUrl: './dynamic-header.component.css'
 })
@@ -34,6 +35,10 @@ export class DynamicHeaderComponent {
       autoFocus: false,
       backdropClass: 'bg-picker-backdrop'
     });
+  }
+
+  GoToBoards() {
+    this.router.navigateByUrl('/boards');
   }
 
   GoToUserProfile() {
