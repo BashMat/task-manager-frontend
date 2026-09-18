@@ -2,6 +2,7 @@
   @case ('visible') {
     <dynamic-header></dynamic-header>
     <div class="flex justify-center items-start p-8 min-h-screen ">
+      <div class="flex flex-col md:flex-row items-start gap-6">
       <mat-card class="w-full max-w-md shadow-lg">
         <mat-card-header class="pb-6 flex flex-col gap-4">
           <div class="flex items-center gap-4">
@@ -62,6 +63,59 @@
           </form>
         </mat-card-content>
       </mat-card>
+
+      <mat-card class="w-full md:w-auto md:max-w-[480px] shadow-lg">
+        <mat-card-content style="display: flex; flex-direction: column; gap: 1rem;">
+          <span class="text-2xl font-semibold text-gray-800">Activity</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 min-w-0">
+              <span class="text-xs text-gray-500">Actions</span>
+              <span class="text-2xl font-bold text-gray-900 mt-1">{{ totalActions() }}</span>
+            </div>
+            <div class="flex flex-col rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 min-w-0">
+              <span class="text-xs text-gray-500">Entries created</span>
+              <span class="text-2xl font-bold text-gray-900 mt-1">{{ entriesCreated() }}</span>
+            </div>
+            <div class="flex flex-col rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 min-w-0">
+              <span class="text-xs text-gray-500">Busiest day</span>
+              <span class="text-xl font-bold text-gray-900 mt-1 whitespace-nowrap">{{ busiestDay().count > 0 ? busiestDay().dateLabel : '—' }}</span>
+              @if (busiestDay().count > 0) {
+                <span class="text-xs text-gray-500 mt-0.5">{{ busiestDay().count }} {{ busiestDay().count === 1 ? 'action' : 'actions' }}</span>
+              }
+            </div>
+            <div class="flex flex-col rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 min-w-0">
+              <span class="text-xs text-gray-500">Most active Log</span>
+              <span class="text-xl font-bold text-gray-900 truncate mt-1" [title]="mostActiveBoardName() ?? ''">{{ mostActiveBoardName() ?? '—' }}</span>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <div class="inline-flex flex-col gap-1.5">
+              <div class="grid grid-flow-col gap-1.5" style="grid-auto-columns: 26px;">
+                @for (label of contributionGrid().monthLabels; track $index) {
+                  <div class="text-xs text-gray-500 whitespace-nowrap h-4 leading-4">{{ label }}</div>
+                }
+              </div>
+              <div class="grid grid-flow-col gap-1.5" style="grid-template-rows: repeat(7, 26px); grid-auto-columns: 26px;">
+                @for (cell of contributionGrid().cells; track $index) {
+                  <div class="rounded" style="width: 26px; height: 26px;" [style.background-color]="levelColor(cell.level)" [matTooltip]="cell.title" matTooltipShowDelay="100"></div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 text-sm text-gray-500">
+            <span class="mr-1">Less</span>
+            <div class="w-4 h-4 rounded" [style.background-color]="levelColor(0)"></div>
+            <div class="w-4 h-4 rounded" [style.background-color]="levelColor(1)"></div>
+            <div class="w-4 h-4 rounded" [style.background-color]="levelColor(2)"></div>
+            <div class="w-4 h-4 rounded" [style.background-color]="levelColor(3)"></div>
+            <div class="w-4 h-4 rounded" [style.background-color]="levelColor(4)"></div>
+            <span class="ml-1">More</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      </div>
     </div>
   }
   @default {
